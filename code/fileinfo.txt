@@ -1,0 +1,431 @@
+.:
+total 48
+-rw-rw-r-- 1 kirill kirill    0 2012-02-11 18:40 fileinfo.txt
+drwxr-xr-x 2 kirill kirill 4096 2012-02-11 18:35 TestPrograms
+drwxr-xr-x 2 kirill kirill 4096 2012-02-11 18:34 Icp
+drwxr-xr-x 2 kirill kirill 4096 2012-02-11 18:34 UteSLAM
+drwxr-xr-x 2 kirill kirill 4096 2012-02-11 18:33 CornerSLAM
+drwxr-xr-x 3 kirill kirill 4096 2012-02-11 18:27 EdgeSLAM
+drwxr-xr-x 2 kirill kirill 4096 2012-02-11 18:23 xr4000
+drwxr-xr-x 2 kirill kirill 4096 2012-02-11 18:23 Misc
+drwxr-xr-x 2 kirill kirill 4096 2012-02-11 18:23 Slam
+drwxr-xr-x 8 kirill kirill 4096 2005-08-11 16:05 Matlab
+drwxr-xr-x 2 kirill kirill 4096 2005-08-11 16:05 VisionSLAM
+-rw-r--r-- 1 kirill kirill  209 2005-08-08 11:19 Makefile
+-rw-r--r-- 1 kirill kirill   37 2005-08-07 10:31 exclude.txt
+
+./TestPrograms:
+total 504
+-rw-r--r-- 1 kirill kirill   1789 2005-06-17 04:18 tstOdo.cc
+-rw-r--r-- 1 kirill kirill   1864 2005-06-17 03:59 Makefile
+-rw-r--r-- 1 kirill kirill  18586 2005-01-05 10:50 tst.cc
+-rw-r--r-- 1 kirill kirill   2413 2004-12-17 04:08 test.s
+-rw-r--r-- 1 kirill kirill    976 2004-12-17 04:07 test.cc
+-rw-r--r-- 1 kirill kirill  67511 2004-11-05 06:50 TestLCD.cc
+-rw-r--r-- 1 kirill kirill  36270 2004-10-07 10:12 tmp.las
+-rw-r--r-- 1 kirill kirill   1852 2004-09-17 13:17 odo_test.cc
+-rw-r--r-- 1 kirill kirill 160415 2004-08-28 04:25 tst.dat
+-rw-r--r-- 1 kirill kirill   2125 2004-08-25 08:50 m2_.m
+-rw-r--r-- 1 kirill kirill  49099 2004-08-24 11:55 m2.m
+-rw-r--r-- 1 kirill kirill  71710 2004-08-24 11:54 m1.m
+-rw-r--r-- 1 kirill kirill  14386 2004-05-28 05:58 k3.m
+-rw-r--r-- 1 kirill kirill   2009 2004-05-28 05:42 k3.odo
+-rw-r--r-- 1 kirill kirill   2009 2004-05-28 05:42 k3.obs
+-rw-r--r-- 1 kirill kirill   7137 2004-05-21 08:50 tst_geometry.cc
+-rw-r--r-- 1 kirill kirill    228 2004-05-14 11:07 in
+-rw-r--r-- 1 kirill kirill     56 2004-05-04 07:25 input2
+-rw-r--r-- 1 kirill kirill    195 2004-05-04 05:24 input
+-rw-r--r-- 1 kirill kirill   2257 2004-04-29 07:10 matrix2.cc
+-rw-r--r-- 1 kirill kirill   2314 2004-04-29 07:06 matrix3.cc
+-rw-r--r-- 1 kirill kirill   1070 2004-03-06 07:27 matrix.in
+-rw-r--r-- 1 kirill kirill   6673 2004-03-05 03:58 tst_ekf.cc
+-rw-r--r-- 1 kirill kirill   3078 2004-02-20 09:15 match_tt.cc
+-rw-r--r-- 1 kirill kirill   1490 2003-12-02 07:27 test_pfilter.cc
+-rw-r--r-- 1 kirill kirill    875 2003-09-08 10:42 tst_matlab.cc
+
+./Icp:
+total 36
+-rw-r--r-- 1 kirill kirill 1897 2005-02-13 10:39 Makefile
+-rw-r--r-- 1 kirill kirill 2245 2005-01-12 08:09 icp_odo.cpp
+-rw-r--r-- 1 kirill kirill 5520 2005-01-12 07:35 icp.cc
+-rw-r--r-- 1 kirill kirill 1903 2005-01-12 07:33 icp.h
+-rw-r--r-- 1 kirill kirill 2264 2004-12-30 08:44 icp_odo.cc
+-rw-r--r-- 1 kirill kirill 5873 2004-12-17 08:20 kdtree.cc
+-rw-r--r-- 1 kirill kirill 1437 2004-12-17 08:19 kdtree.h
+
+./UteSLAM:
+total 44
+-rw-r--r-- 1 kirill kirill 16016 2005-08-03 08:03 tree.cc
+-rw-r--r-- 1 kirill kirill  1899 2005-08-03 07:37 Makefile
+-rw-r--r-- 1 kirill kirill  6070 2005-08-03 07:35 tree.h
+-rw-r--r-- 1 kirill kirill  6027 2005-04-08 06:53 ute_slam.cc
+-rw-r--r-- 1 kirill kirill  5488 2005-02-11 11:47 tree_slam.cc
+
+./CornerSLAM:
+total 100
+-rw-r--r-- 1 kirill kirill  2017 2005-07-26 08:37 extractCorners.cc
+-rw-r--r-- 1 kirill kirill 21780 2005-07-23 07:38 LaserCornerExtractor.cc
+-rw-r--r-- 1 kirill kirill  3685 2005-07-23 07:07 LaserCornerExtractor.h
+-rw-r--r-- 1 kirill kirill  7997 2005-04-08 09:14 LaserGridMapper.cc
+-rw-r--r-- 1 kirill kirill  7616 2005-04-08 06:09 slam_app.cc
+-rw-r--r-- 1 kirill kirill  2250 2005-03-18 11:16 Makefile
+-rw-r--r-- 1 kirill kirill 15122 2005-03-02 04:42 corner.cc
+-rw-r--r-- 1 kirill kirill  6470 2005-03-02 04:41 corner.h
+-rw-r--r-- 1 kirill kirill 10466 2005-02-11 11:43 corner_loc.cc
+-rw-r--r-- 1 kirill kirill  1407 2004-09-07 04:26 LaserGridMapper.h
+-rw-r--r-- 1 kirill kirill  3838 2004-08-07 09:56 hough.cc
+-rw-r--r-- 1 kirill kirill  1311 2004-08-07 09:50 hough.h
+
+./EdgeSLAM:
+total 76
+drwxr-xr-x 2 kirill kirill  4096 2005-08-11 16:05 Matlab
+-rw-r--r-- 1 kirill kirill  4797 2005-08-05 06:05 edgeLandmark.h
+-rw-r--r-- 1 kirill kirill 10828 2005-08-05 06:03 edge_slam.cc
+-rw-r--r-- 1 kirill kirill  3476 2005-08-05 06:01 edge_common.h
+-rw-r--r-- 1 kirill kirill  5413 2005-08-04 11:06 eslam.cc
+-rw-r--r-- 1 kirill kirill 20924 2005-08-04 07:10 edgeLandmark.cc
+-rw-r--r-- 1 kirill kirill  2161 2005-07-30 11:43 Makefile
+-rw-r--r-- 1 kirill kirill  2365 2005-07-30 04:15 obs.sample
+-rw-r--r-- 1 kirill kirill  1554 2005-06-17 08:16 stereoPair.h
+-rw-r--r-- 1 kirill kirill   589 2005-06-11 06:10 seq.sh
+
+./EdgeSLAM/Matlab:
+total 148
+-rw-r--r-- 1 kirill kirill 4922 2005-08-11 12:00 edge_match_maps.m
+-rw-r--r-- 1 kirill kirill  820 2005-08-09 10:50 compute_edges.m
+-rw-r--r-- 1 kirill kirill 4287 2005-08-09 09:51 landmark_view.m
+-rw-r--r-- 1 kirill kirill 1370 2005-07-19 09:12 batch_play2.m
+-rw-r--r-- 1 kirill kirill  228 2005-07-19 06:11 join.m
+-rw-r--r-- 1 kirill kirill 1543 2005-07-16 03:06 getVerticalLines.m
+-rw-r--r-- 1 kirill kirill 4243 2005-06-15 04:23 edge_setup.m
+-rw-r--r-- 1 kirill kirill 1368 2005-06-14 09:16 batch.m
+-rw-r--r-- 1 kirill kirill 1656 2005-06-14 08:27 template_compress.m
+-rw-r--r-- 1 kirill kirill 2178 2005-06-13 09:35 matchImages.m
+-rw-r--r-- 1 kirill kirill 1273 2005-06-12 14:32 batch_clean.m
+-rw-r--r-- 1 kirill kirill 1525 2005-06-12 13:57 undistort.m
+-rw-r--r-- 1 kirill kirill 1706 2005-06-10 10:37 edge_save.m
+-rw-r--r-- 1 kirill kirill  471 2005-06-08 10:44 edge_save_bak.m
+-rw-r--r-- 1 kirill kirill 4524 2005-05-31 10:08 epipolar_viewer.m
+-rw-r--r-- 1 kirill kirill  609 2005-05-31 09:57 find_fundamental_matrix.m
+-rw-r--r-- 1 kirill kirill  674 2005-05-31 09:57 normalise_points.m
+-rw-r--r-- 1 kirill kirill 7297 2005-05-31 09:47 make_polygon_model.m
+-rw-r--r-- 1 kirill kirill 1620 2005-05-27 07:18 batch_play.m
+-rw-r--r-- 1 kirill kirill 8375 2005-05-11 13:03 bak.tgz
+-rw-r--r-- 1 kirill kirill 1069 2005-05-11 12:59 lines2points.m
+-rw-r--r-- 1 kirill kirill 1156 2005-05-03 07:12 findLines.m
+-rw-r--r-- 1 kirill kirill 2287 2005-03-22 12:10 edge_load.m
+-rw-r--r-- 1 kirill kirill  237 2005-03-20 08:41 save_templates.m
+-rw-r--r-- 1 kirill kirill 1581 2005-03-16 10:17 backProject.m
+-rw-r--r-- 1 kirill kirill  360 2005-03-12 07:24 mycorr2.m
+-rw-r--r-- 1 kirill kirill  719 2005-03-08 11:45 generate_test_case.m
+-rw-r--r-- 1 kirill kirill  205 2005-03-03 12:55 find2.m
+-rw-r--r-- 1 kirill kirill 2761 2005-03-03 10:40 vis_load2.m
+-rw-r--r-- 1 kirill kirill  177 2005-02-25 04:05 findPeaks.m
+
+./xr4000:
+total 40
+-rw-r--r-- 1 kirill kirill 5742 2005-06-28 04:54 odoXR4000.cc
+-rw-r--r-- 1 kirill kirill 1781 2005-06-16 08:15 odoXR4000.h
+-rw-r--r-- 1 kirill kirill 1634 2005-06-16 08:05 odoXR4000.bak.h
+-rw-r--r-- 1 kirill kirill 4815 2005-06-16 08:05 odoXR4000.bak.cc
+-rw-r--r-- 1 kirill kirill 5426 2005-03-18 09:04 DataSource.cc
+-rw-r--r-- 1 kirill kirill 1800 2005-02-13 10:16 Makefile
+-rw-r--r-- 1 kirill kirill 3583 2004-12-23 05:11 DataSource.h
+
+./Misc:
+total 264
+-rw-r--r-- 1 kirill kirill  6344 2005-08-02 11:02 polygon.h
+-rw-r--r-- 1 kirill kirill  7359 2005-08-02 11:01 polygon.cc
+-rw-r--r-- 1 kirill kirill  2033 2005-07-30 11:40 Makefile
+-rw-r--r-- 1 kirill kirill  5278 2005-02-12 04:49 sim_slam_app.cc
+-rw-r--r-- 1 kirill kirill  6131 2004-11-17 11:47 shiny_slam.cc
+-rw-r--r-- 1 kirill kirill 30595 2004-11-04 09:05 LaserCornerDetectorMain.cc
+-rw-r--r-- 1 kirill kirill  5857 2004-10-21 04:12 line_loc.cc
+-rw-r--r-- 1 kirill kirill   844 2004-10-09 08:41 multi_run.sh
+-rw-r--r-- 1 kirill kirill  4842 2004-10-07 08:09 LaserCornerDetectorMain.h
+-rw-r--r-- 1 kirill kirill  2928 2004-10-05 08:30 shiny.cc
+-rw-r--r-- 1 kirill kirill  7450 2004-09-21 06:13 match_app.cc
+-rw-r--r-- 1 kirill kirill 11211 2004-09-14 09:25 loc_app.cc
+-rw-r--r-- 1 kirill kirill  1431 2004-08-25 12:18 median.h
+-rw-r--r-- 1 kirill kirill  4698 2004-07-28 09:59 simple_slam.cc
+-rw-r--r-- 1 kirill kirill 14367 2004-05-04 07:57 ConvexIntersect.cc
+-rw-r--r-- 1 kirill kirill  5588 2004-05-04 05:18 hull.cc
+-rw-r--r-- 1 kirill kirill  5295 2004-04-15 14:05 map_view.cc
+-rw-r--r-- 1 kirill kirill 13685 2004-02-03 12:38 loopClose.cc
+-rw-r--r-- 1 kirill kirill  2028 2003-08-29 12:55 matlab_notes
+-rw-r--r-- 1 kirill kirill 79228 2003-07-19 14:46 README.pdf
+-rw-r--r-- 1 kirill kirill  5736 2003-07-19 14:45 README.tex
+
+./Slam:
+total 600
+-rw-r--r-- 1 kirill kirill  9945 2005-08-11 08:11 util.cc
+-rw-r--r-- 1 kirill kirill  4764 2005-08-02 11:11 gridmap.h
+-rw-r--r-- 1 kirill kirill 44543 2005-07-30 08:50 MappingAgent.cc
+-rw-r--r-- 1 kirill kirill  3370 2005-07-30 08:06 mappingProcess.h
+-rw-r--r-- 1 kirill kirill  2510 2005-07-30 08:03 localmap.h
+-rw-r--r-- 1 kirill kirill  8891 2005-06-16 09:46 pfilter.cc
+-rw-r--r-- 1 kirill kirill  2422 2005-03-18 11:16 Makefile
+-rw-r--r-- 1 kirill kirill 11675 2005-03-18 11:08 MappingAgent.h
+-rw-r--r-- 1 kirill kirill 19911 2005-03-18 09:04 graph.cc
+-rw-r--r-- 1 kirill kirill 21558 2005-03-18 05:37 globalmap.cc
+-rw-r--r-- 1 kirill kirill  7978 2005-03-18 05:07 LocaliserHype.h
+-rw-r--r-- 1 kirill kirill 12262 2005-03-18 05:03 globalmap.h
+-rw-r--r-- 1 kirill kirill  8264 2005-03-16 07:22 matrix2.h
+-rw-r--r-- 1 kirill kirill 15145 2005-03-08 10:27 geometry.cc
+-rw-r--r-- 1 kirill kirill 25522 2005-03-03 09:42 landmark2d.cc
+-rw-r--r-- 1 kirill kirill 16968 2005-03-02 04:50 map.h
+-rw-r--r-- 1 kirill kirill  9908 2005-03-02 04:40 landmark2d.h
+-rw-r--r-- 1 kirill kirill 13825 2005-02-27 06:40 map.cc
+-rw-r--r-- 1 kirill kirill  1831 2005-02-11 08:08 bisearch.cc
+-rw-r--r-- 1 kirill kirill  3627 2005-02-11 08:05 kalman2.cc
+-rw-r--r-- 1 kirill kirill  1904 2005-02-10 05:19 slam.cc
+-rw-r--r-- 1 kirill kirill  1943 2005-02-10 03:25 random.cc
+-rw-r--r-- 1 kirill kirill  7717 2005-02-10 03:24 random.h
+-rw-r--r-- 1 kirill kirill 14146 2005-02-10 03:22 util.h
+-rw-r--r-- 1 kirill kirill  4864 2005-02-10 03:18 odoHolonomic.cc
+-rw-r--r-- 1 kirill kirill  3761 2005-02-10 03:10 odoHolonomic.h
+-rw-r--r-- 1 kirill kirill  8536 2004-12-17 07:26 matrix3.h
+-rw-r--r-- 1 kirill kirill  6967 2004-12-04 04:40 slam.h
+-rw-r--r-- 1 kirill kirill 11128 2004-11-22 05:46 multiSLAM.cc
+-rw-r--r-- 1 kirill kirill  8492 2004-11-20 12:06 mapRegion.h
+-rw-r--r-- 1 kirill kirill  3089 2004-11-20 09:44 multiSLAM.h
+-rw-r--r-- 1 kirill kirill 22987 2004-11-16 05:33 geometry.h
+-rw-r--r-- 1 kirill kirill  5973 2004-10-28 04:54 MultiLocaliser.cc
+-rw-r--r-- 1 kirill kirill  4506 2004-10-28 03:34 mapRegion.cc
+-rw-r--r-- 1 kirill kirill  5236 2004-10-22 07:22 localmap.cc
+-rw-r--r-- 1 kirill kirill  6468 2004-10-21 03:53 LineLocaliser.cc
+-rw-r--r-- 1 kirill kirill  2427 2004-10-20 10:39 LineLocaliser.h
+-rw-r--r-- 1 kirill kirill  3821 2004-10-19 10:00 pfilter.h
+-rw-r--r-- 1 kirill kirill  3078 2004-10-16 11:55 localiser.cc
+-rw-r--r-- 1 kirill kirill  7868 2004-10-16 11:46 DataStore.h
+-rw-r--r-- 1 kirill kirill  4159 2004-09-28 11:19 simpleSLAM.h
+-rw-r--r-- 1 kirill kirill  7069 2004-09-28 05:18 simplex.cc
+-rw-r--r-- 1 kirill kirill  8057 2004-09-24 10:32 localiser.h
+-rw-r--r-- 1 kirill kirill  4143 2004-09-24 09:52 DataStore.cc
+-rw-r--r-- 1 kirill kirill  3146 2004-09-23 06:42 odoCar.cc
+-rw-r--r-- 1 kirill kirill  2071 2004-09-22 09:31 array2d.h
+-rw-r--r-- 1 kirill kirill  4165 2004-09-22 07:16 odoCar.h
+-rw-r--r-- 1 kirill kirill  4046 2004-09-21 06:10 graph.h
+-rw-r--r-- 1 kirill kirill   586 2004-09-17 11:45 kalman2.h
+-rw-r--r-- 1 kirill kirill   444 2004-09-14 09:49 global_vars.cc
+-rw-r--r-- 1 kirill kirill   505 2004-09-04 05:14 simplex.h
+-rw-r--r-- 1 kirill kirill  2020 2004-09-03 12:08 mapMatch.h
+-rw-r--r-- 1 kirill kirill  7858 2004-09-01 04:56 image.cc
+-rw-r--r-- 1 kirill kirill  1308 2004-09-01 04:49 gridmap.cc
+-rw-r--r-- 1 kirill kirill  1117 2004-09-01 04:40 image.h
+-rw-r--r-- 1 kirill kirill  2503 2004-08-25 04:44 matrix.h
+-rw-r--r-- 1 kirill kirill  4916 2004-08-13 06:00 LocaliserHype.cc
+-rw-r--r-- 1 kirill kirill    25 2004-05-22 06:56 simpleSLAM.cc
+-rw-r--r-- 1 kirill kirill  2731 2004-05-05 07:29 MultiLocaliser.h
+-rw-r--r-- 1 kirill kirill  1589 2004-04-30 05:21 odoModel.h
+-rw-r--r-- 1 kirill kirill  1329 2003-12-02 07:28 memstat.cc
+-rw-r--r-- 1 kirill kirill   310 2003-11-25 07:33 debug.h
+-rw-r--r-- 1 kirill kirill  3130 2003-11-05 07:42 timeLog.h
+-rw-r--r-- 1 kirill kirill  1186 2003-09-09 02:34 bisearch.h
+-rw-r--r-- 1 kirill kirill   864 2003-09-08 08:40 matlab.h
+-rw-r--r-- 1 kirill kirill  4483 2003-09-06 06:53 matlab.cc
+-rw-r--r-- 1 kirill kirill   541 2003-09-06 06:34 memstat.h
+-rw-r--r-- 1 kirill kirill  6703 2003-07-19 14:45 AngleTools.h
+-rw-r--r-- 1 kirill kirill  1352 2003-07-19 14:45 TimeTools.h
+-rw-r--r-- 1 kirill kirill  1575 2003-07-19 14:45 TimeTools.c
+
+./Matlab:
+total 488
+drwxr-xr-x 2 kirill kirill  4096 2005-08-11 16:05 Lines
+drwxr-xr-x 2 kirill kirill  4096 2005-08-11 16:05 LoopClose
+drwxr-xr-x 2 kirill kirill  4096 2005-08-11 16:05 Old
+drwxr-xr-x 3 kirill kirill  4096 2005-08-11 16:05 Simulation
+drwxr-xr-x 2 kirill kirill  4096 2005-08-11 16:05 Test
+drwxr-xr-x 2 kirill kirill  4096 2005-08-11 16:05 Tmp
+-rw-r--r-- 1 kirill kirill  1436 2005-08-11 11:36 sample_path.m
+-rw-r--r-- 1 kirill kirill  1792 2005-08-04 07:18 load_map.m
+-rw-r--r-- 1 kirill kirill  1708 2005-08-03 12:02 map_edit.m
+-rw-r--r-- 1 kirill kirill  3150 2005-07-28 11:01 lookForCorners.m
+-rw-r--r-- 1 kirill kirill  3581 2005-07-26 08:40 cornerView.m
+-rw-r--r-- 1 kirill kirill   352 2005-06-25 05:44 plot_topology.m
+-rw-r--r-- 1 kirill kirill   259 2005-06-25 05:30 plot_coord.m
+-rw-r--r-- 1 kirill kirill  2118 2005-06-24 07:40 plot_map_ref.m
+-rw-r--r-- 1 kirill kirill   859 2005-06-09 08:17 mplot.m
+-rw-r--r-- 1 kirill kirill  1433 2005-03-11 10:27 ellipse.m
+-rw-r--r-- 1 kirill kirill   498 2005-01-30 12:28 MIT_play.m
+-rw-r--r-- 1 kirill kirill   671 2004-12-06 08:48 plot_corner_map.m
+-rw-r--r-- 1 kirill kirill   576 2004-12-06 08:31 plot_map.m
+-rw-r--r-- 1 kirill kirill  7174 2004-11-29 08:34 slam_play.m
+-rw-r--r-- 1 kirill kirill  8600 2004-11-23 10:34 slamDebugger.m
+-rw-r--r-- 1 kirill kirill   253 2004-11-16 09:25 odo_interpolate.m
+-rw-r--r-- 1 kirill kirill   372 2004-11-09 11:11 fit_line.m
+-rw-r--r-- 1 kirill kirill   628 2004-11-08 09:19 findCorner.m
+-rw-r--r-- 1 kirill kirill   707 2004-11-06 12:44 collect_points.m
+-rw-r--r-- 1 kirill kirill   666 2004-10-26 04:18 fit_gauss3.m
+-rw-r--r-- 1 kirill kirill  1414 2004-10-13 11:57 obs_profile.m
+-rw-r--r-- 1 kirill kirill  1727 2004-10-06 06:37 plot_obs2d.m
+-rw-r--r-- 1 kirill kirill 31216 2004-10-01 08:55 slamDebugger.fig
+-rw-r--r-- 1 kirill kirill   480 2004-09-25 07:28 inspect_trans.m
+-rw-r--r-- 1 kirill kirill   252 2004-09-23 07:57 transit_pose.m
+-rw-r--r-- 1 kirill kirill  2399 2004-09-18 10:11 odo_inspect.m
+-rw-r--r-- 1 kirill kirill   597 2004-09-15 11:11 plot_corner.m
+-rw-r--r-- 1 kirill kirill 10906 2004-09-10 05:24 mapView.m
+-rw-r--r-- 1 kirill kirill 19808 2004-09-10 04:50 mapView.fig
+-rw-r--r-- 1 kirill kirill   514 2004-09-03 05:24 propagate_odo.m
+-rw-r--r-- 1 kirill kirill   300 2004-08-27 08:01 plot_grid.m
+-rw-r--r-- 1 kirill kirill   734 2004-08-26 06:02 display_grid_data.m
+-rw-r--r-- 1 kirill kirill   207 2004-08-25 10:33 angle_mean.m
+-rw-r--r-- 1 kirill kirill   622 2004-08-23 07:58 propagate_obs.m
+-rw-r--r-- 1 kirill kirill   412 2004-08-20 10:01 sample_gauss.m
+-rw-r--r-- 1 kirill kirill   441 2004-08-19 10:37 translate_obs.m
+-rw-r--r-- 1 kirill kirill  9337 2004-08-13 12:05 mapInspector.m
+-rw-r--r-- 1 kirill kirill   546 2004-08-03 10:25 las_flat.m
+-rw-r--r-- 1 kirill kirill   459 2004-08-03 09:57 odo2sensor.m
+-rw-r--r-- 1 kirill kirill   716 2004-08-03 05:29 collect_lines.m
+-rw-r--r-- 1 kirill kirill   444 2004-07-27 04:11 plot_circle.m
+-rw-r--r-- 1 kirill kirill 19728 2004-06-03 12:17 mapInspector2.fig
+-rw-r--r-- 1 kirill kirill  7156 2004-06-03 12:17 mapInspector2.m
+-rw-r--r-- 1 kirill kirill 17296 2004-06-03 12:12 mapInspector.fig
+-rw-r--r-- 1 kirill kirill   472 2004-05-25 04:22 plot_line_map.m
+-rw-r--r-- 1 kirill kirill   456 2004-05-22 09:29 obs3d.m
+-rw-r--r-- 1 kirill kirill  5465 2004-05-07 09:58 mapInspector.m1
+-rw-r--r-- 1 kirill kirill   120 2004-05-07 08:43 translate_map.m
+-rw-r--r-- 1 kirill kirill  1435 2004-05-06 06:02 plot_robot.m
+-rw-r--r-- 1 kirill kirill  1024 2004-05-05 04:53 plot_path.m
+-rw-r--r-- 1 kirill kirill   489 2004-05-01 05:20 translate_odo.m
+-rw-r--r-- 1 kirill kirill  1534 2004-05-01 04:41 plot_odo.m
+-rw-r--r-- 1 kirill kirill   360 2004-04-28 11:52 plot_loc.m
+-rw-r--r-- 1 kirill kirill   218 2004-04-28 05:05 map_core.m
+-rw-r--r-- 1 kirill kirill  2490 2004-03-20 03:27 loop_plot.m
+-rw-r--r-- 1 kirill kirill  1492 2004-03-13 07:35 rsise_level3.map
+-rw-r--r-- 1 kirill kirill   178 2004-03-10 13:14 map2d.m
+-rw-r--r-- 1 kirill kirill   462 2004-03-09 09:33 plot_obs3d.m
+-rw-r--r-- 1 kirill kirill  1129 2004-03-09 09:23 sim3d.m
+-rw-r--r-- 1 kirill kirill  1990 2004-03-05 06:07 pfilt_plot.m
+-rw-r--r-- 1 kirill kirill  2484 2003-12-11 10:13 plot_match.m
+-rw-r--r-- 1 kirill kirill   271 2003-12-11 07:18 map_translate.m
+-rw-r--r-- 1 kirill kirill   837 2003-11-22 08:37 map_optimise.m
+-rw-r--r-- 1 kirill kirill   554 2003-11-21 10:16 map_weight.m
+-rw-r--r-- 1 kirill kirill  3114 2003-11-13 13:03 map_draw_callback.m
+-rw-r--r-- 1 kirill kirill   640 2003-11-13 10:17 map_draw_init.m
+-rw-r--r-- 1 kirill kirill  1140 2003-11-07 11:36 time_stats.m
+-rw-r--r-- 1 kirill kirill   812 2003-11-05 09:15 plot_timer.m
+-rw-r--r-- 1 kirill kirill   341 2003-11-03 13:44 plot_agent.m
+-rw-r--r-- 1 kirill kirill   234 2003-11-01 13:02 angle_diff.m
+-rw-r--r-- 1 kirill kirill   210 2003-10-28 15:42 zero_odo.m
+-rw-r--r-- 1 kirill kirill  3149 2003-10-16 05:11 plot_global.m
+-rw-r--r-- 1 kirill kirill   253 2003-10-15 13:53 map_propagate.m
+-rw-r--r-- 1 kirill kirill   792 2003-10-12 10:34 hist2d.m
+-rw-r--r-- 1 kirill kirill  1102 2003-10-12 04:04 notes3
+-rw-r--r-- 1 kirill kirill  2270 2003-10-11 05:58 notes2
+-rw-r--r-- 1 kirill kirill  1192 2003-10-11 05:19 map2gauss.m
+-rw-r--r-- 1 kirill kirill   467 2003-10-10 05:05 plot_path2.m
+-rw-r--r-- 1 kirill kirill   598 2003-10-09 07:16 notes
+-rw-r--r-- 1 kirill kirill  2214 2003-10-04 08:19 loop_close.m
+-rw-r--r-- 1 kirill kirill   276 2003-10-03 13:53 mahalanobis2.m
+-rw-r--r-- 1 kirill kirill   676 2003-09-09 15:23 map_match.m
+-rw-r--r-- 1 kirill kirill  1608 2003-09-07 05:26 map_correspond.m
+-rw-r--r-- 1 kirill kirill   348 2003-09-06 02:35 map2graph.m
+-rw-r--r-- 1 kirill kirill   339 2003-09-04 03:56 print_fig.m
+-rw-r--r-- 1 kirill kirill   617 2003-07-19 14:46 README
+-rw-r--r-- 1 kirill kirill   265 2003-07-19 14:46 odo2las.m
+-rw-r--r-- 1 kirill kirill   265 2003-07-19 14:46 las2odo.m
+
+./Matlab/Lines:
+total 0
+
+./Matlab/LoopClose:
+total 28
+-rw-r--r-- 1 kirill kirill 2005 2004-09-21 05:51 align_maps3.m
+-rw-r--r-- 1 kirill kirill 1151 2004-09-21 05:24 map_overlap.m
+-rw-r--r-- 1 kirill kirill  977 2004-09-03 09:39 compute_angles.m
+-rw-r--r-- 1 kirill kirill 3096 2004-09-03 06:44 align_maps.m
+-rw-r--r-- 1 kirill kirill  266 2004-08-24 04:54 plot_mapmatch.m
+-rw-r--r-- 1 kirill kirill 1335 2004-08-21 09:17 compute_edges.m
+-rw-r--r-- 1 kirill kirill 1229 2004-08-20 12:13 compute_edge.m
+
+./Matlab/Old:
+total 8
+-rw-r--r-- 1 kirill kirill 920 2003-07-19 14:46 pplot.m
+-rw-r--r-- 1 kirill kirill 126 2003-07-19 14:46 pmerge.m
+
+./Matlab/Simulation:
+total 1960
+drwxr-xr-x 2 kirill kirill    4096 2005-08-11 16:05 slam
+-rw-r--r-- 1 kirill kirill   26759 2004-12-29 10:50 drive_export.m
+-rw-r--r-- 1 kirill kirill     487 2004-09-25 10:20 line2abc.m
+-rw-r--r-- 1 kirill kirill   12105 2004-09-25 09:47 drive.m
+-rw-r--r-- 1 kirill kirill   23344 2004-09-25 09:39 drive.fig
+-rw-r--r-- 1 kirill kirill    1596 2004-08-25 11:50 las_filt.m
+-rw-r--r-- 1 kirill kirill     328 2004-08-07 08:03 line2hough.m
+-rw-r--r-- 1 kirill kirill    1671 2004-08-05 04:54 viewLsr.m
+-rw-r--r-- 1 kirill kirill    4818 2004-08-04 12:14 simulate.m
+-rw-r--r-- 1 kirill kirill     575 2004-08-03 10:47 car_advance.m
+-rw-r--r-- 1 kirill kirill  265073 2004-08-03 10:29 dd_dat.m
+-rw-r--r-- 1 kirill kirill   20636 2004-08-03 10:29 dd_map.m
+-rw-r--r-- 1 kirill kirill 1390320 2004-08-03 08:26 run.las
+-rw-r--r-- 1 kirill kirill    4760 2004-08-03 08:26 run.man
+-rw-r--r-- 1 kirill kirill   16136 2004-08-03 08:26 run.mat
+-rw-r--r-- 1 kirill kirill  159822 2004-08-03 08:26 run.obs
+-rw-r--r-- 1 kirill kirill    8256 2004-08-03 08:26 run.odo
+-rw-r--r-- 1 kirill kirill     708 2004-08-03 05:56 ray_line.m
+-rw-r--r-- 1 kirill kirill     487 2004-07-30 12:00 store.m
+-rw-r--r-- 1 kirill kirill     758 2004-07-30 06:52 add_noise.m
+-rw-r--r-- 1 kirill kirill     709 2004-07-30 06:32 extractTrees.m
+-rw-r--r-- 1 kirill kirill    3675 2004-07-30 04:48 detectTrees.m
+-rw-r--r-- 1 kirill kirill    1131 2004-07-27 03:54 lc_intersect.m
+
+./Matlab/Simulation/slam:
+total 1048
+-rw-r--r-- 1 kirill kirill 993544 2004-07-30 07:24 dd_dat.m
+-rw-r--r-- 1 kirill kirill  73851 2004-07-30 07:24 dd_map.m
+-rw-r--r-- 1 kirill kirill      0 2004-07-27 09:51 dd.m
+
+./Matlab/Test:
+total 176
+-rw-r--r-- 1 kirill kirill   688 2004-10-15 10:33 gauss_line_intersect.m
+-rw-r--r-- 1 kirill kirill   987 2004-09-16 12:09 tst_vol.m
+-rw-r--r-- 1 kirill kirill   319 2004-09-16 12:06 gauss_eval.m
+-rw-r--r-- 1 kirill kirill   514 2004-09-16 11:46 gauss_d.m
+-rw-r--r-- 1 kirill kirill   252 2004-09-16 11:20 vol2.m
+-rw-r--r-- 1 kirill kirill  1237 2004-09-14 08:59 tst5.m
+-rw-r--r-- 1 kirill kirill   412 2004-08-31 08:48 spiral.m
+-rw-r--r-- 1 kirill kirill  2109 2004-08-27 10:00 flood_fill.m
+-rw-r--r-- 1 kirill kirill   319 2004-08-27 08:59 circle_mask.m
+-rw-r--r-- 1 kirill kirill   229 2004-08-26 09:35 tst_template.m
+-rw-r--r-- 1 kirill kirill 16888 2004-06-03 12:10 MapInspector2.fig
+-rw-r--r-- 1 kirill kirill  9347 2004-06-03 12:09 MapInspector2.m
+-rw-r--r-- 1 kirill kirill  2844 2004-05-28 05:58 tst_kalman3d.m
+-rw-r--r-- 1 kirill kirill  5904 2004-05-14 04:21 tst_convex.m
+-rw-r--r-- 1 kirill kirill   455 2004-05-08 06:17 wh_learn.m
+-rw-r--r-- 1 kirill kirill  4773 2004-05-05 14:19 tst_match.m
+-rw-r--r-- 1 kirill kirill   938 2004-04-01 07:40 tst_odo.m
+-rw-r--r-- 1 kirill kirill   860 2004-03-23 06:47 align_maps.m
+-rw-r--r-- 1 kirill kirill   316 2004-03-23 06:33 cov_svd.m
+-rw-r--r-- 1 kirill kirill  2486 2004-03-05 04:24 tst_kalman.m
+-rw-r--r-- 1 kirill kirill  3356 2003-11-07 08:12 tst_posterior.m
+-rw-r--r-- 1 kirill kirill   188 2003-11-06 10:19 volume.m
+-rw-r--r-- 1 kirill kirill   972 2003-11-06 09:14 gauss2a.m
+-rw-r--r-- 1 kirill kirill   857 2003-10-09 06:58 tst4.m
+-rw-r--r-- 1 kirill kirill  2439 2003-10-04 03:13 tst2.m
+-rw-r--r-- 1 kirill kirill   113 2003-10-03 15:09 vol.m
+-rw-r--r-- 1 kirill kirill   629 2003-10-03 13:41 tst3.m
+-rw-r--r-- 1 kirill kirill   369 2003-10-03 12:17 gauss_d2.m
+-rw-r--r-- 1 kirill kirill   252 2003-09-13 05:11 match_hist.m
+-rw-r--r-- 1 kirill kirill   563 2003-09-13 04:33 tst1.m
+-rw-r--r-- 1 kirill kirill   411 2003-09-10 09:16 match_prob.m
+-rw-r--r-- 1 kirill kirill   169 2003-09-10 09:09 gauss_prod.m
+-rw-r--r-- 1 kirill kirill  1366 2003-09-10 06:44 cov_tst.m
+-rw-r--r-- 1 kirill kirill   599 2003-09-10 06:28 cov_intersect.m
+-rw-r--r-- 1 kirill kirill   701 2003-07-19 14:46 ptrack.m
+-rw-r--r-- 1 kirill kirill  1263 2003-07-19 14:46 las_test.m
+
+./Matlab/Tmp:
+total 32
+-rw-r--r-- 1 kirill kirill 17200 2004-08-13 12:12 mapView.fig
+-rw-r--r-- 1 kirill kirill  9426 2004-08-13 12:12 mapView.m
+
+./VisionSLAM:
+total 3484
+-rw-r--r-- 1 kirill kirill   10289 2005-06-30 04:41 vis_slam.cc
+-rw-r--r-- 1 kirill kirill 3517608 2005-06-28 04:54 vis_slam
+-rw-r--r-- 1 kirill kirill    9675 2005-03-23 13:08 landmark3d.cc
+-rw-r--r-- 1 kirill kirill    5181 2005-03-23 12:35 landmark3d.h
+-rw-r--r-- 1 kirill kirill    2087 2005-02-13 10:27 Makefile
+-rw-r--r-- 1 kirill kirill    5065 2004-10-06 09:58 TemplateStore.cc
+-rw-r--r-- 1 kirill kirill     762 2004-10-06 09:58 TemplateStore.h

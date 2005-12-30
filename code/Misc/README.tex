@@ -1,0 +1,152 @@
+\documentclass{article}
+
+\usepackage{a4}
+\usepackage{graphicx,epsfig,subfigure}
+
+\title{README for FastSLAM}
+\author{Kirill Kouzoubov}
+
+\begin{document}
+\date{}
+\maketitle
+
+\section{Overview}
+
+This document describes implementation of FastSLAM algorithm for
+point-landmarks.
+
+\section{Data Flow and Data Structure}
+First we obtain raw Laser and Odometry data using \textit{OdoSource}
+and \textit{LaserSource} classes. 
+
+Odometry data is then fed into the \textit{SLAM} class which passes it
+on to underlying \textit{ParticleFilter} which in turn passes it on
+to it's \textit{MotionModel}. \textit{ParticleFilter} then samples
+control inputs from \textit{MotionModel} to advance particles.
+
+Laser Data is passed to shiny feature extractor function, which
+extract point landmarks using intensity information. Point landmarks
+are then added to global observation store (class
+\textit{ObservationStore}).
+
+Once features have been detected an update is called in \textit{SLAM}
+class, this triggers evaluation in the underlying
+\textit{ParticleFilter} that passes on all the information to
+particles (\textit{SLAMParticle}). Update takes: reference to
+ObservationStore, indices of new observations, and a TimeStamp of
+observation. 
+
+\textit{SLAMParticle} then computes predicted robot pose at the time
+of the observation, adds it to it's path (\textit{OdometryStore}),
+then passes on the observations and robot pose to the
+\textit{MapBuilder}.
+
+\textit{MapBuilder} computes global coordinates of observations, finds
+subset of the current map that should be visible from the robot pose,
+runs nearest neighbour on this subset, updates map elements and adds
+new ones as required, also computes importance weights as it
+goes. Most of these tasks are actually performed by the \textit{Map}
+class, which also implements a binary-tree like structure for storing
+landmarks with branches shared by several trees. This structure
+reduces memory complexity and copying time when particles are resampled.
+
+Every landmark in the map (\textit{MapEntry}) maintains a list of
+observations. For every observation it stores: index in the global
+observation store, and pointer to the robot pose. This information is
+used to recompute probability of the landmark after it is
+updated. Probability of the landmark is just a sum of mahalanobis
+distances squared from all observations to the landmarks location
+estimate.
+
+\textit{SLAMParticle} computes it's importance weight as following:
+
+\begin{eqnarray}
+  w_k^{\prime}    & = & w_{k-1} + p(Obs|Map_{k-1})p(Map_{k-1}), \\
+  p(Obs|Map_{k-1})& = & exp(-md2(Obs, Map_{k-1})),     \\
+  p(Map_{k-1})    & = & exp(-\sum{md2(obs_i, Map_{k-1})}), \\
+  w_k & = & nomalise(w_k^{\prime}).
+\end{eqnarray}
+
+In here $md2$ is a mahalonobis distance squared function.
+
+\section{Source Files}
+
+FastSLAM implementation consists of the following files
+
+\textbf{ DataSource.cc}-- contains classes for accessing odometry and 
+laser data.
+
+\textbf{ DataStore.cc }-- Storage classes:
+
+\textit{OdometryStore} -- a link list of robot poses, with
+fancy copying capabilities for sharing common parts of the path for
+different particles.
+
+\textit{ObservationStore} -- a vector of all observations in robot
+coordinate frame.
+
+\textbf{ geometry.cc }-- Defines data structures like Point,
+PointLandmark, RobotPose, does some math on covariance matrices.
+
+\textbf{ kalman2.cc }-- Kalman filter for updating pointlandmark
+position estimate.
+
+\textbf{ matrix2.h }-- Math on 2x2 matrices, used by kalman filter.
+
+\textbf{ matrix2.cc}-- test file for matrix2.h
+
+\textbf{ random.cc }-- Uniform and Gaussian random number generators.
+
+\textbf{ odoModel.cc }-- Odometry model for the holonomic robot,
+derives control commands from odometry, provides sampling functions
+for control commands, translates control commands to odometry. 
+
+\textbf{ pfilter.cc }-- Particle filter implementation, a generic
+one, should be able to use the same framework for localisation
+purposes as well.
+
+\textbf{ bisearch.cc }-- Binary search for particle filter resampling step.
+
+\textbf{ map.cc }-- Map building. Builds maps of PointLandmarks, has
+fancy structure for sharing common sub-maps between particles, performs
+nearest neighbour data association using mahalanobis distances,
+provides weights for SLAM.
+
+\textbf{ slam.cc }-- Specialised particle filter for doing
+SLAM. Defines \textit{SLAMParticle} that implements \textit{Particle}
+interface. Every \textit{SLAMParticle} has \textit{MapBuilder} that
+does all the work of map building, also every particle stores it's
+path, using \textit{OdometryStore} class.
+
+\textbf{ memstat.cc }-- Debugging module that keeps track of how much
+storage is used up by maps and odometry, can be turned of by
+undefining USE\_MEMSTAT (see Makefile).
+
+\textbf{ test\_pfilter.cc }-- test file for the particle filter
+implementation, might be outdate.
+
+\textbf{ odo\_test.cc }-- test file for odometry model.
+
+\textbf{ slam\_app.cc}-- Application that does slam using shiny
+features, also contains shiny feature extractor function.
+
+\section{Compile, Run, etc.}
+
+To compile type \textbf{make}.
+
+To run type \textbf{./slam\_app odo\_file laser\_file output\_prefix
+numParticles}
+
+Example: \textbf{./slam\_app odo.log las.log slam\_out/dat 100}.
+
+Program generates a lot of files, two per particle plus more. For
+every particle we dump map and odometry in separate files. There is
+global matlab file \textbf{prefix}\_mat.m that contains final weight of
+particles, all observations extracted in robot-centered coordinates
+and odometry. There are also some debug files generated by the
+particle filter.
+
+Matlab directory contains matlab files for displaying the results, see
+README file in that directory for typical usage.
+
+\end{document}

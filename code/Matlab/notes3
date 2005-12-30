@@ -1,0 +1,40 @@
+% Inverse of 3x3 covariance matrix
+%
+%        [ sxx   sxy   sxa ]
+%   Sx = [ sxy   syy   sya ]
+%        [ sxa   sya   saa ]
+%   
+
+%
+%
+%           [    syy*saa-sya^2, -sxy*saa+sxa*sya,  sxy*sya-sxa*syy]
+% inv(Sx) = [ -sxy*saa+sxa*sya,    sxx*saa-sxa^2, -sxx*sya+sxy*sxa]/ $1
+%           [  sxy*sya-sxa*syy, -sxx*sya+sxy*sxa,    sxx*syy-sxy^2]
+%
+% where $1 = (sxx*syy*saa-sxx*sya^2-sxy^2*saa+2*sxy*sxa*sya-sxa^2*syy)
+%
+
+b = 1.0/(sxx*syy*saa - sxx*sya*sya - sxy*sxy*saa + 2*sxy*sxa*sya - sxa*sxa*syy);
+
+sxx_ = b*( syy*saa - sya*sya);
+syy_ = b*( sxx*saa - sxa*sxa);
+saa_ = b*( sxx*syy - sxy*sxy);
+
+sxy_ = b*(-sxy*saa + sxa*sya);
+sxa_ = b*( sxy*sya - sxa*syy);
+sya_ = b*(-sxx*sya + sxy*sxa);
+
+       [ sxx_ sxy_ sxa_ ]
+Sx_  = [ sxy_ syy_ sya_ ]
+       [ sxa_ sya_ saa_ ]
+
+
+% Mahalanobis distance is then
+% (dx*sxx_+dy*sxy_+da*sxa_)*dx+(dx*sxy_+dy*syy_+da*sya_)*dy+(dx*sxa_+dy*sya_+da*saa_)*da
+% ==> dx^2*sxx_ + 2*dx*dy*sxy_ + 2*dx*da*sxa_ + dy^2*syy_ + 2*dy*da*sya_ + da^2*saa_
+
+dx = x - mx;
+dy = y - my;
+da = a - ma;
+
+md = dx*dx*sxx_ + 2*dx*dy*sxy_ + 2*dx*da*sxa_ + dy*dy*syy_ + 2*dy*da*sya_ + da*da*saa_;

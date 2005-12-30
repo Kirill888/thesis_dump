@@ -1,0 +1,95 @@
+1. Rotation of the 3x3 robot covariance matrix by angle 'a'
+
+  P_ = R*P*R'
+
+       ca -sa 0
+  R  = sa  ca 0
+        0   0 1
+
+Let:
+ ca = cos(a);
+ sa = sin(a);
+ caca = ca*ca;
+ sasa = sa*sa;
+ saca = ca*sa;
+
+     p00 p01 p02                             s_xx  s_xy  s_xa
+ P = p10 p11 p12  robot pose covariance -->  s_xy  s_yy  s_ya
+     p20 p21 p22                             s_xa  s_ya  s_aa
+
+ P_[0][0] = caca*p00 - saca*p10 - saca*p01 + sasa*p11;
+ P_[0][1] = saca*p00 - sasa*p10 + caca*p01 - saca*p11;
+ P_[0][2] =                         ca*p02 - sa*p12  ;
+ P_[1][0] = saca*p00 + caca*p10 - sasa*p01 - saca*p11;
+ P_[1][1] = sasa*p00 + saca*p10 + saca*p01 + caca*p11;
+ P_[1][2] =                         sa*p02 + ca*p12  ;
+ P_[2][0] =                         p20*ca - p21*sa  ;
+ P_[2][1] =                         p20*sa + p21*ca  ;
+ P_[2][2] =                                  p22     ;
+
+
+
+
+
+
+2. Propogation of the sensor covariance to observation:
+
+ Z -- observation covariance in sensor coordinates
+
+ Z_ = Tx*P*Tx' + Tz*Z*Tz'; -- obs. cov. in robot coords
+
+     p00 p01 p02
+ P = p10 p11 p12  sensor pose covariance (robot coords)
+     p20 p21 p22
+
+ zx,zy -- observation in sensor coordinates.
+
+Let:
+  a = - zx*sin(o) - zy*cos(o);
+  b = - zx*cos(o) - zy*sin(o);
+  aa = a*a;
+  bb = b*b;
+  ba = b*a;
+
+  o -- orientation of the robot.
+
+ then:
+
+  Tz = cos(o) -sin(o) 
+       sin(o)  cos(o)
+
+  Tx = 1 0 a
+       0 1 b
+
+  let also
+
+  Z2 = Tz*Z*Tz';
+
+Z_[0][0] = p00 + a*p20 + a*p02 + aa*p22 + Z2[0][0];
+Z_[0][1] = p01 + a*p21 + b*p02 + ba*p22 + Z2[0][1];
+Z_[1][0] = p10 + b*p20 + a*p12 + ba*p22 + Z2[1][0];
+Z_[1][1] = p11 + b*p21 + b*p12 + bb*p22 + Z2[1][1];
+
+IF P is diagonal we get: 
+       p00  0   0       s_x  0   0
+   P =  0  p11  0    ==  0  s_y  0
+        0   0  p22       0   0  s_o
+
+   Z_[0][0] = s_x + aa*s_o + Z2[0][0];
+   Z_[0][1] =       ba*s_o + Z2[0][1];
+   Z_[1][0] =       ba*s_o + Z2[1][0];
+   Z_[1][1] = s_y + bb*s_o + Z2[1][1];
+
+IF o == pi/2
+  a = -zx;
+  b = -zy;
+  aa = zx*zx;
+  bb = zy*zy;
+  ba = zx*zy; 
+
+
+
+
+
+
+

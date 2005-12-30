@@ -1,0 +1,34 @@
+-syy/(-sxx*syy+sxy^2)*x^2
+
+-sxx/(-sxx*syy+sxy^2)*y^2
+
+-2*sxy/(-sxx*syy+sxy^2)*x*y
+
++2*syy/(-sxx*syy+sxy^2)*mx*x
+-2*sxy/(-sxx*syy+sxy^2)*my*x
+
+
+-2*sxy/(-sxx*syy+sxy^2)*mx*y
++2*sxx/(-sxx*syy+sxy^2)*my*y
+
+-sxx/(-sxx*syy+sxy^2)*my^2
+-syy/(-sxx*syy+sxy^2)*mx^2
++2*sxy/(-sxx*syy+sxy^2)*my*mx
+
+
+% Convert
+%    exp(-0.5*((x-m)'*inv(S)*(x-m)))
+% in to equivalent 
+%  exp(a(1)*x.*x + a(2)*y.*y + a(3)*x.*y + a(4)*x + a(5)*y + a(6))
+
+a(1) = -syy;
+a(2) = -sxx;
+a(3) = +2*sxy;
+a(4) = +2*syy*mx - 2*sxy*my;
+a(5) = -2*sxy*mx + 2*sxx*my;
+a(6) = -sxx*my^2 - syy*mx^2 + 2*sxy*my*mx;
+
+a = -0.5*a/(-sxx*syy+sxy^2);
+
+
+

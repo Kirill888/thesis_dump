@@ -1,0 +1,23 @@
+After running slam do (replacing prefix with whatever you used, i
+usuallly use "dat").
+
+> prefix_mat
+
+This loads robot odometry(odo) observations (obs_all) and final
+particle weights (pw).
+
+>> [v,i] = max(pw);
+
+Find the best particle (index i).
+
+>> plot_robot(odo,'go-'); axis equal; hold on
+
+Plot original odometry in green.
+
+>> pplot(prefix,i,obs_all,'rs','r:','bo','b:','ro-',0.05)
+
+Load particle with index i, and plot it's path in red, also plot
+observations is red and map in blue. 0.05 is the length of the arrow,
+when plotting odometry.
+
+Note: odometry is actually odometry of the laser center, not the robot.

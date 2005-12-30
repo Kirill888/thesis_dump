@@ -1,0 +1,83 @@
+%========================================
+%  Uncertainty propogation
+%
+%        [ sxx   sxy   sxa ]
+%   Sx = [ sxy   syy   sya ]
+%        [ sxa   sya   saa ]
+%   
+%        [ 1  0  a ]
+%   Tx = [ 0  1  b ]
+%        [ 0  0  1 ]
+% where
+%   a = -Xz*sin(Ox) - Yz*cos(Ox);
+%   b = +Xz*cos(Ox) - Yz*sin(Ox);
+%
+%   Sx_ = Tx*Sx*Tx'
+%========================================
+% 
+%[ sxx+a*sxa+(sxa+a*saa)*a, sxy+a*sya+(sxa+a*saa)*b, sxa+a*saa]
+%[ sxy+b*sxa+(sya+b*saa)*a, syy+b*sya+(sya+b*saa)*b, sya+b*saa]
+%[               sxa+a*saa,               sya+b*saa,       saa]
+
+
+sxx_ = sxx+a*sxa+(sxa+a*saa)*a;
+syy_ = syy+b*sya+(sya+b*saa)*b;
+saa_ = saa;
+
+sxy_ = sxy+b*sxa+(sya+b*saa)*a;
+sxa_ = sxa+a*saa;
+sya_ = sya+b*saa;
+
+%====================================================
+% 3x3 pose uncertainty matrix rotation S_ = R*S*R'
+%   where
+%       [ cos(o)   -sin(o)   0 ]
+%   R = [ sin(o)    cos(o)   0 ]
+%       [   0        0       1 ]
+%
+%       [ sxx   sxy   sxa ]
+%   S = [ sxy   syy   sya ]
+%       [ sxa   sya   saa ]
+%====================================================
+%
+%[         ca^2*sxx-2*ca*sa*sxy+sa^2*syy, sa*ca*sxx-sa^2*sxy+ca^2*sxy-ca*sa*syy,  ca*sxa-sa*sya]
+%[ sa*ca*sxx-sa^2*sxy+ca^2*sxy-ca*sa*syy,         sa^2*sxx+2*ca*sa*sxy+ca^2*syy,  sa*sxa+ca*sya]
+%[                         ca*sxa-sa*sya,                         sa*sxa+ca*sya,            saa]
+
+caca = cos(o)*cos(o);
+casa = cos(o)*sin(o);
+sasa = sin(o)*sin(o);
+
+sxx_ = caca*sxx	- 2*casa*sxy	+ sasa*syy;
+syy_ = sasa*sxx	+ 2*casa*sxy	+ caca*syy;
+saa_ = saa;
+
+sxy_ = casa*sxx	+ (caca-sasa)*sxy	- casa*syy;
+sxa_ = ca*sxa	- sa*sya;
+sya_ = sa*sxa	+ ca*sya;
+
+
+%====================================================
+% Uncretainty propogation for xy observation
+%
+%        [ sxx   sxy   sxa ]
+%   Sx = [ sxy   syy   sya ]
+%        [ sxa   sya   saa ]
+%   
+%        [ 1  0  a ]
+%   Tx = [ 0  1  b ]
+%
+% where
+%   a = -Xz*sin(Ox) - Yz*cos(Ox);
+%   b = +Xz*cos(Ox) - Yz*sin(Ox);
+%
+
+%   Sx_ = Tx*Sx*Tx'=[ sxx_  sxy_ ]
+%                   [ sxy_  syy_ ]
+%====================================================
+%  [ sxx+a*sxa+(sxa+a*saa)*a, sxy+a*sya+(sxa+a*saa)*b]
+%  [ sxy+b*sxa+(sya+b*saa)*a, syy+b*sya+(sya+b*saa)*b]
+
+sxx_ = sxx + 2*a*sxa + a*a*saa;
+syy_ = syy + 2*b*sya + b*b*saa;
+sxy_ = sxy + b*sxa   + a*b*saa + a*sya;
