@@ -1,0 +1,164 @@
+\documentclass[11pt,onecolum,a4paper,oneside]{book}
+\usepackage{a4}
+\usepackage{graphicx,epsfig,subfigure}
+\usepackage{amssymb}
+\usepackage{ifthen}
+\usepackage{pseudocode}
+\usepackage{doublespace}
+\usepackage{anuthesis}
+
+\title{Hybrid Topological-Metric Simultaneous Localisation and
+  Mapping} 
+\author{Kirill Kouzoubov}
+
+%Style 
+%% \setlength\textwidth{171mm}
+%% \setlength\oddsidemargin{-6.4mm}    %25.4 - 6.4 = 19
+%% \setlength\evensidemargin{-6.4mm}   %25.4 - 6.4 = 19
+%% \setlength\textheight{244mm}
+%% \setlength\topmargin{-15.4mm}        %25.4 - 5.4 = 20
+
+
+\begin{document}
+\date{30 June 2006}
+
+\maketitle
+\normalsize
+
+\onehalfspace
+\chapter*{Declaration}
+
+This thesis is an account of research undertaken between March 2002
+and June 2006 at The Department of Systems Engineering, Faculty of
+Engineering, The Australian National University, Canberra, Australia.
+
+Except where acknowledged in the customary manner, the material 
+presented in this thesis is, to the best of my knowledge, original and 
+has not been submitted in whole or part for a degree in any 
+university.
+
+\chapter*{Acknowledgements}
+\addcontentsline{toc}{chapter}{Acknowledgements}
+
+I would like to thank my supervisors Dr. David Austin and Prof. John
+Moore. Special thanks to Dr. Alex Zelinsky for encouraging me to take
+up the scholarship while I was a summer scholar in RSISE.
+
+I express my gratitude to the organisers and hosts of the SLAM summer
+school of 2002. I have learned a lot about SLAM over that week.
+Presentations and code examples were extremely helpful.  Sandwiches
+with cheese and capsicum slices, served in the afternoon, were of
+great help too.
+
+I have visited Intelligent Robot Laboratory, University of Tsukuba in
+the winter of 2002. I have enjoyed three months in Japan, even though
+it was rather cold sometimes. I would like to thank Prof. Shinichi
+Yuta and Dr. Masahiro Tomono for the supervision during that time and
+I thank the team from Roboken for their hospitality and sake.
+
+%English
+Dr. David Leibowitz and Dr. Nick Barnes have helped with English in
+most parts of this thesis, readability has improved significantly
+thanks to their efforts. Thank you to Rosemary Shephered for her great
+help with the administrative side of this thesis.
+
+%People from RSISE
+
+
+%Vlada
+Finally I acknowledge the contribution my wife Vlada has made to this
+thesis, her support during the final stages of this thesis, were
+crucial to the successful completion.
+
+
+
+
+
+\input{notation_definitions.tex}
+
+\chapter*{Abstract}  % the * means don't put a number in the title
+\addcontentsline{toc}{chapter}{Abstract} % but add it to the table of contents
+
+%\begin{abstract}
+This thesis deals with the problem of simultaneous localisation and
+mapping (SLAM). The problem of SLAM has been studied over the past two
+decades by many researchers. Limitations of traditional approaches are
+well understood in the research community. Some of the more
+challenging aspects of the SLAM problem include: ambiguous data
+association in the presence of clutter, loop closing, large maps,
+dynamic environments.
+
+Traditional approaches to SLAM cannot operate in large
+environments. Computational complexity is one of the limiting
+factors. A more important limitation is the accumulation of systematic
+approximation errors that ultimately lead to an inconsistent map. It is
+this author's believe that new map representations are needed to
+overcome these limitations.
+
+This thesis presents a novel map representation that combines metric
+and topological information - hybrid topological SLAM (HTSLAM). The
+map is a graph: local maps form nodes of the graph, each local map has
+its own reference frame and edges of the graph maintain spatial
+information and coordinate transformations between adjacent
+regions. There is no global reference frame. FastSLAM is used for
+building local maps. The uncertainty in the coordinate transformations
+between adjacent maps is modelled using particles. This representation
+allows constant time map updates and robust loop closing. Since there
+is no global reference frame, this approach does not suffer from
+constantly increasing uncertainty.
+
+The ideas of this thesis are tested on real-life data. Three different
+data sets are considered: a laser range scanner detecting corners in
+indoor environment, a laser range scanner detecting trees in the park
+(well known Victoria Park data set), and a vision system detecting
+vertical edges in an indoor environment.
+
+
+%\end{abstract}
+
+\tableofcontents
+\listoffigures
+
+
+\chapter{Literature review}
+\input{chpt_LiteratureReview.tex}
+
+
+\chapter{Background Theory and FastSLAM}
+\label{chpt:Overview}
+\input{chpt_FastSLAM.tex}
+
+
+\chapter{HTSLAM Map Structure}
+\label{chpt:MapStructure}
+\input{chpt_MapStructure.tex}
+
+\chapter{Mapping Procedure}
+\label{chpt:Mapping}
+\input{chpt_Mapping.tex}
+
+\chapter{Multiple Hypothesis and Loop Closing}
+\label{chpt:LoopClosing}
+\input{chpt_LoopClosing.tex}
+
+\chapter{Summary and Comparison}
+\input{chpt_Summary.tex}
+
+\chapter{Experimental Results: Laser Scanner}
+\label{chpt:Laser_Results}
+\input{chpt_ExperimentLaser.tex}
+
+\chapter{Experimental Results: Vision}
+\label{chpt:Vision_Results}
+\input{chpt_ExperimentVision.tex}
+
+\chapter{Conclusion}
+\input{chpt_Conclusion.tex}
+
+\bibliographystyle{plain}
+\bibliography{my_ref,bio_ref,ref_slam}
+
+\end{document}
+
+% LocalWords:  HTSLAM FastSLAM Zelinsky RSISE Tsukuba Shinichi Yuta Masahiro
+% LocalWords:  Tomono Roboken Vlada

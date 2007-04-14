@@ -1,0 +1,12 @@
+*~
+\#*\#
+*.aux
+*.log
+*.bbl
+*.blg
+*.bak
+*.lof
+*.toc
+*CVS/*
+*CVS
+.nfs*

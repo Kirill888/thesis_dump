@@ -1,0 +1,33 @@
+
+Mapping Paper categories
+
+1. EKF SLAM
+
+   1.1 Submap Methods
+   1.2 Information Filters
+   1.3 UKF
+
+2. FastSLAM
+
+   2.1 With unknown data associations
+   2.2 FastSLAM 2
+
+3. Batch Data Association Methods
+
+4. Topological SLAM
+
+5. Hybrid Methods
+   5.1 Topology/Grid
+   5.2 Grid/Feature
+   5.3 Topology/Features
+
+6. Scan Matching SLAM
+   6.1 Lazy registration (undo)
+
+7. Expectation Maximisation
+
+8. Sampling Methods
+
+9. Overview/Comparison papers.
+
+
