@@ -168,8 +168,8 @@ physically possible.
 
 %\NOTE{cite topological papers}
 
-Metric maps are generally considered to be more detailed and hence
-useful.  The robot pose and the map features are defined in a single
+Metric maps are generally more detailed and hence useful. 
+The robot pose and the map features are defined in a single
 reference frame. Metric maps can have landmarks (unique or identical),
 or they can represent the environment as an occupancy grid. Each cell
 of an occupancy grid map is assigned a probability value of being
@@ -202,9 +202,10 @@ not scale up to big environments. The main restricting factors are:
 
  \item Increase of the robot pose uncertainty. As you run the
  algorithm for longer, errors tend to accumulate, especially in large
- cyclic environments. No matter how accurate your mapping process is,
+ environments. No matter how accurate your mapping process is,
  there is still going to be some residual uncertainty, and it will
- accumulate as the robot travels on a long cycle. 
+ accumulate as the robot travels longer distance. The effect of such approximation
+ errors is especially harmful when cycles are present.
 
  \item Increasing approximation error in the mapping procedure.
 
