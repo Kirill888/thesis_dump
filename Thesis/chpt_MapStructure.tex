@@ -1,6 +1,6 @@
 HTSLAM models the map as a hybrid topological-metric structure: the
 environment is divided into a number of regions, and a local metric
-map is built for each region . The relative poses of the regions are
+map is built for each region. The relative poses of the regions are
 stored in a topological structure. There is no global reference
 frame. Only relative poses of the nearby regions are stored.
 
@@ -69,11 +69,11 @@ HTSLAM map for indoor environment, and
 \refFigure{fig:htslam_structure_outdoor} for an outdoor environment.
 
 The structure used in HTSLAM is similar to that of \Atlas\ 
-\cite{bosse02atlas}, however HTSLAM uses superior uncertainty
+\cite{bosse02atlas}, however HTSLAM uses different uncertainty
 representations, both for the coordinate transformations between
 adjacent map frames and for the local maps. \Atlas\ utilises EKF SLAM
 and so models each local map as a high-dimensional Gaussian.
-\Atlas\ models the links or transitions between maps as Gaussian.  On
+\Atlas\ also models the links or transitions between maps as Gaussian.  On
 the other hand, HTSLAM uses FastSLAM (Rao-Blackwellised particle
 filter) for the local maps, permitting multi-modal modelling of the
 local map.  HTSLAM also models the transitions between maps using sets
@@ -83,14 +83,14 @@ A further difference between \Atlas\ and HTSLAM is that HTSLAM
 maintains map extent information for every local map. This extra data
 allows HTSLAM to perform map transitions and loop closing in a more
 elegant way (as will be discussed later in
-chapter~\ref{chpt:LoopClosing}).  In addition, HTSLAM explicitly
+Chapter~\ref{chpt:LoopClosing}).  In addition, HTSLAM explicitly
 models the multiple hypotheses that arise during mapping, including
 during loop closing, giving a more intuitively appealing and robust
 approach.
 
 The details of the uncertainty representation, both for each local map
-and for the transitions between maps are discussed, in the next two
-sections.  After that, section~\ref{sec:region} discusses methods for
+and for the transitions between maps are discussed in the next two
+sections.  Section~\ref{sec:region} discusses methods for
 determining the extents of each local map.
 
 \section{Modelling Uncertainty within a Local Map}
@@ -108,14 +108,11 @@ The state $\s{k}{a}{m}$ of the $m$-th particle in the local map $a$
 at time $k$ consists of the path of the particle within this local
 frame, denoted \Xall{k}{a}{m}, and the map of the local environment
 conditioned on the path, denoted \map{k}{a}{m}, i.e.
-
-
 \begin{eqnarray}
  \s{k}{a}{m}    &=& [\Xall{k}{a}{m}, \map{k}{a}{m} ]\\
  \Xall{k}{a}{m} &=& [\x{0}{a}{m}, \x{1}{a}{m}, ... \x{k}{a}{m}]\\
  \map{k}{a}{m}  &=& [\mape{a}{m}{1}, \mape{a}{m}{2}, ..., \mape{a}{m}{n}],
 \end{eqnarray}
-
 where $\x{k}{a}{m}$ is the pose of a robot for the $m$-th particle at
 time step $k$ in local map $a$ and $\mape{a}{m}{n}$ is the position
 of an $n$-th landmark in local map $a$. Note that the landmark
@@ -198,16 +195,16 @@ In general transitions and maps are not independent,
 hence a joint probability needs to be stored. For adjacent maps $a$
 and $b$ a joint probability distribution
 $\prob{\map{}{}{a},\tr{}{a}{b}, \map{}{}{b}}$ is stored. Effectively,
-transition between the two adjacent maps captures a three-way
+the transition between the two adjacent maps captures a three-way
 relationship between the two maps and the relative pose of the
 reference frames of the two maps in a probabilistic manner. The exact
 mechanism used to store the probability densities is described in more
 detail in chapter~\ref{chpt:Mapping}.
 
-It is worth noting, that it is possible to derive joint
+It is worth noting that it is possible to derive the joint
 probability $\prob{\map{}{}{a},\tr{}{a}{b},\map{}{}{b}}$ even for
 non-adjacent maps $a$ and $b$ by merging probability densities along
-the topological path joining the two maps.  Presence of loops in
+the topological path joining the two maps.  The presence of loops in
 the topological structure implies multiple paths between some of the
 local maps. Therefore $\prob{\map{}{}{a},\tr{}{a}{b},\map{}{}{b}}$ can
 be derived in several possible ways from the HTSLAM structure. This

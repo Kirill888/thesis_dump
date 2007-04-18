@@ -529,14 +529,12 @@ The problem of localisation can be thought of as a problem of
 estimating the probability density distribution of robot pose
 conditioned on the observation and control data.  This posterior is
 typically called {\it Belief} and is denoted
-
 \begin{equation}
   Bel(\x{k}{}{}) = p(\x{k}{}{} | \Uall{k-1}{}, \Zall{k}{}),
 \label{eqn:localise_belief}
 \end{equation}
-
-where \Uall{k-1} is a set of all control inputs up to time $k-1$, and
-\Zall{k} is a set of all observations up to time $k$. It is usually
+where \Uall{k-1}{} is a set of all control inputs up to time $k-1$, and
+\Zall{k}{} is a set of all observations up to time $k$. It is usually
 desired to approximate the posterior recursively, otherwise one would
 run into computation problems very quickly.  If we make a Markov
 assumption that future data is independent of past data given the
@@ -623,8 +621,8 @@ computational resources against performance.
 
 \subsection{SLAM Problem}
 
-This section introduces the problem of simultaneous localisation and
-mapping.
+This section introduces the problem of Simultaneous Localisation and
+Mapping.
 
 A robot starts at time 0 at location \x{0}{}{}, executes a series of
 motion commands $\Uall{k}{} = [\U{0},\U{1}...\U{k}]$ and collects a
@@ -653,7 +651,7 @@ initial pose of the robot:
 \end{equation}
 
 If one makes an assumption that odometry errors are independent of the
-observation errors and of the environment model, one can separate
+observation errors and of the environment model, one can separate the
 model into an observation and motion parts, so we define:
 
 \begin{enumerate}
