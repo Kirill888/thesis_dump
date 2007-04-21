@@ -209,7 +209,7 @@ the topological structure implies multiple paths between some of the
 local maps. Therefore $\prob{\map{}{}{a},\tr{}{a}{b},\map{}{}{b}}$ can
 be derived in several possible ways from the HTSLAM structure. This
 adds a constraint to the HTSLAM structure, which will be discussed in
-more detail in the chapter on loop closing chapter~\ref{chpt:LoopClosing}.
+more detail in the chapter on loop closing(Chapter~\ref{chpt:LoopClosing}).
 
 Let us define the coordinate transform using the \transit\ operator
 \begin{equation}
@@ -344,10 +344,10 @@ non-overlapping, while minimising the inter-region area.
 \item Works well in indoor environments.
 \end{itemize}
 
-On the negative side, grid representation does require a lot more memory
-than all other representations considered so far, however since there
-is no need to a have a very fine detail, memory requirements are not
-that huge. For example a grid map with 10cm grid size will require 100
+On the negative side, a grid representation does require a lot more
+memory than all other representations considered so far, however since
+there is no need to a have a very fine detail, memory requirements are
+kept low. For example a grid map with 10cm grid size will require 100
 bytes per square meter. HTSLAM does not need access to all regions at
 any one time, therefor the memory requirement is bounded.
 

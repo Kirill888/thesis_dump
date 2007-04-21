@@ -23,7 +23,7 @@ probabilistic framework. Why is it great.}
 %map at any given time instance.
 
 When mapping new terrain a robot periodically checks whether it has
-returned to a region that was mapped previously. Since HTSLAM
+returned to a region that was mapped previously. Since the HTSLAM
 structure does not have a global reference frame, a robot pose is only
 defined for the region currently being mapped. It is however possible
 to estimate a relative alignment of any two given regions. Using this
@@ -63,11 +63,11 @@ landmarks in maps $A$ and $E$.}
 \label{sec:relative_poses}
 
 Since HTSLAM maps in general can contain cycles, there might be
-multiple paths between any two regions. To resolve this ambiguity
+multiple paths between any two regions. To resolve this ambiguity the
 graph structure of the map is converted into a tree with the root
 being the current node. This can be achieved using either breadth-
-first traversal of the graph or with Dijkstra's algorithm for
-finding the shortest path in the graph \cite{dijkstra_shortest_path}.
+first traversal of the graph or with Dijkstra's algorithm for finding
+the shortest path in the graph \cite{dijkstra_shortest_path}.
 
 \subsubsection{Breadth First Traversal}
 
@@ -85,7 +85,7 @@ One sensible approach is to minimise the number of transitions needed
 to compute the relative pose of two map frames. As it happens, it
 is possible to compute the shortest path between one of the nodes of
 the graph and all the other nodes of the graph by converting a graph
-in to a tree using Breadth-First Traversal ( see \refFigure{fig:bst}).
+in to a tree using Breadth-First Traversal (see \refFigure{fig:bst}).
 The computational complexity of the BFT approach is $O(|V| + |E|)$,
 where $|V|$ is the number of nodes (vertices) and $|E|$ is the number of
 edges in the graph.
@@ -109,11 +109,11 @@ which is higher than that of BFT.
 
 Due to approximation errors, Dijkstra's algorithm might not actually
 compute the most certain path. As a result, the benefit of using
-Dijkstra algorithm for this problem is questionable. Experimentation
-with vision data (chapter~\ref{chpt:Vision_Results}) has shown that
+Dijkstra's algorithm for this problem is questionable. Experimentation
+with vision data (Chapter~\ref{chpt:Vision_Results}) has shown that
 the Gaussian approximation for the transition uncertainty can be poor.
 An alternative distance metric should be used for the Dijkstra
-algorithm, one involving number of transitions along the path as well
+algorithm, one involving the number of transitions along the path as well
 as the estimate of the uncertainty. However no experimentation in that
 regard were performed.
 
@@ -158,17 +158,17 @@ particles one needs to represent the relative poses accurately.
 \end{enumerate}
 }
 
-Given two local maps, it is required to assess the probability that
-they correspond to the same region in the environment and find their
-relative alignment. The choice of map matching algorithm depends on
-the type of local mapping module. In this thesis we concentrate on
+Given two local maps, a method is required to assess the probability
+that they correspond to the same region in the environment and find
+their relative alignment. The choice of map matching algorithm depends
+on the type of local mapping module. In this thesis we concentrate on
 feature based maps (other types include: occupancy grids, dense point
 clouds and laser scans). In the case of feature based maps, the map
 correspondence problem is split into a number of landmark
-correspondence problems. To solve map correspondence problem, one
+correspondence problems. To solve the map correspondence problem, one
 needs to find the most likely set of common landmarks between the two
-local maps. It is a requirement of HTSLAM that correspondence problem
-can be solved without accurate knowledge of the relative map
+local maps. It is a requirement of HTSLAM that the correspondence
+problem can be solved without accurate knowledge of the relative map
 alignment. The nearest neighbour gating technique, commonly used for
 data association problems, will not work in this situation since the
 uncertainty in the relative alignment of the two maps is large. There
@@ -186,12 +186,12 @@ fully connected subgraph of a graph) in a sparse correspondence graph.
 The correspondence graph is constructed from the geometric feature
 matches (distances between landmarks, in the case of point landmarks).
 If individual landmarks can be differentiated in some way (for example
-door landmark cannot match chair landmark, or pink door cannot match
-green door), such a constraint is referred to as {\it absolute}
+a door landmark cannot match a chair landmark, or a pink door cannot match
+a green door), such a constraint is referred to as an {\it absolute}
 constraint. Absolute constraints are also taken into account when
 constructing the correspondence graph. Unlike JPBB, the graph based
-approach can work without a prior knowledge on the relative alignments
-of the two sets being matched, however if a prior is available it is
+approach can work without prior knowledge of the relative alignments
+of the two sets being matched: however if a prior is available it is
 used.
 
 Both of the batch methods mentioned above were developed for data
@@ -199,20 +199,20 @@ association in EKF SLAM. As a result they assume that a set of
 uncorrelated observations is matched to a set of correlated
 landmarks. However they can be easily extended to match two sets of
 landmarks instead. In HTSLAM landmarks are uncorrelated, and so some
-computations can be simplified significantly.
+computation can be simplified significantly.
 
-
-The approach used in this thesis is similar to the graph
-approach. Like the graph approach it looks for a maximum clique of the
+The approach used in this thesis is similar to the graph approach.
+Like the graph approach it looks for a maximum clique of the
 correspondence graph, but without constructing the graph explicitly.
 This approach computes joint compatibility in a slightly different
 way. Geometric and absolute constraints are used as in the graph
 approach, but in addition this approach also exploits constraints
 arising from the alignment of the two sets. Generally, geometric
-constraints alone are not sufficient to disregard all impossible set
-correspondences. Any two sets of landmarks which are mirror images of
-one another will satisfy the geometric constraints, but the landmarks
-in these sets do not correspond (see \refFigure{fig:mirror_sets}).
+constraints alone are not sufficient to disregard all impossible sets
+of correspondences. Any two sets of landmarks which are mirror images
+of one another will satisfy the geometric constraints, but the
+landmarks in these sets do not correspond (see
+\refFigure{fig:mirror_sets}).
 
 \begin{figure}[htbp]
   \centering
@@ -230,7 +230,7 @@ The most direct way to evaluate a correspondence hypothesis is to
 perform a two-view reconstruction of the scene, and then compute the
 likelihood of the reconstruction. Let $\theta_i$ be a landmark
 pose in the reference frame of map $a$, let $\theta_i^a, \theta_i^b$
-be an observation of the landmark $i$ in the reference frames $a$ and
+be an estimate of the landmark $i$ in the reference frames $a$ and
 $b$ respectively. Let ${\bf R},{\bf t}$ be a rotation and translation
 from frame $a$ to frame $b$. Assume also that a prior $p\left({\bf
 R},{\bf t}\right)$ is available. The reconstruction process needs to
@@ -244,12 +244,12 @@ p\left({\bf R}\theta_i + {\bf t} | \theta_i^b\right).
 \label{eqn:align}
 \end{equation}
 
-The maximum of the \refEquation{eqn:align} can be used as a measure of
+The maximum of \refEquation{eqn:align} can be used as a measure of
 the likelihood of a particular landmark correspondence configuration.
 While there is no closed form solution to this problem, an iterative
 numerical optimisation can be used to find the maximum of
 \refEquation{eqn:align}. This process is outlined in
-section~\ref{sec:map_alignment}. Such an operation is computationally
+Section~\ref{sec:map_alignment}. Such an operation is computationally
 expensive and cannot be used to search for the most likely
 configuration. However it can be applied to compare the best few
 hypotheses.
@@ -263,10 +263,10 @@ and $k$ in the map $a$. For every landmark correspondence compute an
 upper bound on the size of the correspondence set it can belong to
 
 $$
-u_{i,j} = \sum_{k \ne i} \sum_{l \ne j} {\bf MATCH}(E^a_{i,k}, E^b_{j,l})
+u_{ij} = \sum_{k \ne i} \sum_{l \ne j} {\bf MATCH}(E^a_{i,k}, E^b_{j,l})
 $$
 
-Here function ${\bf match}$ returns 1 if edges match and zero
+Here function ${\bf MATCH}$ returns 1 if edges match and zero
 otherwise. Edges match if the landmarks on either side of the edge
 satisfy absolute constraints {\bf AND} their lengths are sufficiently
 similar {\bf AND} the alignment arising from the edge correspondences
@@ -417,9 +417,9 @@ $$
 
 %\subsubsection{Using Landmark Appearance for Matching}
 
-Distance between landmarks is not the only transform invariant
+The distance between landmarks is not the only transform invariant
 feature. It might be possible to differentiate individual landmarks to
-some degree. In the case of corner landmarks, for example, convex
+some degree. In the case of corner landmarks, for example, a convex
 corner should not match a concave corner. Landmark type is therefore
 used as a binary measure to disregard impossible landmark
 correspondences. In the case of vision landmarks, cross-correlation of
@@ -454,8 +454,8 @@ correct.
 Assume $\theta^a_1$ and $\theta^a_2$ are true poses of the two
 landmarks expressed in the reference frame of the map $a$. Assume
 ${\bf R,t}$ are true rotation and translation from frame $a$ to frame
-$b$, such that ${\bf R}\theta_1 + \bf{t}$ is a landmark pose expressed
-in frame $b$. $\theta^a_i, \theta^b_j$ are observations of the first
+$b$, such that ${\bf R}\theta_1^a + \bf{t}$ is a landmark pose expressed
+in frame $b$. $\theta^a_i, \theta^b_j$ are estimates of the first
 landmark in frames $a$ and $b$ respectively, and $\theta^a_k,
 \theta^b_l$ are observations of the second. Ideally, relative map
 pose and the locations of landmarks have to be computed
@@ -478,7 +478,6 @@ $$
   \phi^{a \rightarrow b} = \tan^{-1} \frac{\Delta y^a}{ \Delta x^a}
   -\tan^{-1} \frac{\Delta y^b}{ \Delta x^b},
 $$
-
 where $[\Delta x^a, \Delta y^a]^T = \theta^a_i - \theta^a_k$ and
 $[\Delta x^b, \Delta y^b]^T = \theta^b_j - \theta^b_l$. The
 uncertainty of the rotation is approximated using first order Taylor
@@ -487,7 +486,7 @@ series expansion. Alternatively one can use unscented transform
 
 For a fixed rotation, translation between two sets of landmarks is
 exactly Gaussian, and can be computed analytically. The exact process
-is outlined in a section~\ref{sec:map_alignment} on map alignment .
+is outlined in Section~\ref{sec:map_alignment} on map alignment .
 
 
 
@@ -557,13 +556,13 @@ region $A$, explores new regions $B,C,D,E$, in that order, then
 discovers that region $A$ and $E$ overlap.
 
 From landmark correspondences it is possible to infer the relative
-pose of the two maps, allowing update of the global map
+pose of the two maps, allowing for an update of the global map
 structure. Through map alignment new link can be added between the two
-maps. The robot can then transfer into map $A$ and continue
-mapping. However, this new information also provides information about
-the path of the robot along the loop. Before map matching all paths
-are equally likely (by construction), subsequently the robot have
-re-localises itself in map $A$.
+maps. The robot can then transfer into map $A$ and continue mapping.
+However, this new information also provides information about the path
+of the robot along the loop. Before map matching all paths are equally
+likely (by construction), subsequently the robot have re-localises
+itself in map $A$.
 
 If there are no loops in the HTSLAM structure, transitions are
 independent variables. This follows from the process by which
@@ -571,13 +570,13 @@ transitions are constructed.  However, when the loop is closed one can
 no longer think of transitions as independent. New evidence provides
 the means to evaluate the joint probability of all transitions along
 the path, and this joint probability is generally not equal to the
-product of individual probabilities, invalidating independence the
+product of individual probabilities, invalidating the independence
 hypothesis.
 
 The big question is whether the fact of loop closing provides
 information about the path along the loop. Is there enough information
 to evaluate the joint probability of the transitions along the
-path. Model approximations introduce errors that accumulate and
+path? Model approximations introduce errors that accumulate and
 introduce biases in the robot pose estimate.
 
 \begin{figure}[htbp]
@@ -599,16 +598,16 @@ estimates its position to be at $A'$.}
 
 
 The effects of model approximation errors can be significant, as
-\refFigure{fig:hump} illustrates. In this example robot assumes a
-planar surface, while this assumption might work well enough for local
-observations, it breaks globally. The more accurate robot sensors are
-the more obvious model errors become. If your observations tell you
-that to get from $A$ to $C$ you either go 100 km north, then 30 km
-west, OR 30 km west then 110 km north, then maybe both these
-observations are right, but your assumption of planar surface is
-wrong.
+\refFigure{fig:hump} illustrates. In this example the robot assumes a
+planar surface; while this assumption might work well enough for local
+observations, it breaks globally. The more accurate the robot's
+sensors are, the more obvious model errors become. If your
+observations tell you that to get from $A$ to $C$ you either go 100 km
+north, then 30 km west, OR 30 km west then 110 km north, then maybe
+both these observations are right, but your assumption of a planar
+surface is wrong.
 
-If one assumes that impact of model approximation errors is
+If one assumes that the impact of model approximation errors is
 insignificant along the path, one can attempt to incorporate all
 information along the path when closing the loop. This is however
 problematic due to practical considerations. Given there are $K$
@@ -671,13 +670,14 @@ bridge, passes the crossing, goes into the tunnel, passes another
 train station that looks very similar to the first one, and then the
 bridge and a crossing and then the tunnel again.
 
-After few laps, Choo-choo robot stops to think about his discoveries.
-He has two main hypothesis: one is that the world is an infinite
-straight line, with infinite number of similar structures of 4 types,
-that follow in a sequence: station, bridge, crossing, tunnel, station,
-bridge, crossing ... and so forth. Another hypothesis Choo-choo has
-developed, is that a tunnel is actually a worm-hole that wraps the
-line and brings Choo-choo robot back to the same train station. 
+After a few laps, Choo-choo robot stops to think about his
+discoveries.  He has two main hypothesis: one is that the world is an
+infinite straight line, with an infinite number of similar structures
+of 4 types, that follow in a sequence: station, bridge, crossing,
+tunnel, station, bridge, crossing ... and so forth. Another hypothesis
+Choo-choo has developed, is that a tunnel is actually a worm-hole that
+wraps the line and brings Choo-choo robot back to the same train
+station.
 
 After some thinking Choo-choo robot settles on a second hypothesis.
 Having decided that the world is finite, Choo-choo robot wonders how
@@ -725,7 +725,7 @@ genetic algorithm:
 
 \begin{enumerate}
 \item Start with a small random sample of paths. 
-\item Generate new sample by mutating (mutation is performed by
+\item Generate new samples by mutating (mutation is performed by
   changing one transition at a time).
 \item Sample with replacement ``good'' paths.
 \item Repeat from step 2, until convergence is reached
@@ -774,7 +774,7 @@ One alternative is to assume that the relative alignment is
 independent of the maps. This way it is possible to estimate the
 alignment using just one of the pairs, and then sample
 map-transition-map triples, based on the independence
-assumption. Approach like this will work well when maps are relatively
+assumption. An approach like this will work well when maps are relatively
 similar. If, however, the maps between particles differ significantly,
 samples generated this way will contain a large proportion of very poor
 matches. A particle filter will eventually get rid of the poor matches,
@@ -785,7 +785,7 @@ accurately.
 \label{sec:map_alignment}
 
 After landmark correspondence is established HTSLAM requires an
-estimate of the relative alignment of the two maps in the
+estimate of the relative alignment of the two maps in a
 probabilistic manner in order to model the coordinate transformation
 between the two maps. This section describes an approach to map
 alignment used in the experiments presented in
@@ -820,7 +820,7 @@ rewritten as
 \label{eqn:align_log_w_matrix_form}
 \end{equation}
 
-If rotation ${\bf R}$ is fixed, translation ${\bf t}$ that maximises
+If rotation ${\bf R}$ is fixed, the translation ${\bf t}$ that maximises
 \refEquation{eqn:align_log_w_matrix_form} can be found. For clarity
 lets define $C_l = A_l + {\bf R}^TB_l{\bf R}$ and $c_l = a_l - b_l$,
 substituting these in to \refEquation{eqn:align_log_w_matrix_form}
@@ -922,8 +922,6 @@ p([\theta_1, ...\theta_n],{\bf R},{\bf t} | \mapA, \mapB) =
 \label{eqn:align_w0}
 \end{array}
 \end{equation}
-
-
 where $\eta$ is a normalisation constant, independent of ${\bf
 R,t},\theta_1, \theta_2 ...\theta_n$. Taking $\log$s we obtain
 
@@ -977,7 +975,7 @@ a_n^TA_n+b_n^TB_n{\bf R},
 \end{eqnarray}
 
 Note that since matrices $A_i,B_i$ are symmetric, and hence the
-diagonal elements of ${\bf G}$ are also symmetric, and that ${\bf G}$
+diagonal elements of ${\bf G}$ are also symmetric, that ${\bf G}$
 is a symmetric matrix as well. 
 
 

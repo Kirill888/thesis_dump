@@ -69,7 +69,7 @@ over robot pose is Gaussian. FastSLAM samples directly from the motion
 model. More importantly, FastSLAM can capture the uncertainty of the
 data association decisions, something that is impossible with EKF.
 This is especially advantageous when the environment is cluttered. It
-is well known that EKF is very sensitive to errors in data association
+is well known that the EKF is very sensitive to errors in data association
 decisions \cite{neira01:_data_assoc_stoch_mappin_using}. FastSLAM
 provides a more robust solution to mapping with unknown data
 association.
@@ -121,7 +121,6 @@ $$
 \prob{\map{k}{}{a},\Xall{k}{}{a} | 
 \Zall{k}{a},\Uall{k}{a},\TeleportAll{k}{a},\x{k_0}{}{a}},
 $$
-
 where \map{k}{}{a} is a map of the region $a$ and \x{k_0}{}{a} is an
 arbitrary initial robot pose (typically at the origin).
 
@@ -168,12 +167,12 @@ overlap with the sensor field of view than all the others, it switches
 to that region. The goal is to maximise the proportion of observations
 that match to an existing map. If one assumes uniform distribution of
 landmarks in the environment and uniform detection rates for a sensor
-view (i.e. landmark straight ahead is as easily detectable as the one
-on the robots left), than this approach actually maximises the number
-of re-observed landmarks. In the real world landmarks are not
-distributed uniformly, and the detection rates for different views of
-a landmark are different. This approach nevertheless provides a good,
-computational inexpensive measure for determining map transitions.
+view (i.e. a landmark straight ahead is as easily detectable as one on
+the robot's left), than this approach actually maximises the number of
+re-observed landmarks. In the real world landmarks are not distributed
+uniformly, and the detection rates for different views of a landmark
+are different. This approach nevertheless provides a good,
+computationaly inexpensive measure for determining map transitions.
 
 A sensor view based approach also makes the decision to start a new
 map trivial. If no region overlaps sufficiently with the sensor field
@@ -195,7 +194,7 @@ slightly favour staying in the current region.
 %\end{enumerate}
 
 
-A pose of a robot is represented by a set of particles: at any time
+The pose of a robot is represented by a set of particles: at any time
 instant HTSLAM maintains a set of path particles, and the
 corresponding maps conditioned on the path. When a new map is started
 the relative pose of the current and the new map reference frames is
@@ -243,13 +242,13 @@ current map.  The current reference frame is set to that of a new
 node. The initial map region is computed and assigned to the new
 map. All the neighbouring regions are then projected into the new
 coordinate frame and are subtracted from the initial map region to
-force the non-overlapping constraint. A pose of all particles is then
+force the non-overlapping constraint. The pose of all particles is then
 set to some initial value, their maps are set to empty, and the
 mapping process is restarted.
 
-As the robot continues mapping new region, any error in the map and robot
-pose estimate remains conditionally independent from errors in any
-previous maps. This independence remains until the region is
+As the robot continues mapping the new region, any error in the map
+and robot pose estimate remains conditionally independent from errors
+in any previous maps. This independence remains until the region is
 revisited.
 
 
@@ -273,12 +272,12 @@ are not directly connected, the transition is performed along the
 shortest path between the two regions and is equivalent to performing
 several transitions one after another. The procedure for computing the
 shortest path between two local maps is discussed in the chapter on
-loop closing (chapter~\ref{chpt:LoopClosing}).
+loop closing (Chapter~\ref{chpt:LoopClosing}).
 
 Consider the transition under the assumption that the two regions are
 adjacent. For clarity let $A$ be the region that was mapped first, and
 $B$ the region created subsequently. As described previously
-(chapter~\ref{chpt:MapStructure}), each transition maintains joint
+(Chapter~\ref{chpt:MapStructure}), each transition maintains joint
 probabilities that capture the three-way relationship of the two maps
 joined by the transition and their relative pose. It is therefore
 possible to sample a map-transition-map triple $\{
@@ -314,7 +313,7 @@ It is best to describe the process of transition from one map to
 another with an example, referring to
 \refFigure{fig:MappingExample}. The robot has a car like driving
 system and lives on a plane. Three particles are used to approximate
-robots motion. The robot starts in region $A$ and travels some
+the robot's motion. The robot starts in region $A$ and travels some
 distance forward, taking observations. Some time later the robot
 reaches the boundary of region $A$ and starts a new map $B$. Again
 three particles are used to model the uncertainty of the robot's path
@@ -324,8 +323,8 @@ have taken. These paths are illustrated in
 \refFigure{fig:MappingExampleC}. By starting a new map $B$, HTSLAM
 effectively conserved the uncertainty at that time instant. Now, when
 the robot is returning to the region $A$ there are more possible paths
-to consider. More hypothesis are beneficial. The number of hypothesis
-is akin of resolution in images - more hypothesis provide a clearer
+to consider. More hypothesis are beneficial. The number of hypotheses
+is akin to resolution in images - more hypothesis provide a clearer
 picture of the observed uncertainty. HTSLAM used only 3 particles for
 mapping but has 9 possible paths. A global mapping approach would have
 had to use 9 particles (that is $N^2$) to get the same ``resolution''
