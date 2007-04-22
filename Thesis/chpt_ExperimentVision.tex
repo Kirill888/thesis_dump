@@ -1,28 +1,29 @@
 \section{Sensor Description}
 
-A sensor consists of a stereo pair of cameras. Cameras are mounted on
-an XR4000 robot facing forward, parallel to the ground plane. The two
-cameras were aligned to be almost parallel to each other. Stereo base
-line is approximately 30 cm. The exact relative poses of the cameras
-were computed through stereo calibration.
+The sensor used in the experiment consists of a stereo pair of
+cameras. Cameras are mounted on an XR4000 robot facing forward,
+parallel to the ground plane. The two cameras were aligned to be
+almost parallel to each other. The stereo base line is approximately 30
+cm. The exact relative poses of the cameras were computed through
+stereo calibration.
 
 Internal camera parameters were determined by calibration for each of
-the cameras. These cameras are capable of capturing colour images at
-the maximum resolution of 640x480 at the rate of 30 frames per second,
+the cameras. These cameras are capable of capturing colour images at a
+maximum resolution of 640x480 at the rate of 30 frames per second,
 however the image is obtained by interlacing. Camera captures odd rows
 in one sweep and then even rows in the second sweep. These two halves
 of the image, are called fields, and are transmitted one after
-another. Each field is a 640x240 image.  Complete image can then be
+another. Each field is a 640x240 image. The complete image can then be
 constructed by the capturing software from the two successive fields.
-Since the two fields are captured at slightly different times, joined
-image might have undesired artefacts when the scene is not static or
-when the robot is moving.
+Since the two fields are captured at slightly different times, the
+joined image might have undesired artefacts when the scene is not
+static or when the robot is moving.
 
-While cameras can provide 30 frames per second, computer on the robot
-can successfully capture and store 15 fields from each camera at most.
-Sustainable throughput is even less at 11-12 fields per seconds, due
-to the limitations of the recording system. Captured frames are stored
-to the on-board hard drive as separate files.
+While the cameras can provide 30 frames per second, the computer on
+the robot can successfully capture and store 15 fields from each
+camera at most.  Sustainable throughput is even less at 11-12 fields
+per seconds, due to the limitations of the recording system. Captured
+frames are stored to the on-board hard drive as separate files.
 
 The odd and even fields are very similar, so there is little extra
 information to be gained from the second field. Faster frame rate is
@@ -43,9 +44,9 @@ recorded at a sustainable rate of 11.5 per second.
 \end{figure}
 
 The cameras used in this experiment have a noticeable barrel
-distortion, it is corrected in software. Correction is applied
-off-line. \refFigure{fig:barrel_distortion} shows the original and
-corrected images.
+distortion, that is corrected in software. The correction is applied
+off-line. \refFigure{fig:barrel_distortion} shows an example of an
+original and corrected images.
 
 
 \section{Feature Detector: Vertical Edges}
@@ -53,7 +54,7 @@ corrected images.
 Vertical edges are common in human built environments. Edge detection
 is a relatively fast and reliable operation. Edges are unlikely to
 appear on moving objects like humans. A matched pair of edges in two
-images corresponds to a line in the world coordinates. A matched pair
+images corresponds to a line in world coordinates. A matched pair
 of two vertical edges corresponds to a vertical line in world
 coordinate, if the cameras a parallel to the ground plane. A vertical
 line in a three dimensional space has only two degrees of freedom and
@@ -97,28 +98,28 @@ Run vertical edge detector on the left image. We use vertical Sobel
 image. This section is predefined at the start of the experiment and
 is computed from the geometry of the stereo pair and a valid sensor
 range. We are only interested in the features that are reasonably
-close to the camera (we use 30 meter threshold). We can therefor
-discard an extreme left part of the left image, since the features
+close to the camera (we use a 30 meter threshold). We can therefore
+discard the extreme left part of the left image, since the features
 present there won't be visible in the right image, unless they are too
 far away.
 
-Prune edges: discard short edges, also discard cluttered edges.For all
-remaining edges try to find a match in the right image. Normalised
-cross-correlation is used to find matches. Only need to search in a
-portion of the right image (defined by valid sensor range). Cameras
-were aligned to be close to parallel, so that epipolar lines are
-roughly parallel to the $x$ axis. In general case search should be
-performed along the epipolar line defined by the location of the
-lowest pixel of the edge. Only accept matches with high enough
-correlation. If there are to many possibilities ($> 5$) , discard the
-edge. If there are none, discard the edge. Otherwise, keep best 3
-matches.
+Prune edges: discard short edges, also discard cluttered edges. For
+all remaining edges try to find a match in the right image. Normalised
+cross-correlation is used to find matches. The algorithm only needs to
+search in a portion of the right image (defined by the valid sensor
+range). The cameras were aligned to be close to parallel, so that
+epipolar lines are roughly parallel to the $x$ axis. In the general
+case the search should be performed along the epipolar line defined by
+the location of the lowest pixel of the edge. Only matches with high
+enough correlation are accepted. If there are to many possibilities
+($> 5$) , discard the edge. If there are none, discard the
+edge. Otherwise, keep best 3 matches.
 
 We would like to avoid situations when two edges in the left image
 match to the same edge in the right image. It is clearly impossible
 that two distinct features in the left image appear in the same spot
 in the right image, without one being hidden by another, in which case
-the true location of any of the features can not determined. Feature
+the true location of any of features can not determined. Feature
 is defined as a pair of edges one in the left image and a matching one
 in the right image. If two features share a common edge in either of
 the images, they are considered to be mutually exclusive.  Given a set
