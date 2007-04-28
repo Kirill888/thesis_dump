@@ -7,11 +7,12 @@ frame. Instead, each local region has its own reference
 frame. Relative poses of neighbouring regions are maintained in the
 topological structure of a HTSLAM map. The proposed map structure
 facilitates computation of relative poses between any two local
-regions, effectively allowing to set a ``global'' reference frame in
-any of the regions. A common problem for global SLAM is an increasing
-uncertainty as the robot moves further away from the origin. HTSLAM
-map structure moves the origin into the current local region,
-providing a more efficient representation of spatial uncertainty.
+regions, effectively allowing a ``global'' reference frame to be
+selected in any of the regions. A common problem for global SLAM is an
+increasing uncertainty as the robot moves further away from the
+origin. The HTSLAM map structure moves the origin into the current local
+region, providing a more efficient representation of spatial
+uncertainty.
 
 HTSLAM uses particles to represent spatial uncertainty between local
 regions. To the best of my knowledge there is no other published
@@ -67,19 +68,19 @@ environment. Corners and doorways were used as landmarks.
 
 There are a number of improvements to the current algorithms that I
 believe can make mapping more robust and efficient. Experiments with
-real data have shown that most failures occur after transition between
-local regions. This is because the process of transition between
-regions generates a large proportion of weak particles. The process of
-re-sampling will generally favour good particles and prune out weak
-ones, however there is a danger that there will not be any particles
-in the right place. A smarter sampling strategy that takes into
-account recent observations, or overlap between local maps, can
+real data have shown that most failures occur after the transition
+between local regions. This is because the process of transition
+between regions generates a large proportion of weak particles. The
+process of re-sampling will generally favour good particles and prune
+out weak ones, however there is a danger that there will not be any
+particles in the right place. A smarter sampling strategy that takes
+into account recent observations, or overlap between local maps, can
 provide a significant improvement over the current approach.
 
 At the moment there is no obvious answer to how many particles are
 needed to build a map of a particular environment. It would be
 beneficial to automatically adjust the number of particles during
-mapping, increasing number of particles when the situation is
+mapping, increasing the number of particles when the situation is
 ambiguous (loop closing, or transition), and decreasing it when things
 are going smoothly. Varying sample size has been used for the problem
 of localisation \cite{KLDSampling}, it would be interesting to see if
@@ -91,7 +92,7 @@ features. Static features are always present, for example walls in the
 indoor environment. Dynamic features include moving objects like
 humans or other robots. Semi-static features are those that change
 their position from time to time, a couch or a desk for
-example. Traditional approaches to mapping assume static world. While
+example. Traditional approaches to mapping assume a static world. While
 these approaches can tolerate a small number of dynamic objects,
 changes to the environment due to semi-static objects will render the
 map unusable eventually, requiring a complete rebuild. I believe that

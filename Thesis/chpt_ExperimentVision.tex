@@ -97,7 +97,7 @@ Run vertical edge detector on the left image. We use vertical Sobel
 \cite{Hartley2004}. Only need to run it on a section of the left
 image. This section is predefined at the start of the experiment and
 is computed from the geometry of the stereo pair and a valid sensor
-range. We are only interested in the features that are reasonably
+range. We are only interested in features that are reasonably
 close to the camera (we use a 30 meter threshold). We can therefore
 discard the extreme left part of the left image, since the features
 present there won't be visible in the right image, unless they are too
@@ -119,44 +119,44 @@ We would like to avoid situations when two edges in the left image
 match to the same edge in the right image. It is clearly impossible
 that two distinct features in the left image appear in the same spot
 in the right image, without one being hidden by another, in which case
-the true location of any of features can not determined. Feature
-is defined as a pair of edges one in the left image and a matching one
+the true location of any of features can not determined. A feature
+is defined as a pair of edges; one in the left image and a matching one
 in the right image. If two features share a common edge in either of
 the images, they are considered to be mutually exclusive.  Given a set
 of features, some of which might be mutually exclusive, we would like
-to find a set of compatible features with the highest total
-probability.
+to find a most likely set of compatible features.
 
 One can visualise this problem as a graph: every pair of edges defines
 a node in the graph, every two nodes of the graph are connected,
 except for those nodes that share a common edge in either of the
 images. The largest fully connected subgraph of this graph (commonly
 referred as ``clique'' or ``maximal clique'' of a graph) corresponds
-to the largest set of compatible edge pairs. A problem of finding a
+to the largest set of compatible edge pairs. A problem of finding the
 clique of a graph is NP complete, meaning that for a large set of
-features solution will take forever to compute.
+features the solution will take forever to compute.
 
 In our case it probably shouldn't take too long to find a true
-solution by a brute force approach ($N<20$). However we prefer to take
-a computationally faster route to solving the problem. The approach
-used has $O(N^2)$ computational complexity, $N$ is a number of
-features being considered. It is a greedy approach, that is choices
-are made in favour of short-term gains, rather than overall return.
-While it is not guaranteed to find the best set of features, it works
-most of the time. It gives much better results than just a nearest
-neighbour search.
+solution by a brute force approach ($N<20$)\NOTE{what is the cost of
+brute force?}. However we prefer to take a computationally faster
+route to solving the problem. The approach used has $O(N^2)$
+computational complexity, $N$ is a number of features being
+considered. It is a greedy approach, that is choices are made in
+favour of short-term gains, rather than overall return.  While it is
+not guaranteed to find the best set of features, it works most of the
+time. It gives much better results than just a nearest neighbour
+search. \NOTE{how is this assessed}
 
 The approach is straightforward. Sort the input set of features, most
-likely features first. The output set is initially empty. Take one
-feature from the input set, check if it is compatible with all the
-features in the output set, if it is, add it to the output set,
-otherwise discard it.  Keep taking features from the input set, until
-none left. This will require at most $\frac{N(N-1)}{2}$ comparisons
-for a naive implementation.  Sorting can be performed in $O(N\log N)$,
-therefor total computational complexity for a naive implementation is
-$O(N^2)$. Compatibility check can actually be performed at constant
-time. Therefor smart implementation will have a computational
-complexity of $O(N\log N)$.
+likely features first\NOTE{define whta ''most likely'' is}. The output
+set is initially empty. Take one feature from the input set, check if
+it is compatible with all the features in the output set, if it is,
+add it to the output set, otherwise discard it.  Keep taking features
+from the input set, until none are left. This will require at most
+$\frac{N(N-1)}{2}$ comparisons for a naive implementation.  Sorting
+can be performed in $O(N\log N)$, therefore total computational
+complexity for a naive implementation is $O(N^2)$. The compatibility
+check can actually be performed at constant time. Therefor smart
+implementation will have a computational complexity of $O(N\log N)$.
 
 
 \begin{figure}[htbp]
@@ -172,9 +172,9 @@ are indicated by colour, a blue edge in the left corresponds to a blue
 edge in the right image, green to green, and so forth. Locations of
 the features in the reference frame of the left camera are also shown.
 
-The appearance of the feature can provide an important information to
+The appearance of a feature can provide important information to
 the mapping module: it can assist in data association, especially in
-the situations when two edges are very close spatially (like cyan and
+situations when two edges are very close spatially (like the cyan and
 magenta edges (edges 4 and 5, counting from the left) in the
 \refFigure{fig:example_edge_detector})
 
@@ -182,25 +182,25 @@ Since vertical edges are generally uniform along the vertical
 dimension, i.e. every row looks a lot like any other, edge template
 can be ``compressed'' by computing the average intensity along the
 vertical dimension. It is simply an average of the columns around the
-edge. We use a width of 7 pixels, 3 colours per pixel, gives us 21
+edge. We use a width of 7 pixels, 3 colours per pixel, giving us 21
 integer values. Using only 7 pixels per feature (21 values) greatly
 reduces computational effort for template matching.  Templates are
-also normalised, that makes correlation computation really fast (21
-multiplications and 20 additions, in this case). Normalisation also
-makes template matching less sensitive to the variations in the
-lightning conditions.
+also normalised to have zero mean, making correlation computation
+really fast (21 multiplications and 20 additions, in this
+case). Normalisation also makes template matching less sensitive to
+variations in the lightning conditions.
 
 \subsection{Sensor Uncertainty}
 
 There are several sources for uncertainty in the sensor. Some
 uncertainty comes from the fact that camera calibration is not
-perfect.Cameras focal length $F$ and centre point $C$ are not known
-exactly, and might also vary slightly during the experiment. Second
-source of uncertainty is the feature extraction mechanism. As point of
-view changes, the edge might be picked up from a slightly different
-part of the landmark. Pixel error in the right image is even more,
-because correlation search adds more uncertainty to it. And off course
-there is also discretisation error.
+perfect. The cameras focal length $F$ and centre point $C$ are not
+known exactly, and might also vary slightly during the experiment. A
+second source of uncertainty is the feature extraction mechanism. As
+point of view changes, the edge might be picked up from a slightly
+different part of the landmark. Pixel error in the right image is even
+more, because the correlation search adds more uncertainty to it.
+Discretisation errors add some noise as well.
 
 Bearing is computed from the column pixel $p$ using the following equation
 
@@ -208,15 +208,15 @@ $$
 z = f([p,C,F]^T) = \frac{p - C}{F}
 $$
 
-Jacobian of $f$ with respect to $[p,C,F]^T$ ,$\bigtriangledown f$ is used to compute the
+The Jacobian of $f$ with respect to $[p,C,F]^T$ ,$\bigtriangledown f$ is used to compute the
 approximate Gaussian uncertainty of $z$ from the uncertainties of
 $[p,C,F]^T$.
 
 $$
 \bigtriangledown f = \left[ 
-\frac{1}{F^2},
-\frac{1}{F^2},
-\frac{p - C}{F^4}
+\frac{1}{F},
+\frac{1}{-F},
+\frac{-p + C}{F^2}
 \right]
 $$
 
@@ -234,21 +234,20 @@ $$
 
 \section{Edge Landmark}
 
-Edge landmark is basically a point landmark with some extra
-attributes. The extra attributes include normalised edge template (7
-pixel x 3 colours = 21 bytes) and a list of all observations of the
-landmark.  Normalised average template is used to aid the data
-association and also during the map matching when closing loops. The
+An edge landmark is basically a point landmark with some extra
+attributes. The extra attributes include the normalised edge template
+(7 pixel x 3 colours = 21 bytes) and a list of all observations of the
+landmark.  Normalised average template is used to aid in data
+association and also during the map matching when closing loops. A
 list of observations is also used during data association if the
 result of matching with the average template failed to produce a
-definite answer (not quite the same, but not very dissimilar
-either). 
+definite answer (not quite the same, but not very dissimilar either).
 
-Data structure used to hold the list of the observations allows to
-make a copy of itself in constant time, so there is no computational
-burden for keeping this information. Memory requirements however grow
-as more observations are collected. It is not absolutely necessary to
-keep all this information, average template is usually sufficient. The
+The data structure used to hold the list of observations allows itself
+to be copied in constant time, so there is no computational burden for
+keeping this information. Memory requirements however grow as more
+observations are collected. It is not absolutely necessary to keep all
+this information, as the average template is usually sufficient. The
 main motivation for keeping all observations of the landmark is to
 allow accurate template matching in situations when the appearance of
 the landmark changes significantly depending on the observation angle.
@@ -256,31 +255,30 @@ the landmark changes significantly depending on the observation angle.
 The goal of keeping templates is to provide a comprehensive
 representation of the appearance of the landmark from various view
 points. This can be achieved with relatively few templates. It is not
-necessary to store all of them. This problem is however beyond the
-scope of this thesis.
+necessary to store all of them. \NOTE{cite Principal Component
+Analysis?} This problem is however beyond the scope of this thesis.
 
-Landmark true state ${\bf x} = \left[x,y \right]^T$ is its location
- in the local reference frame. Camera pose in the local frame is
- denoted $x_c,y_c$ and camera orientation is $\theta_c$. For clarity
- lets also define $x'=x-x_c$ and $y'=y-y_c$.  Observation $z_k$, and
- landmark states are related by the non-linear function $h$, defined
- in the equation below ($v = N(0,\sigma_{v}^2)$ is a measurement
- noise)
+The landmark true state ${\bf x} = \left[x,y \right]^T$ represents its
+location in the local reference frame. The camera pose in the local frame
+is denoted $x_c,y_c$ and camera orientation is $\theta_c$. For clarity
+lets also define $x'=x-x_c$ and $y'=y-y_c$.  Observation $z_k$, and
+landmark states are related by the non-linear function $h$, defined in
+the equation below ($v = N(0,\sigma_{v}^2)$ is a measurement noise)
 
 $$
-z = h({\bf x},v) =
+z_k = h({\bf x},v) =
 \frac{-x'\sin \theta_c + y' \cos \theta_c }
      {+x'\cos \theta_c + y' \sin \theta_c } + v.
 $$
 
 The true state of the landmark is not known, the estimate of the
 landmark state at time $k$, $\hat{\bf x}_k$ is available
-instead. Estimate error covariance for the landmark is maintained by
+instead. The estimate error covariance for the landmark is maintained by
 the EKF and is denoted $P_k$. For clarity lets also define
-$\hat{x}'=\hat{x}-x_c$ and $\hat{y}'=\hat{y}-y_c$.
+$\hat{x_k}'=\hat{x_k}-x_c$ and $\hat{y_k}'=\hat{y_k}-y_c$.
 
 Let us now define a Jacobian of partial derivatives of $h$ with
-respect to landmark state
+respect to the landmark state
 
 $$
 H_{[i,j]} = \frac{\partial h_{[i]}}{\partial {\bf x}_{[j]}}
@@ -292,17 +290,17 @@ It is equal to
 $$
   H = \left[ 
 \begin{array}{c}
-\frac{-\hat{y}'}
-{\hat{x}'^2 \cos^2 \theta_c + 2\hat{x}'\hat{y}'\cos\theta_c\sin\theta_c + \hat{y}'^2\sin^2  \theta_c }\\
+\frac{-\hat{y_k}'}
+{\hat{x_k}'^2 \cos^2 \theta_c + 2\hat{x_k}'\hat{y_k}'\cos\theta_c\sin\theta_c + \hat{y_k}'^2\sin^2  \theta_c }\\
 {}\\
-\frac{\hat{x}'}
-{\hat{x}'^2 \cos^2 \theta_c + 2\hat{x}'\hat{y}'\cos\theta_c\sin\theta_c + \hat{y}'^2\sin^2 \theta_c }
+\frac{\hat{x_k}'}
+{\hat{x_k}'^2 \cos^2 \theta_c + 2\hat{x_k}'\hat{y_k}'\cos\theta_c\sin\theta_c + \hat{y_k}'^2\sin^2 \theta_c }
 \end{array}
       \right].
 $$
 
-These Jacobians are used by the EKF, and also during the data association,
-to project landmark uncertainty in to the observation space.
+These Jacobians are used by the EKF, and also during data association,
+to project landmark uncertainty into the observation space.
 
 The Jacobian of partial derivatives of $h$ with respect
 to noise is also needed by EKF, in this case it is trivial
@@ -315,8 +313,8 @@ $$
 
 \subsection{Data Association}
 
-First, all landmarks are projected in to the observation space,both
-into left and right camera. Those landmarks that fall outside the
+First, all landmarks are projected into the observation space,both
+into the left and right camera. Those landmarks that fall outside the
 sensor range are discarded. For each observation the most likely
 landmark is found using the nearest neighbour search. 
 
@@ -327,25 +325,25 @@ $$
   {\bf w}_k = \int p(z_k|^z{\bf x}_k)p(^z{\bf x}_k) d^z{\bf x}.
 $$
 
-Here $^z{\bf x}_k$ is a landmark projected in to the camera plane,
-$p(^z{\bf x})$ is approximated to be a Gaussian, EKF style
+Here $^z{\bf x}_k$ is a landmark projected into the camera plane,
+$p(^z{\bf x_k})$ is approximated to be a Gaussian, EKF style
 
 $$
 p(^z{\bf x}_k) = N(h(\hat{\bf x}_k,0), H P_k H^T).
 $$
 
-The term $p(z_k|^z{\bf x}_k)$ is a measurement uncertainty, and is
-also a Gaussian distribution $N(z_k ,\sigma^2_{vk})$. Since both
-distributions are Gaussians, likelihood of the match can be computed
-analytically.
+The term $p(z_k|^z{\bf x}_k)$ represents the measurement uncertainty,
+and is also a Gaussian distribution $N(z_k ,\sigma^2_{vk})$. Since
+both distributions are Gaussians, the likelihood of the match can be
+computed analytically.
 
 Both left and right bearing have to match the landmark. Total quality
-of the match is a product of left and right weights ${\bf w}^l_k{\bf
-w}^r _k$. 
+of the match is a product of the left and right weights ${\bf
+w}^l_k{\bf w}^r _k$.
 
 Template matching is used to aid data association as a binary pass or
-  fail operator. Template matching is only performed if spatial tests
-  have passed.
+fail operator. Template matching is only performed if the spatial
+tests have passed.
 
 Nearest neighbour is not the best approach to data association. The
 fact that observations were extracted from the same video frame
@@ -354,24 +352,24 @@ observations came from different physical entities. Nearest neighbour
 search discards this information. Observations from the same video
 frame can be assigned to the same landmark.
 
-Ideally data association process should take all available information
-in to consideration. One can use joint compatibility data association
-\cite{neira01:_data_assoc_stoch_mappin_using}. Or one might explore
-the complete set of possible data associations directly, by sampling
-from the set of all possible data association decisions
-\cite{nieto2003}. In this work nearest neighbour search
-assisted by template matching proved to be sufficient. However a
-better data association approach is likely to improve the success rate
-of the existing approach.
+Ideally the data association process should take all available
+information into consideration. One can use the joint compatibility
+data association \cite{neira01:_data_assoc_stoch_mappin_using}. Or one
+might explore the complete set of possible data associations directly,
+by sampling from the set of all possible data association decisions
+\cite{nieto2003}. In this work nearest neighbour search assisted by
+template matching proved to be sufficient. However a better data
+association approach is likely to improve the success rate of the
+existing approach.
 
 
 \subsection{Observation Update}
 
-Observation is treated as two independent bearing only
-observations. First left, then right one. Standard EKF update
+An observation is treated as two independent bearing only
+observations. First left, then right one. The standard EKF update
 equations are applied to update the estimate of the landmark
 state. $P_k$ is an uncertainty of the state estimate.  Superscript
-$^+$ indicates an update estimate.
+$^+$ indicates an updated estimate.
 
 \begin{eqnarray}
 K &=& P_kH(HP_kH^T + \sigma^2_{vk})^{-1}\\
@@ -380,30 +378,32 @@ K &=& P_kH(HP_kH^T + \sigma^2_{vk})^{-1}\\
 P^+_k &=& (I - KH)P_k
 \end{eqnarray}
 
+\NOTE{Normalise EKF notation accross the whole document.}
 
-Landmark template is also updated. It is simply an average of all
-observation templates. Landmark maintains number of times it has been
-observed and a sum of all templates. Average template is computed from
-the sum by simply dividing by the total number of observations, after
-that the template is normalised, such that the mean is equal to zero,
-and sum of deviations from the mean squared is equal to 1. The
-normalisation is needed to make the normalised cross correlation
-computation faster.
+The landmark template is also updated. It is simply an average of all
+observation templates. Each landmark maintains a count of the number
+of times it has been observed and a sum of all templates. The average
+template is computed from the sum by simply dividing by the total
+number of observations, after that the template is normalised, such
+that the mean is equal to zero, and the sum of deviations from the
+mean squared is equal to 1. The normalisation is needed to make the
+normalised cross correlation computation faster. \NOTE{move
+explanation up.}
 
 
 
 \subsection{Genesis}
 
-When an edge pair does not match to any of the existing landmarks in
+When an edge pair does not match any of the existing landmarks in
 the map, a new landmark is added to the map. The initial landmark pose
 and the corresponding uncertainties are computed from the observations
 using the equations described below.
 
-Let $x_r,y_r$ be location of the right camera with respect to the left
-one, and $\theta_r$ be orientation of the right camera relative to the
-left one. Let $u_l,u_r$ be the bearing observation (tangent of the
-angle) from the left and right cameras respectively. We than define
-observation to be
+Let $x_r,y_r$ be the location of the right camera with respect to the
+left one, and $\theta_r$ be the orientation of the right camera
+relative to the left one. Let $u_l,u_r$ be the bearing observation
+(tangent of the angle) from the left and right cameras
+respectively. We then define the observation to be
 
 $$
 {\bf z} =  \left[
@@ -439,7 +439,7 @@ C_z = \left[
 \right].
 $$
 
-We then compute Jacobian of $f$ with respect to each of the
+We then compute the Jacobian of $f$ with respect to each of the
 observation elements
 
 $$
@@ -453,24 +453,23 @@ $$
 P = {\bf J} C_z {\bf J}^T.
 $$
 
-Landmark template is set to that of the observation.
+The landmark template is set to that of the observation.
 
 \section{Defining Map Region}
 
-Unlike laser range sensor, vision sensors can not provide free space
+Unlike laser range sensors, vision sensors can not provide free space
 information easily. While it is not impossible to extract free space
 information from a sequence of images, it is definitely not
-trivial. It is therefor assumed that no free space information is
-available.
-
-The approach was identical to that used for the Victoria park data
-set. The size of the initial region and the size of grid cells were
-smaller.
+trivial. It is therefore assumed that no free space information is
+available. The approach for defining region bundaries was identical to
+that used for the Victoria park data set, with an excpetion of the
+size of the initial region and the size of grid cells, which wer set
+to be smaller.
 
 \section{Results}
 
 Vision data has been collected together with the laser corner data, so
-a comparison can be made between vision and laser experiments. Vision
+a comparison can be made between vision and laser experiments. The vision
 data set was processed with 100 and 300 particles. One hundred runs of
 the algorithm were taken to judge the robustness of the algorithm (100
 for 100 particles and 100 for 300 particles).
@@ -498,12 +497,12 @@ Num. Particles & Consistent & Consistent but improper & Inconsistent\\
 \label{tab:results_vision}
 \end{table}
 
-Increasing number of particles have made the algorithm more robust,
+Increasing the number of particles makes the algorithm more robust,
 but only slightly. Figures~\ref{fig:edge_map_300p_broken} and
 \ref{fig:edge_map_300p_borken2} show examples when HTSLAM did not
 succeed to build a proper map. \refFigure{fig:edge_odo_all} shows the
 paths of all 100 experiments projected into the reference frame of the
-first region. 
+first region.
 
 %Refer to the laser results, same data set. 
 
@@ -575,7 +574,7 @@ first region.
 
 \subsection{Error Analysis}
 
-There are a number of reasons for poor performance of the vision
+There are a number of reasons for the poor performance of the vision
 SLAM:
 
 \begin{itemize}
