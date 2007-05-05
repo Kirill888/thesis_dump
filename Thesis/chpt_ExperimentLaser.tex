@@ -282,7 +282,7 @@ $$
 
 Since \U{k} is not available directly it has to be derived from the
 integrated robot poses returned from the on-board wheel controllers.
-\U{K} is computed by the differentiation of the controller readings.
+\U{k} is computed by the differentiation of the controller readings.
 
 \begin{figure}[htbp]
   \centering
@@ -308,23 +308,24 @@ different, however no experiments were conducted to estimate it. It is
 assumed to be equal to that of the straight line.
 
 
-\subsection{Ute: Odometry Model}
+\subsection{Truck: Odometry Model}
 
-Ackerman model is used. Sensor input: velocity of left rear wheel and
-angle of the front wheel. Velocity of the centre of the vehicle $v_c$
-is computed from the velocity of the left wheel $v_e$ using the
-following
+An Ackerman model is used to model the odometry of the truck used to
+collect the Victoria Park data set. Sensor input: velocity of the left
+rear wheel and angle of the front wheel. Velocity of the centre of the
+vehicle $v_c$ is computed from the velocity of the left wheel $v_e$
+using the following
 
 $$
-v_c = \frac{v_e}{1 - \tan \alpha \frac{H}{L}}
+v_c = \frac{v_e}{1 - \tan \alpha \frac{H}{L}}.
 $$
 
-state
+the state of the truck is defined by
 
 $$
 \Vector{x_k\\y_k\\\theta_k} = f(\x{k}{}{},\U{k}) = 
 \x{k}{}{} + v_c \Vector{\cos \theta_{k-1} \\ \sin
-  \theta_{k-1} \\ \frac{\tan \alpha}{L}} \Delta T
+  \theta_{k-1} \\ \frac{\tan \alpha}{L}} \Delta T.
 $$
 
 

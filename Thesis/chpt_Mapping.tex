@@ -28,7 +28,7 @@ just one region and an empty map.
 \item Why is it better than EKF: faster, multi-hype, better
   uncertainty modelling.
 \item Summary of operation: how we start, state variables/data,
-  multiple hypothesis.
+  multiple hypotheses.
 \end{itemize}
 }
 
@@ -46,7 +46,7 @@ particles. Overall FastSLAM computational complexity is linear in the
 number of particles $M$ and logarithmic in the number of landmarks
 $O(M \log N)$.
 
-2. Intrinsic support for multiple hypothesises - makes it really easy
+2. Intrinsic support for multiple hypotheses - makes it really easy
 to extend to multiple local maps, very natural integration into our
 global map structure.
 }
@@ -323,8 +323,8 @@ have taken. These paths are illustrated in
 \refFigure{fig:MappingExampleC}. By starting a new map $B$, HTSLAM
 effectively conserved the uncertainty at that time instant. Now, when
 the robot is returning to the region $A$ there are more possible paths
-to consider. More hypothesis are beneficial. The number of hypotheses
-is akin to resolution in images - more hypothesis provide a clearer
+to consider. More hypotheses are beneficial. The number of hypotheses
+is akin to resolution in images - more hypotheses provide a clearer
 picture of the observed uncertainty. HTSLAM used only 3 particles for
 mapping but has 9 possible paths. A global mapping approach would have
 had to use 9 particles (that is $N^2$) to get the same ``resolution''
@@ -348,7 +348,7 @@ would be pruned out through the process of re-sampling.
 
 %% \NOTE{I reckon
 %% this approach is a better one. It is however not very clear, what will
-%% happen when running multiple hypothesis (loop closing). I know it have
+%% happen when running multiple hypotheses (loop closing). I know it have
 %% been done for localisation, but can't find any references for SLAM.}
 
 Once the robot transferred from $B$ to $A$ the two maps are no longer

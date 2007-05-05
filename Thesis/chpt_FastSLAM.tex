@@ -15,14 +15,14 @@ Section~\ref{sec:back_loop}.
 \section {Notation}
 \label{sec:Notation}
 
-The pose of the robot is represented by $\x{k}{}{a}$. Superscript
-$a$ indicates a reference frame, $k$ is a discrete time. A map of the
+The pose of the robot is represented by $\x{k}{}{a}$. Superscript $a$
+indicates a reference frame, $k$ is a discrete time. A map of the
 region $a$ at time $k$ is $\map{k}{}{a}$. In the case when we need to
 differentiate between different particles, we add an extra superscript
 $m$ to indicate a particle index $\x{k}{a}{m}$ and $\map{k}{a}{m}$. A
 control input at time $k$ is $\U{k}$. An observation taken at time $k$
-is $\z{k}$. Further notation will be introduced later on in the
-report. \refTable{tab:notation} summarises most of the symbols used in
+is $\z{k}$. Further notation will be introduced later on in this
+thesis. \refTable{tab:notation} summarises most of the symbols used in
 this thesis.
 
 
@@ -59,13 +59,13 @@ thesis and their meaning.
                  from time $0$ to time $k$. \\
 %
 \U{k}    & control input at time $k$.\\
-\Uall{k}{a} & Subset of all control inputs up to time $k$, that apply to the map frame $a$.\\
+\Uall{k}{a} & subset of all control inputs up to time $k$, that apply to the map frame $a$.\\
 %
 \z{k}    & observation at time $k$. \\ 
-\Zall{k}{a} & Subset of all observations up to time $k$, that apply to the map frame $a$. \\ 
+\Zall{k}{a} & subset of all observations up to time $k$, that apply to the map frame $a$. \\ 
 %
-\Teleport{k}    & Teleportation at time $k$.\\
-\TeleportAll{k}{a} & Subset of all teleportations up to time $k$, that apply to the map frame $a$.\\
+\Teleport{k}    & teleportation at time $k$.\\
+\TeleportAll{k}{a} & subset of all teleportations up to time $k$, that apply to the map frame $a$.\\
 %
 \map{k}{a}{m} & map of the $m$-th particle in the map frame $a$ at time $k$\\
 \mape{a}{m}{i} & $i$-th map element from the $m$-th particle's map in 
@@ -73,15 +73,15 @@ thesis and their meaning.
 %
 \s{k}{a}{m} & $m$-th particle in the SLAM particle filter at time $k$,
               in the map frame $a$.\\
-\Sall{k}{}    & Set of all particles in the SLAM particle filter at time $k$.\\
+\Sall{k}{}    & set of all particles in the SLAM particle filter at time $k$.\\
 %
-\tr{i}{a}{b} & Transition vector from map frame $a$ to map frame $b$. \\
+\tr{i}{a}{b} & transition vector from map frame $a$ to map frame $b$. \\
 %
-\Trall{a}{b} & A set of transition vectors from map frame $a$ to $b$.\\
+\Trall{a}{b} & a set of transition vectors from map frame $a$ to $b$.\\
 %
 %
 \sample{a}{p(A)}& $a$ is a sample from the distribution $p(A)$.\\
-\gpath{a}{b} & Path from map $a$ to map $b$.\\
+\gpath{a}{b} & path from map $a$ to map $b$.\\
 \hline
 
 \end{tabular}
@@ -190,7 +190,7 @@ are non-linear and are subject to non-Gaussian noise.
 %Non-linear problems can be solved with the Extended Kalman Filter.
 The Kalman filter approach can be applied to non-linear systems, by
 using first order Taylor series approximation of the process and
-measurement models. This approach is generally known as Extended
+measurement models. This approach is generally known as the Extended
 Kalman Filter.
 
 The state \x{k}{}{} evolves according to some non-linear stochastic
