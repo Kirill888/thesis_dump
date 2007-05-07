@@ -71,19 +71,20 @@ HTSLAM map for indoor environment, and
 The structure used in HTSLAM is similar to that of \Atlas\ 
 \cite{bosse02atlas}, however HTSLAM uses different uncertainty
 representations, both for the coordinate transformations between
-adjacent map frames and for the local maps. \Atlas\ utilises EKF SLAM
-and so models each local map as a high-dimensional Gaussian.
-\Atlas\ also models the links or transitions between maps as Gaussian.  On
-the other hand, HTSLAM uses FastSLAM (Rao-Blackwellised particle
-filter) for the local maps, permitting multi-modal modelling of the
-local map.  HTSLAM also models the transitions between maps using sets
-of particles.
+adjacent map frames and for the local maps. 
+\Atlas as a framework allows to use arbitrary mapping model, however the two
+implementations that have been published include EKF SLAM and scan matching.
+\Atlas\ models the links or transitions between maps as Gaussian, and therefore
+requires that the spatial uncertainty of the mapping module is represented as a Gaussian.
+On the other hand, HTSLAM uses Rao-Blackwellised particle filter for the local maps (like FastSLAM), 
+permitting multi-modal modelling of the local map. HTSLAM also models the transitions 
+between maps using sets of particles.
 
 A further difference between \Atlas\ and HTSLAM is that HTSLAM
 maintains map extent information for every local map. This extra data
 allows HTSLAM to perform map transitions and loop closing in a more
 elegant way (as will be discussed later in
-Chapter~\ref{chpt:LoopClosing}).  In addition, HTSLAM explicitly
+Chapter~\ref{chpt:LoopClosing}). In addition, HTSLAM explicitly
 models the multiple hypotheses that arise during mapping, including
 during loop closing, giving a more intuitively appealing and robust
 approach.
@@ -115,9 +116,10 @@ conditioned on the path, denoted \map{k}{a}{m}, i.e.
 \end{eqnarray}
 where $\x{k}{a}{m}$ is the pose of a robot for the $m$-th particle at
 time step $k$ in local map $a$ and $\mape{a}{m}{n}$ is the position
-of an $n$-th landmark in local map $a$. Note that the landmark
+of an $n$-th landmark in local map $a$. The landmark
 position is a stochastic variable, described by a Gaussian
-distribution.
+distribution. Note that one does not have to store the whole path of a particle, 
+since only the most current pose of the particle is used in the mapping process.
 
 A map is a probability distribution
 $p(\map{k}{a}{m}|\Xall{k}{a}{m},\Zall{k}{a})$. If one makes an
