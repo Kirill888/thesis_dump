@@ -35,7 +35,8 @@ extent of each local region.
 \begin{center}
 \includegraphics[width=10cm]{Pics/fig_map_structure}
 \end{center}
-\caption{Overview of HTSLAM map structure. Each region has it's own
+\caption[Overview of HTSLAM map structure.]
+{Overview of HTSLAM map structure. Each region has it's own
 coordinate frame. The local map is built for every region (ellipses
 represent landmarks). }
 \label{fig:htslam_structure}
@@ -115,11 +116,11 @@ conditioned on the path, denoted \map{k}{a}{m}, i.e.
  \map{k}{a}{m}  &=& [\mape{a}{m}{1}, \mape{a}{m}{2}, ..., \mape{a}{m}{n}],
 \end{eqnarray}
 where $\x{k}{a}{m}$ is the pose of a robot for the $m$-th particle at
-time step $k$ in local map $a$ and $\mape{a}{m}{n}$ is the position
-of an $n$-th landmark in local map $a$. The landmark
-position is a stochastic variable, described by a Gaussian
-distribution. Note that one does not have to store the whole path of a particle, 
-since only the most current pose of the particle is used in the mapping process.
+time step $k$ in local map $a$ and $\mape{a}{m}{n}$ is the position of
+an $n$-th landmark in local map $a$. The landmark position is a
+stochastic variable, described by a Gaussian distribution. Note that
+one does not have to store the whole path of a particle, since only
+the most current pose of the particle is used in the mapping process.
 
 A map is a probability distribution
 $p(\map{k}{a}{m}|\Xall{k}{a}{m},\Zall{k}{a})$. If one makes an
@@ -136,8 +137,8 @@ variable. For example, if one builds a map of trees, the landmark
 might have one extra parameter for the diameter of the tree trunk.
 Note that since there are multiple particles, the actual posterior
 distribution of the landmark is more complex than just a Gaussian. In
-this thesis we will confine ourselves to planar motion. The
-results however can be readily extended to full three-dimensional motion. Note
+this thesis we will confine ourselves to planar motion. The results
+however can be readily extended to full three-dimensional motion. Note
 that, since the landmarks are estimated independently (in FastSLAM),
 there is no need to maintain the global covariance matrix for the
 whole map.
@@ -223,6 +224,22 @@ another.
 
 \section{Defining Region Boundaries}
 \label{sec:region}
+
+Each region has its own ``area of influence''. This area is defined by
+a grid map in the local reference frame. The size of the grid cells is
+in the order of the robot's footprint, there is no need to have a
+higher resolution. Regions who are neighbours in the topological
+sense, have their region boundaries cropped in such a way as to
+minimise the overlap. Since the grid maps are defined in local
+coordinates, one needs to transform grids from one reference frame to
+another, this is not a problem since relative poses of the
+neighbouring maps are know with high certainty. The transformation is
+therefore performed using the mean of the relative poses of the two
+regions.
+
+
+DELETE BELOW THE LINE\\
+===============================
 
 One of the important problems for HTSLAM is dividing the environment
 into local maps. Ideally each local map should correspond to a unique
