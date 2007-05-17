@@ -233,10 +233,14 @@ higher resolution. Regions who are neighbours in the topological
 sense, have their region boundaries cropped in such a way as to
 minimise the overlap. Since the grid maps are defined in local
 coordinates, one needs to transform grids from one reference frame to
-another, this is not a problem since relative poses of the
-neighbouring maps are know with high certainty. The transformation is
-therefore performed using the mean of the relative poses of the two
-regions.
+another. Since relative poses of the neighbouring maps are known with high 
+certainty, the transformation is performed using the mean of the relative 
+poses of the two regions.
+
+By limiting the area of the local map, the HTSLAM algorithm achieves two major goals:
+firstly the computation requirements per local map are bounded, since there is a finite number of landmarks in a finite area, secondly the residual uncertainty of the robot pose within the local region is bounded.
+
+TODO: accentuate the difference in approach from Atlas, that constantly monitors the pose uncertainty/performance of the mapper/size of the map.
 
 
 DELETE BELOW THE LINE\\
