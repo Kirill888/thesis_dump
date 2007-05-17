@@ -218,7 +218,7 @@ landmarks in these sets do not correspond (see
 \begin{figure}[htbp]
   \centering
   \includegraphics[width=6cm]{Pics/fig_mirror_sets}
-  \caption{Two incompatible landmark sets, that {\bf do} satisfy
+  \caption[Reflection and alignment]{Two incompatible landmark sets, that {\bf do} satisfy
     geometric constraints. One set is a mirror image of another, the
     distances between landmarks match, but the sets cannot be aligned
     by a Euclidean transform.
@@ -589,7 +589,8 @@ introduce biases in the robot pose estimate.
 \subfigure[2-d estimate of the path ($A$ and $A'$ should be the same point)]{
   \includegraphics[width=5cm]{Pics/hump_xy}
 }
-\caption{Robot starts at point $A$, and travels on a loop
+\caption[Effect of unmodelled environment features on localisation]
+{Robot starts at point $A$, and travels on a loop
 $ABCDA$. Since the segment $BC$ passes over the hill, it's length
 is longer than that of $DA$. As a result, the flattened path does not
 close the loop. By the time robot returns to point $A$, it
