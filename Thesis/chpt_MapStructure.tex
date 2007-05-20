@@ -69,17 +69,18 @@ only. \refFigure{fig:htslam_structure_indoor} shows an example of an
 HTSLAM map for indoor environment, and
 \refFigure{fig:htslam_structure_outdoor} for an outdoor environment.
 
-The structure used in HTSLAM is similar to that of \Atlas\ 
+The structure used in HTSLAM is similar to that of \Atlas\
 \cite{bosse02atlas}, however HTSLAM uses different uncertainty
 representations, both for the coordinate transformations between
-adjacent map frames and for the local maps. 
-\Atlas as a framework allows to use arbitrary mapping model, however the two
-implementations that have been published include EKF SLAM and scan matching.
-\Atlas\ models the links or transitions between maps as Gaussian, and therefore
-requires that the spatial uncertainty of the mapping module is represented as a Gaussian.
-On the other hand, HTSLAM uses Rao-Blackwellised particle filter for the local maps (like FastSLAM), 
-permitting multi-modal modelling of the local map. HTSLAM also models the transitions 
-between maps using sets of particles.
+adjacent map frames and for the local maps.  \Atlas as a framework
+allows to use arbitrary mapping model, however the two implementations
+that have been published include EKF SLAM and scan matching.  \Atlas\
+models the links or transitions between maps as Gaussian, and
+therefore requires that the spatial uncertainty of the mapping module
+is represented as a Gaussian.  On the other hand, HTSLAM uses
+Rao-Blackwellised particle filter for the local maps (like FastSLAM),
+permitting multi-modal modelling of the local map. HTSLAM also models
+the transitions between maps using sets of particles.
 
 A further difference between \Atlas\ and HTSLAM is that HTSLAM
 maintains map extent information for every local map. This extra data
@@ -237,10 +238,15 @@ another. Since relative poses of the neighbouring maps are known with high
 certainty, the transformation is performed using the mean of the relative 
 poses of the two regions.
 
-By limiting the area of the local map, the HTSLAM algorithm achieves two major goals:
-firstly the computation requirements per local map are bounded, since there is a finite number of landmarks in a finite area, secondly the residual uncertainty of the robot pose within the local region is bounded.
+By limiting the area of the local map, the HTSLAM algorithm achieves
+two major goals: firstly the computation requirements per local map
+are bounded, since there is a finite number of landmarks in a finite
+area, secondly the residual uncertainty of the robot pose within the
+local region is bounded.
 
-TODO: accentuate the difference in approach from Atlas, that constantly monitors the pose uncertainty/performance of the mapper/size of the map.
+TODO: accentuate the difference in approach from Atlas, that
+constantly monitors the pose uncertainty/performance of the
+mapper/size of the map.
 
 
 DELETE BELOW THE LINE\\
