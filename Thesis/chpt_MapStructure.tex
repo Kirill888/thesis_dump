@@ -72,9 +72,9 @@ HTSLAM map for indoor environment, and
 The structure used in HTSLAM is similar to that of \Atlas\
 \cite{bosse02atlas}, however HTSLAM uses different uncertainty
 representations, both for the coordinate transformations between
-adjacent map frames and for the local maps.  \Atlas as a framework
+adjacent map frames and for the local maps.  \Atlas\ as a framework
 allows to use arbitrary mapping model, however the two implementations
-that have been published include EKF SLAM and scan matching.  \Atlas\
+that have been published include EKF SLAM and scan matching. \Atlas\
 models the links or transitions between maps as Gaussian, and
 therefore requires that the spatial uncertainty of the mapping module
 is represented as a Gaussian.  On the other hand, HTSLAM uses
@@ -196,10 +196,20 @@ loops in HTSLAM, transition samples are taken from the results of map
 matching (landmark matches are used to provide an estimate of
 the transition function).
 
-In general transitions and maps are not independent,
-hence a joint probability needs to be stored. For adjacent maps $a$
-and $b$ a joint probability distribution
-$\prob{\map{}{}{a},\tr{}{a}{b}, \map{}{}{b}}$ is stored. Effectively,
+Let us define \tr{}{a}{b} to be a coordinate transformation between
+coordinate frames $a$ and $b$, and the coordinate transform operator
+\transit\ 
+\begin{equation}
+\x{k}{}{b} = \x{k}{}{a} \transit \tr{}{a}{b}.
+\end{equation}
+This operator projects the pose of the robot from one coordinate frame to
+another.
+
+The exact transformation between two maps is never known, it is
+therefor a stochastic variable. In general transitions and maps are
+not independent, hence a joint probability needs to be stored. For
+adjacent maps $a$ and $b$ this joint probability distribution is
+$\prob{\map{}{}{a},\tr{}{a}{b}, \map{}{}{b}}$. Effectively,
 the transition between the two adjacent maps captures a three-way
 relationship between the two maps and the relative pose of the
 reference frames of the two maps in a probabilistic manner. The exact
@@ -214,14 +224,11 @@ the topological structure implies multiple paths between some of the
 local maps. Therefore $\prob{\map{}{}{a},\tr{}{a}{b},\map{}{}{b}}$ can
 be derived in several possible ways from the HTSLAM structure. This
 adds a constraint to the HTSLAM structure, which will be discussed in
-more detail in the chapter on loop closing(Chapter~\ref{chpt:LoopClosing}).
+more detail in the chapter on loop
+closing(Chapter~\ref{chpt:LoopClosing}).
 
-Let us define the coordinate transform using the \transit\ operator
-\begin{equation}
-\x{k}{}{b} = \x{k}{}{a} \transit \tr{}{a}{b}.
-\end{equation}
-This operator projects the pose of robot from one coordinate frame to
-another.
+%While each transtion between adjacent maps 
+
 
 
 \section{Defining Region Boundaries}
@@ -229,23 +236,49 @@ another.
 
 Each region has its own ``area of influence''. This area is defined by
 a grid map in the local reference frame. The size of the grid cells is
-in the order of the robot's footprint, there is no need to have a
-higher resolution. Regions who are neighbours in the topological
-sense, have their region boundaries cropped in such a way as to
-minimise the overlap. Grid maps are defined in local coordinates,
-therefore one needs to transform grids from one reference frame to
-another. Since relative poses of the neighbouring maps are known with
-high certainty, the transformation is performed using the mean of the
-relative poses of the two regions.
+in the order of the robot's footprint. Landmarks are allowed to be
+outside the ``area of influence''. However, if the robot leaves the
+region, it will not be able to add new landmarks to the corresponding
+map. Basicaly any landmark visible from the region is mapped within
+this region. This implies that some landmarks will be mapped in
+multiple maps.
 
 By limiting the area of the local map, the HTSLAM algorithm achieves
 two major goals: firstly the computation requirements per local map
-are bounded, since there is a finite number of landmarks in a finite
-area, secondly the residual uncertainty of the robot pose within the
-local region is bounded.
+are bounded, since there is a finite number of landmarks visible from
+a finite area, secondly the residual uncertainty of the robot pose
+within the local region is bounded.
+
+Note that these grid maps define the area of influence of a particular
+region, they are not meant to serve as occupancy grids. Although when
+operating indoors it is advantageous to align map regions with the
+structure of the building.
+
+Regions who are neighbours in the topological sense, have their region
+boundaries cropped in such a way as to minimise the overlap. Grid maps
+are defined in local coordinates, therefore one needs to transform
+grids from one reference frame to another in order to perform such
+cropping. Since relative poses of the neighbouring maps are known with
+high certainty, the transformation is performed using the mean of the
+relative poses of the two regions.
 
 
-TODO: accentuate the difference in approach from Atlas, that
-constantly monitors the pose uncertainty/performance of the
-mapper/size of the map.
+Whenever a new map is started initial region for the map is defined.
+The size and shape of the region depends on the environment and the
+available sensors. For the indoor experiment with the laser range
+sensor free space information from the laser sensor is used to
+initialise the region. For the outdoor data set the region is set to a
+rectangle of a fixed size, aligned with the initial robot pose.
+
+When mapping is complete for a given map, the region of influence is
+cropped in such a way as to minimise area that was not actually
+mapped. To do that a convex hull is fitted to all landmarks in a map,
+mean of a landmark location is used and any uncertainty in landmark
+location is ignored. Area that falls outside the convex hull is
+removed from the region.
+
+
+%TODO: accentuate the difference in approach from Atlas, that
+%constantly monitors the pose uncertainty/performance of the
+%mapper/size of the map.
 
