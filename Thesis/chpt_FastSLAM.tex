@@ -388,103 +388,6 @@ another.
 resampling strategies, entropy based maybe?}
 
 
-\section{Particle Filter vs Extended Kalman Filter}
-\label{sec:PFvsEKF}
-
-\begin{figure}
-\begin{center}
-\subfigure[Experiment setup]{
-\includegraphics[width=6cm]{Pics/post_example}
-\label{fig:post_example}
-}
-\subfigure[$p({\bf x} | {\bf u})$]{
-\includegraphics[width=6cm]{Pics/post_odo}
-\label{fig:post_odo}
-}\\
-\subfigure[$p({\bf x} | {\bf z})$]{
-\includegraphics[width=6cm]{Pics/post_obs}
-\label{fig:post_obs}
-}\quad\space
-\subfigure[$p({\bf x} | {\bf u},{\bf z})$]{
-\includegraphics[width=6cm]{Pics/post_obsodo}
-\label{fig:post_obsodo}
-}
-\end{center}
-\caption[Robot pose uncertainty, example]
-{In \ref{fig:post_example} robot makes observation at point (0,0),
-then moves 1 meter forward and makes another observation. The square
-shows the region for which pose uncertainty was computed. The
-resulting uncertainty just before second measurement is shown in
-\ref{fig:post_odo}, the uncertainty due to the measurement is
-\ref{fig:post_obs}, and the robot's uncertainty after incorporating
-the measurement is \ref{fig:post_obsodo}.}
-\label{fig:post_all}
-\end{figure}
-
-The main limitation of the EKF approach is the assumption that
-uncertainty can be modelled as a Gaussian distribution. Many real life
-systems are non-linear, as a result even purely Gaussian noise in
-actuation or observation will result in a non-Gaussian posterior
-distribution.  
-
-TODO: change example figure to include two uncertainty peaks (data
-association uncertainty). Move the whole discussion after the
-localisation and SLAM have been introduced, since the whole comparison
-is in relation to SLAM.
-
-\refFigure{fig:post_all} illustrates uncertainties involved in the 
-robotic mapping system. The robot makes an observation at point (0,0),
-then moves one meter forward and makes another observation at
-approximately (1,0), see \refFigure{fig:post_example}. The environment
-consists of just two landmarks at (2,0.5) and (2,1). We assume they
-are distinct, so the robot knows the correspondences between the two
-observations. The robot motion is a stochastic process, hence the
-robot pose is not known exactly after the execution of the motion
-command (in this case move forward 1 meter). The typical resulting
-uncertainty for a robot with differential drive system is shown in
-\refFigure{fig:post_odo}. As can be seen from the plot  this 
-distribution is anything but Gaussian. The ``banana shape'' comes from
-the fact that robot is uncertain about the direction of travel, as
-well as the distance travelled. Even though the uncertainty about
-the distance and direction is zero mean Gaussian, the effect this
-uncertainty has on the pose of the robot is far from Gaussian.
-
-\begin{figure}
-\begin{center}
-\subfigure[EKF ($1\sigma$)]{
-\includegraphics[width=6cm]{Pics/post_odo_ekf}
-\label{fig:post_odo_ekf}
-}\quad
-\subfigure[Particle Filter]{
-\includegraphics[width=6cm]{Pics/post_odo_pf}
-\label{fig:post_odo_pf}
-}
-\end{center}
-
-\caption[Comparison of uncertainty representation.]
-{Modelling of the robot pose uncertainty,
- using EKF (a) and the particle filter (b).
-}
-\label{fig:post_ekf_vs_pf}
-\end{figure}
-
-
-After execution of the motion command the robot observes the landmarks
-once more. Since the observations were not certain for both first and
-second observation, the pose estimate that can be derived from the
-measurements has a significant uncertainty. This is illustrated in
-\refFigure{fig:post_obs}. The posterior distribution is non-Gaussian
-in this case as well, although the difference is not as apparent as in
-the motion example. The posterior distribution of the robot pose given
-observations and control input is shown in
-\refFigure{fig:post_obsodo}, and it is obviously non-Gaussian.
-\refFigure{fig:post_ekf_vs_pf} illustrates the resulting uncertainty
-computed by the EKF and particle filter algorithms after applying a
-control input, as in example in \refFigure{fig:post_all}. One can see
-that particle filtering captures the banana shape of the motion model
-much better than the EKF.
-
-
 \section{Localisation} 
 \label{sec:Localisation}
 
@@ -750,6 +653,100 @@ believe makes it a more robust algorithm. It is also a conceptually
 straightforward approach.
 
 %We therefore chose to use FastSLAM to perform local mapping tasks.
+
+\subsection{Particle Filter vs Extended Kalman Filter}
+\label{sec:PFvsEKF}
+
+\begin{figure}
+\begin{center}
+\subfigure[Experiment setup]{
+\includegraphics[width=6cm]{Pics/post_example}
+\label{fig:post_example}
+}
+\subfigure[$p({\bf x} | {\bf u})$]{
+\includegraphics[width=6cm]{Pics/post_odo}
+\label{fig:post_odo}
+}\\
+\subfigure[$p({\bf x} | {\bf z})$]{
+\includegraphics[width=6cm]{Pics/post_obs}
+\label{fig:post_obs}
+}\quad\space
+\subfigure[$p({\bf x} | {\bf u},{\bf z})$]{
+\includegraphics[width=6cm]{Pics/post_obsodo}
+\label{fig:post_obsodo}
+}
+\end{center}
+\caption[Robot pose uncertainty, example]
+{In \ref{fig:post_example} robot makes observation at point (0,0),
+then moves 1 meter forward and makes another observation. The square
+shows the region for which pose uncertainty was computed. The
+resulting uncertainty just before second measurement is shown in
+\ref{fig:post_odo}, the uncertainty due to the measurement is
+\ref{fig:post_obs}, and the robot's uncertainty after incorporating
+the measurement is \ref{fig:post_obsodo}.}
+\label{fig:post_all}
+\end{figure}
+
+The main limitation of the EKF approach is the assumption that
+uncertainty can be modelled as a Gaussian distribution. Many real life
+systems are non-linear, as a result even purely Gaussian noise in
+actuation or observation will result in a non-Gaussian posterior
+distribution.  
+
+TODO: change example figure to include two uncertainty peaks (data
+association uncertainty). 
+
+\refFigure{fig:post_all} illustrates uncertainties involved in the 
+robotic mapping system. The robot makes an observation at point (0,0),
+then moves one meter forward and makes another observation at
+approximately (1,0), see \refFigure{fig:post_example}. The environment
+consists of just two landmarks at (2,0.5) and (2,1). We assume they
+are distinct, so the robot knows the correspondences between the two
+observations. The robot motion is a stochastic process, hence the
+robot pose is not known exactly after the execution of the motion
+command (in this case move forward 1 meter). The typical resulting
+uncertainty for a robot with differential drive system is shown in
+\refFigure{fig:post_odo}. As can be seen from the plot  this 
+distribution is anything but Gaussian. The ``banana shape'' comes from
+the fact that robot is uncertain about the direction of travel, as
+well as the distance travelled. Even though the uncertainty about
+the distance and direction is zero mean Gaussian, the effect this
+uncertainty has on the pose of the robot is far from Gaussian.
+
+\begin{figure}
+\begin{center}
+\subfigure[EKF ($1\sigma$)]{
+\includegraphics[width=6cm]{Pics/post_odo_ekf}
+\label{fig:post_odo_ekf}
+}\quad
+\subfigure[Particle Filter]{
+\includegraphics[width=6cm]{Pics/post_odo_pf}
+\label{fig:post_odo_pf}
+}
+\end{center}
+
+\caption[Comparison of uncertainty representation.]
+{Modelling of the robot pose uncertainty,
+ using EKF (a) and the particle filter (b).
+}
+\label{fig:post_ekf_vs_pf}
+\end{figure}
+
+
+After execution of the motion command the robot observes the landmarks
+once more. Since the observations were not certain for both first and
+second observation, the pose estimate that can be derived from the
+measurements has a significant uncertainty. This is illustrated in
+\refFigure{fig:post_obs}. The posterior distribution is non-Gaussian
+in this case as well, although the difference is not as apparent as in
+the motion example. The posterior distribution of the robot pose given
+observations and control input is shown in
+\refFigure{fig:post_obsodo}, and it is obviously non-Gaussian.
+\refFigure{fig:post_ekf_vs_pf} illustrates the resulting uncertainty
+computed by the EKF and particle filter algorithms after applying a
+control input, as in example in \refFigure{fig:post_all}. One can see
+that particle filtering captures the banana shape of the motion model
+much better than the EKF.
 
 
 \section{Loop Closing}
