@@ -1,12 +1,14 @@
-HTSLAM models the map as a hybrid topological-metric structure: the
+HTSLAM models a map as a hybrid topological-metric structure: the
 environment is divided into a number of regions, and a local metric
 map is built for each region. The relative poses of the regions are
 stored in a topological structure. There is no global reference
 frame. Only relative poses of the nearby regions are stored.
 
-The motivation for the structure comes from a few sources. First,
-dividing the world into a set of local maps appears to approximate the
-way that humans reason \cite{psycho_kuipers82}. Second, is to ensure
+
+%maybe enumerate 1,2,3
+The structure is motivated primarily by the following.
+First, dividing the world into a set of local maps appears to approximate the
+way that humans reason \cite{psycho_kuipers82}. Second, it ensures
 that the mapping scheme scales to large environments.  The scalability
 limitations of a single map SLAM methods are well known
 \cite{guivant03,guivant01,guivant02} and prohibit real-time SLAM for
@@ -19,9 +21,8 @@ the position of the fridge when it is near to the fridge.
 
 This chapter describes the HTSLAM approach to map modelling.  Some
 aspects of the map design are motivated by the mapping procedures
-developed in chapter~\ref{chpt:Mapping} and so may only become fully
-clear after reading chapter~\ref{chpt:Mapping}. The following section
-describes the overall map structure.  Section~\ref{sec:local_map}
+developed in chapter~\ref{chpt:Mapping}, and will be clarified in chapter~\ref{chpt:Mapping}. %look in to wording
+The following section describes the overall map structure.  Section~\ref{sec:local_map}
 presents the methods used for modelling uncertainty within each local
 map and section~\ref{sec:link} describes the methods used to model the
 uncertainties of the topological links between maps.  Finally,
@@ -35,10 +36,10 @@ extent of each local region.
 \begin{center}
 \includegraphics[width=10cm]{Pics/fig_map_structure}
 \end{center}
-\caption[Overview of HTSLAM map structure.]
-{Overview of HTSLAM map structure. Each region has it's own
-coordinate frame. The local map is built for every region (ellipses
-erepresent landmarks). }
+\caption[Example of an HTSLAM map structure.]
+{Example of an HTSLAM map structure. Each region has its own
+coordinate frame. A local map is built for every region (ellipses
+represent landmarks). }
 \label{fig:htslam_structure}
 \end{figure}
 
@@ -46,14 +47,14 @@ erepresent landmarks). }
 \begin{center}
 \includegraphics[width=14cm]{Pics/map_example_indoor}
 \end{center}
-\caption{Example of HTSLAM map for indoor environment}
+\caption{Example of an HTSLAM map for an indoor environment}
 \label{fig:htslam_structure_indoor}
 \end{figure}
 
 
 \begin{figure}
 \includegraphics[width=14cm]{Pics/map_example_outdoor}
-\caption{Example of HTSLAM map for outdoor environment}
+\caption{Example of an HTSLAM map for an outdoor environment}
 \label{fig:htslam_structure_outdoor}
 \end{figure}
 
@@ -61,38 +62,42 @@ In HTSLAM, a map is a connected graph. Every node of the graph
 corresponds to a region within the environment. Each node has its own
 reference frame and stores a local, metric map of the region and some
 representation of the extent of the region in the local coordinate
-frame. An example of HTSLAM map is given in the
+frame. An example of an HTSLAM map is given in 
 \refFigure{fig:htslam_structure}. Note that there is no global reference
 frame. The edges of the graph represent the stochastic coordinate
 transformation between adjacent local maps
 only. \refFigure{fig:htslam_structure_indoor} shows an example of an
-HTSLAM map for indoor environment, and
+HTSLAM map for an indoor environment, and
 \refFigure{fig:htslam_structure_outdoor} for an outdoor environment.
 
 The structure used in HTSLAM is similar to that of \Atlas\
 \cite{bosse02atlas}, however HTSLAM uses different uncertainty
 representations, both for the coordinate transformations between
-adjacent map frames and for the local maps.  \Atlas\ as a framework
-allows to use arbitrary mapping model, however the two implementations
+adjacent map frames and for the local maps.  \Atlas, as a framework,
+allows the use of an arbitrary mapping model, although the two implementations
 that have been published include EKF SLAM and scan matching. \Atlas\
-models the links or transitions between maps as Gaussian, and
-therefore requires that the spatial uncertainty of the mapping module
-is represented as a Gaussian.  On the other hand, HTSLAM uses
-Rao-Blackwellised particle filter for the local maps (like FastSLAM),
+models the uncertainty in the coordinates of links or transitions between maps as Gaussian.
+It therefore requires that spatial uncertainty in robot pose is represented by a 
+Gaussian distribution. 
+
+HTSLAM, on the other hand,  uses FastSLAM for local mapping.
+
+
+Rao-Blackwellised particle filtering  the local maps (like FastSLAM),
 permitting multi-modal modelling of the local map. HTSLAM also models
 the transitions between maps using sets of particles.
 
 A further difference between \Atlas\ and HTSLAM is that HTSLAM
 maintains map extent information for every local map. This extra data
 allows HTSLAM to perform map transitions and loop closing in a more
-elegant way (as will be discussed later in
+elegant manner (which will be discussed in
 Chapter~\ref{chpt:LoopClosing}). In addition, HTSLAM explicitly
 models the multiple hypotheses that arise during mapping, including
 during loop closing, giving a more intuitively appealing and robust
 approach.
 
 The details of the uncertainty representation, both for each local map
-and for the transitions between maps are discussed in the next two
+and for the transitions between maps, are discussed in the next two
 sections.  Section~\ref{sec:region} discusses methods for
 determining the extents of each local map.
 
@@ -100,61 +105,61 @@ determining the extents of each local map.
 \label{sec:local_map}
 
 To understand how uncertainty is represented within the local map, one
-needs to be familiar with FastSLAM \cite{Montemerlo02d}, the mapping
-scheme we use. An overview of FastSLAM was presented in
-chapter~\ref{chpt:Overview}. In short, FastSLAM uses particles to
+needs to be familiar with the FastSLAM \cite{Montemerlo02d} mapping
+scheme.
+An overview of FastSLAM appers in
+chapter~\ref{chpt:Overview}. In summary, FastSLAM uses particles to
 sample the possible paths of the robot. A map is built for each
 path. Particles are evaluated based on how well the measurements match
-the map.  Regular resampling is used to prune out unlikely paths.
+the map.  Regular resampling is used to prune unlikely paths.
 
 The state $\s{k}{a}{m}$ of the $m$-th particle in the local map $a$
 at time $k$ consists of the path of the particle within this local
 frame, denoted \Xall{k}{a}{m}, and the map of the local environment
-conditioned on the path, denoted \map{k}{a}{m}, i.e.
+conditioned on the path, \map{k}{a}{m}:
 \begin{eqnarray}
- \s{k}{a}{m}    &=& [\Xall{k}{a}{m}, \map{k}{a}{m} ]\\
- \Xall{k}{a}{m} &=& [\x{0}{a}{m}, \x{1}{a}{m}, ... \x{k}{a}{m}]\\
- \map{k}{a}{m}  &=& [\mape{a}{m}{1}, \mape{a}{m}{2}, ..., \mape{a}{m}{n}],
+ \s{k}{a}{m}    &=& [\Xall{k}{a}{m}, \map{k}{a}{m} ] \nonumber \\ 
+ \Xall{k}{a}{m} &=& [\x{0}{a}{m}, \x{1}{a}{m}, ... \x{k}{a}{m}] \nonumber \\ 
+ \map{k}{a}{m}  &=& [\mape{a}{m}{1}, \mape{a}{m}{2}, ..., \mape{a}{m}{n}], \nonumber
 \end{eqnarray}
 where $\x{k}{a}{m}$ is the pose of a robot for the $m$-th particle at
 time step $k$ in local map $a$ and $\mape{a}{m}{n}$ is the position of
 an $n$-th landmark in local map $a$. The landmark position is a
-stochastic variable, described by a Gaussian distribution. Note that
+stochastic variable described by a Gaussian distribution. Note that
 one does not have to store the whole path of a particle, since only
 the most current pose of the particle is used in the mapping process.
 
 A map is a probability distribution
-$p(\map{k}{a}{m}|\Xall{k}{a}{m},\Zall{k}{a})$. If one makes an
-assumptions that the map consists of landmarks, and that observations
-are independent, then one can represent a map as a set of independent
-landmarks, each conditioned on the path of a particle
-$p(\mape{a}{m}{}|\Xall{k}{a}{m},\Zall{k}{a})$ (note that there is a
-different map for each particle). FastSLAM approximates
+$p(\map{k}{a}{m}|\Xall{k}{a}{m},\Zall{k}{a})$. Assume that the map consists of 
+landmarks and that observations are independent. It follows that a map can be represented 
+by a set of independent landmarks, each conditioned on the path of a particle
+$p(\mape{a}{m}{}|\Xall{k}{a}{m},\Zall{k}{a})$. Note that there is a
+different map for each particle. FastSLAM approximates
 $p(\mape{a}{m}{}|\Xall{k}{a}{m},\Zall{k}{a})$ with a Gaussian.  For
 point landmarks, the distribution is a two-dimensional Gaussian
-(location of the landmark on the plane). However, other landmark
-characteristics can also be incorporated into the stochastic
-variable. For example, if one builds a map of trees, the landmark
+describing the location of the landmark on the plane. Other landmark
+characteristics can be incorporated into the stochastic
+variable as well. For example, if one builds a map of trees, the landmark
 might have one extra parameter for the diameter of the tree trunk.
 Note that since there are multiple particles, the actual posterior
-distribution of the landmark is more complex than just a Gaussian. In
-this thesis we will confine ourselves to planar motion. The results
-however can be readily extended to full three-dimensional motion. Note
-that, since the landmarks are estimated independently (in FastSLAM),
+distribution of the landmark is a mixture of Gaussians. 
+Only planar motion is considered in this thesis. The results,
+however, can be readily extended to three-dimensional motion. Note
+that, since the landmarks are estimated independently in FastSLAM,
 there is no need to maintain the global covariance matrix for the
-whole map.
+map.
 
 Each particle makes its own data association decisions. As a result,
-the FastSLAM captures not only the uncertainty arising from the
-continuous variables like robots' pose and the sensor measurements,
-but also uncertainty due to discrete data association decisions.  This
-uncertainty is not represented in the EKF approaches \cite{ekf_slam}.
-The ability to capture this uncertainty is a big advantage, since in
-most real-life situations the data association is ambiguous.
+FastSLAM captures not only the uncertainty arising from 
+continuous variables like robot pose and sensor measurements,
+but also uncertainty due to discrete data association decisions. This
+uncertainty is not represented in EKF approaches \cite{ekf_slam}.
+The ability to capture data association uncertainty is advantageous since the data association is ambiguous in
+most real-life situations.
 
 When mapping of a given local map is complete, the maps of all
 particles alive at the time are stored within the local map. This set
-of maps is effectively a sample from all the possible maps, given the
+of maps is effectively a sample from all the possible maps given the
 observations and odometry during the time robot was in the region.
 Due to use of importance sampling, the sample from the maps is
 expected to contain the most probable paths and their associated maps
@@ -173,30 +178,29 @@ expected to contain the most probable paths and their associated maps
   set of particles.}
 \end{figure}
 
-The spatial relationships between adjacent local maps are each
-represented by a set of particles.  As is common in SLAM
-implementations, whenever a new map is started, the assumption is made
-that the current location of the robot is precisely known in the new
-map's coordinate frame.\footnote{Often it is assumed that the robot is
+The spatial relationships between adjacent local maps are 
+represented by a set of particles.  Whenever a new map is started, the assumption is made
+that the current location of the robot is precisely known in the  coordinate frame of the new
+map.\footnote{Often it is assumed that the robot is
 at the origin.  Here the position of the robot is chosen to place the
 origin of the coordinate frame suitably for describing the local map
 extents.} Thus, the transition between the old and the new map can be
 most directly computed from the estimate of the robot pose in the old
 map (a set of FastSLAM path particles) and the pose in the new map
 (known by assumption). The transition is then a stochastic variable
-which is most easily represented using particles. This is the chief
+which is easily represented by particles. This is the chief
 motivation for using a particle representation for the
 transitions: the choice of representation makes the process of adding
 new maps straightforward.
 
 Note that when closing loops or, more generally, re-visiting maps,
-there is no such easy method for transition determination and samples
-must be taken from other distributions. For example, when closing
-loops in HTSLAM, transition samples are taken from the results of map
-matching (landmark matches are used to provide an estimate of
-the transition function).
+there is no similarly easy method for transition determination, and samples
+must be taken from other distributions. When closing
+loops in HTSLAM, for example, transition samples are taken from the results of map
+matching. In map matching, landmark matches are used to provide an estimate of
+the transition function.
 
-Let us define \tr{}{a}{b} to be a coordinate transformation between
+Define \tr{}{a}{b} to be a coordinate transformation between
 coordinate frames $a$ and $b$, and the coordinate transform operator
 \transit\ 
 \begin{equation}
@@ -205,8 +209,8 @@ coordinate frames $a$ and $b$, and the coordinate transform operator
 This operator projects the pose of the robot from one coordinate frame to
 another.
 
-The exact transformation between two maps is never known, it is
-therefor a stochastic variable. In general transitions and maps are
+The exact transformation between two maps is never known. It is
+therefore a stochastic variable. In general, transitions and maps are
 not independent, hence a joint probability needs to be stored. For
 adjacent maps $a$ and $b$ this joint probability distribution is
 $\prob{\map{}{}{a},\tr{}{a}{b}, \map{}{}{b}}$. Effectively,
@@ -221,11 +225,11 @@ probability $\prob{\map{}{}{a},\tr{}{a}{b},\map{}{}{b}}$ even for
 non-adjacent maps $a$ and $b$ by merging probability densities along
 the topological path joining the two maps.  The presence of loops in
 the topological structure implies multiple paths between some of the
-local maps. Therefore $\prob{\map{}{}{a},\tr{}{a}{b},\map{}{}{b}}$ can
+local map pairs. Therefore $\prob{\map{}{}{a},\tr{}{a}{b},\map{}{}{b}}$ can
 be derived in several possible ways from the HTSLAM structure. This
-adds a constraint to the HTSLAM structure, which will be discussed in
+adds a constraint to the HTSLAM structure which will be discussed in
 more detail in the chapter on loop
-closing(Chapter~\ref{chpt:LoopClosing}).
+closing (Chapter~\ref{chpt:LoopClosing}).
 
 %While each transtion between adjacent maps 
 
@@ -236,43 +240,46 @@ closing(Chapter~\ref{chpt:LoopClosing}).
 
 Each region has its own ``area of influence''. This area is defined by
 a grid map in the local reference frame. The size of the grid cells is
-in the order of the robot's footprint. Landmarks are allowed to be
+of the order of the robot footprint. Landmarks are allowed to be
 outside the ``area of influence''. However, if the robot leaves the
 region, it will not be able to add new landmarks to the corresponding
-map. Basicaly any landmark visible from the region is mapped within
+map. All landmarks visible from the region are mapped within
 this region. This implies that some landmarks will be mapped in
 multiple maps.
 
 By limiting the area of the local map, the HTSLAM algorithm achieves
-two major goals: firstly the computation requirements per local map
+two major goals: 
+\begin{enumerate}
+\item Computational requirements per local map
 are bounded, since there is a finite number of landmarks visible from
-a finite area, secondly the residual uncertainty of the robot pose
-within the local region is bounded.
+a finite area.
+\item The residual uncertainty of the robot pose within the local region is bounded.
+\end{enumerate}
 
 Note that these grid maps define the area of influence of a particular
-region, they are not meant to serve as occupancy grids. Although when
+region. They are not meant to serve as occupancy grids, although when
 operating indoors it is advantageous to align map regions with the
 structure of the building.
 
-Regions who are neighbours in the topological sense, have their region
-boundaries cropped in such a way as to minimise the overlap. Grid maps
-are defined in local coordinates, therefore one needs to transform
-grids from one reference frame to another in order to perform such
+Regions which are neighbours in the topological sense have their region
+boundaries cropped to minimise the overlap. Grid maps
+are defined in local coordinates, and must be transformed
+from one reference frame to another in order to perform such
 cropping. Since relative poses of the neighbouring maps are known with
 high certainty, the transformation is performed using the mean of the
 relative poses of the two regions.
 
 
-Whenever a new map is started initial region for the map is defined.
+Whenever a new map is started, an initial region for the map is defined.
 The size and shape of the region depends on the environment and the
 available sensors. For the indoor experiment with the laser range
-sensor free space information from the laser sensor is used to
-initialise the region. For the outdoor data set the region is set to a
-rectangle of a fixed size, aligned with the initial robot pose.
+sensor described in \refChapter{fixme}, free space information from the laser sensor is used to
+initialise the region. For the outdoor data set, the region is set to a
+rectangle of a fixed size aligned with the initial robot pose.
 
 When mapping is complete for a given map, the region of influence is
-cropped in such a way as to minimise area that was not actually
-mapped. To do that a convex hull is fitted to all landmarks in a map,
+cropped to minimise area that was not actually
+mapped. This is achieved by computing a convex hull for all landmarks in a map,
 mean of a landmark location is used and any uncertainty in landmark
 location is ignored. Area that falls outside the convex hull is
 removed from the region.
