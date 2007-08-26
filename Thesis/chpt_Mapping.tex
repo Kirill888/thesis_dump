@@ -62,17 +62,16 @@ robot pose. In HTSLAM the size of the environment is limited, hence
 scalability of the local mapping algorithm is not that
 important. FastSLAM has other advantages though.
 
-In the authors opinion the most important advantage of the particle
-filter approach over the EKF is its superior model of uncertainty. The
-EKF linearises the motion model so that the posterior distribution
-over robot pose is Gaussian. FastSLAM samples directly from the motion
-model. More importantly, FastSLAM can capture the uncertainty of the
-data association decisions, something that is impossible with EKF.
-This is especially advantageous when the environment is cluttered. It
-is well known that the EKF is very sensitive to errors in data association
-decisions \cite{neira01:_data_assoc_stoch_mappin_using}. FastSLAM
-provides a more robust solution to mapping with unknown data
-association.
+Another advantage of the particle filter approach over the EKF is its
+superior model of uncertainty. The EKF linearises the motion model so
+that the posterior distribution over robot pose is Gaussian. FastSLAM
+samples directly from the motion model. More importantly, FastSLAM can
+capture the uncertainty of the data association decisions, something
+that is impossible with EKF.  This is especially advantageous when the
+environment is cluttered. It is well known that the EKF is very
+sensitive to errors in data association decisions
+\cite{neira01:_data_assoc_stoch_mappin_using}.  FastSLAM provides a
+more robust solution to mapping with unknown data association.
 
 Particle filter based approaches can incorporate negative information
 (i.e. expect to see landmark but don't) into the computation of the
@@ -238,14 +237,25 @@ only information that needs to be stored at the time of creating a
 transition is a mapping $\mapA \Rightarrow \tr{}{A}{B}$.
 
 %\NOTE{Rewrite in bullet form}
-A new node is added to the graph, this node is connected to the
-current map.  The current reference frame is set to that of a new
-node. The initial map region is computed and assigned to the new
-map. All the neighbouring regions are then projected into the new
-coordinate frame and are subtracted from the initial map region to
-force the non-overlapping constraint. The pose of all particles is then
-set to some initial value, their maps are set to empty, and the
-mapping process is restarted.
+
+The process of creating new map is the following:
+
+\begin{enumerate}
+
+\item A new node is added to the graph, this node is connected to the
+  current map.
+
+\item The current reference frame is set to that of a new node.
+
+%\item The initial map region is computed and assigned to the new map.
+%  All the neighbouring regions are then projected into the new
+%  coordinate frame and are subtracted from the initial map region to
+%  force the non-overlapping constraint.
+%
+\item The pose of all particles is then set to some initial value,
+  their maps are set to empty, and the mapping process is restarted.
+
+\end{enumerate}
 
 As the robot continues mapping the new region, any error in the map
 and robot pose estimate remains conditionally independent from errors
