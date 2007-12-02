@@ -1,4 +1,4 @@
-HTSLAM models a map as a hybrid topological-metric structure: the
+HTSLAM models the map as a hybrid topological-metric structure: the
 environment is divided into a number of regions, and a local metric
 map is built for each region. The relative poses of the regions are
 stored in a topological structure. There is no global reference
@@ -6,28 +6,30 @@ frame. Only relative poses of the nearby regions are stored.
 
 
 %maybe enumerate 1,2,3
-The structure is motivated primarily by the following.
-First, dividing the world into a set of local maps appears to approximate the
+The structure is motivated primarily by the following.  First,
+dividing the world into a set of local maps appears to approximate the
 way that humans reason \cite{psycho_kuipers82}. Second, it ensures
 that the mapping scheme scales to large environments.  The scalability
 limitations of a single map SLAM methods are well known
 \cite{guivant03,guivant01,guivant02} and prohibit real-time SLAM for
 maps of practical size.  The third and final motivation is that a
 robot does not require a single, global, metric description of the
-world.  For example, in the ``fetch me a beer from the refrigerator''
-task, there is no need for the robot to know the position of the
-fridge while it is in the living room.  The robot only needs to know
-the position of the fridge when it is near to the fridge.
+world for navigation. For example, in the ``fetch me a beer from the
+refrigerator'' task, there is no need for the robot to know the
+position of the fridge while it is in the living room.  The robot only
+needs to know the position of the fridge when it is near to the
+fridge.
 
 This chapter describes the HTSLAM approach to map modelling.  Some
 aspects of the map design are motivated by the mapping procedures
-developed in chapter~\ref{chpt:Mapping}, and will be clarified in chapter~\ref{chpt:Mapping}. %look in to wording
-The following section describes the overall map structure.  Section~\ref{sec:local_map}
-presents the methods used for modelling uncertainty within each local
-map and section~\ref{sec:link} describes the methods used to model the
-uncertainties of the topological links between maps.  Finally,
-section~\ref{sec:region} discusses methods for defining the shape and
-extent of each local region.
+developed in chapter~\ref{chpt:Mapping}, and will be clarified in
+chapter~\ref{chpt:Mapping}. %look in to wording
+The following section describes the overall map structure.
+Section~\ref{sec:local_map} presents the methods used for modelling
+uncertainty within each local map and section~\ref{sec:link} describes
+the methods used to model the uncertainties of the topological links
+between maps.  Finally, section~\ref{sec:region} discusses methods for
+defining the shape and extent of each local region.
 
 \section{Hybrid Map structure}
 \label{sec:HM_structure}
@@ -74,18 +76,16 @@ The structure used in HTSLAM is similar to that of \Atlas\
 \cite{bosse02atlas}, however HTSLAM uses different uncertainty
 representations, both for the coordinate transformations between
 adjacent map frames and for the local maps.  \Atlas, as a framework,
-allows the use of an arbitrary mapping model, although the two implementations
-that have been published include EKF SLAM and scan matching. \Atlas\
-models the uncertainty in the coordinates of links or transitions between maps as Gaussian.
-It therefore requires that spatial uncertainty in robot pose is represented by a 
-Gaussian distribution. 
+allows the use of an arbitrary mapping model, although the two
+implementations that have been published include EKF SLAM and scan
+matching. \Atlas\ models the uncertainty in the coordinates of links
+or transitions between maps as Gaussian.  It therefore requires that
+spatial uncertainty in robot pose is represented by a Gaussian
+distribution.
 
-HTSLAM, on the other hand,  uses FastSLAM for local mapping.
-
-
-Rao-Blackwellised particle filtering  the local maps (like FastSLAM),
-permitting multi-modal modelling of the local map. HTSLAM also models
-the transitions between maps using sets of particles.
+HTSLAM, on the other hand, uses FastSLAM for local mapping, permitting
+multi-modal modelling of the local map. HTSLAM also models the
+transitions between maps using sets of particles.
 
 A further difference between \Atlas\ and HTSLAM is that HTSLAM
 maintains map extent information for every local map. This extra data
@@ -130,32 +130,32 @@ one does not have to store the whole path of a particle, since only
 the most current pose of the particle is used in the mapping process.
 
 A map is a probability distribution
-$p(\map{k}{a}{m}|\Xall{k}{a}{m},\Zall{k}{a})$. Assume that the map consists of 
-landmarks and that observations are independent. It follows that a map can be represented 
-by a set of independent landmarks, each conditioned on the path of a particle
+$p(\map{k}{a}{m}|\Xall{k}{a}{m},\Zall{k}{a})$. Assume that the map
+consists of landmarks and that observations are independent. It
+follows that a map can be represented by a set of independent
+landmarks, each conditioned on the path of a particle
 $p(\mape{a}{m}{}|\Xall{k}{a}{m},\Zall{k}{a})$. Note that there is a
 different map for each particle. FastSLAM approximates
 $p(\mape{a}{m}{}|\Xall{k}{a}{m},\Zall{k}{a})$ with a Gaussian.  For
 point landmarks, the distribution is a two-dimensional Gaussian
 describing the location of the landmark on the plane. Other landmark
-characteristics can be incorporated into the stochastic
-variable as well. For example, if one builds a map of trees, the landmark
-might have one extra parameter for the diameter of the tree trunk.
-Note that since there are multiple particles, the actual posterior
-distribution of the landmark is a mixture of Gaussians. 
-Only planar motion is considered in this thesis. The results,
-however, can be readily extended to three-dimensional motion. Note
-that, since the landmarks are estimated independently in FastSLAM,
-there is no need to maintain the global covariance matrix for the
-map.
+characteristics can be incorporated into the stochastic variable as
+well. For example, if one builds a map of trees, the landmark might
+have one extra parameter for the diameter of the tree trunk.  Note
+that since there are multiple particles, the actual posterior
+distribution of the landmark is a mixture of Gaussians.  Only planar
+motion is considered in this thesis. The results, however, can be
+readily extended to three-dimensional motion. Note that, since the
+landmarks are estimated independently in FastSLAM, there is no need to
+maintain the global covariance matrix for the map.
 
 Each particle makes its own data association decisions. As a result,
-FastSLAM captures not only the uncertainty arising from 
-continuous variables like robot pose and sensor measurements,
-but also uncertainty due to discrete data association decisions. This
-uncertainty is not represented in EKF approaches \cite{ekf_slam}.
-The ability to capture data association uncertainty is advantageous since the data association is ambiguous in
-most real-life situations.
+FastSLAM captures not only the uncertainty arising from continuous
+variables like robot pose and sensor measurements, but also
+uncertainty due to discrete data association decisions. This
+uncertainty is not represented in EKF approaches \cite{ekf_slam}.  The
+ability to capture data association uncertainty is advantageous since
+the data association is ambiguous in most real-life situations.
 
 When mapping of a given local map is complete, the maps of all
 particles alive at the time are stored within the local map. This set
@@ -220,16 +220,16 @@ reference frames of the two maps in a probabilistic manner. The exact
 mechanism used to store the probability densities is described in more
 detail in chapter~\ref{chpt:Mapping}.
 
-It is worth noting that it is possible to derive the joint
-probability $\prob{\map{}{}{a},\tr{}{a}{b},\map{}{}{b}}$ even for
-non-adjacent maps $a$ and $b$ by merging probability densities along
-the topological path joining the two maps.  The presence of loops in
-the topological structure implies multiple paths between some of the
-local map pairs. Therefore $\prob{\map{}{}{a},\tr{}{a}{b},\map{}{}{b}}$ can
-be derived in several possible ways from the HTSLAM structure. This
-adds a constraint to the HTSLAM structure which will be discussed in
-more detail in the chapter on loop
-closing (Chapter~\ref{chpt:LoopClosing}).
+It is worth noting that it is possible to derive the joint probability
+$\prob{\map{}{}{a},\tr{}{a}{b},\map{}{}{b}}$ even for non-adjacent
+maps $a$ and $b$ by merging probability densities along the
+topological path joining the two maps.  The presence of loops in the
+topological structure implies multiple paths between some of the local
+map pairs. It follows that
+$\prob{\map{}{}{a},\tr{}{a}{b},\map{}{}{b}}$ can be derived in several
+possible ways from the HTSLAM structure. This adds a constraint to the
+HTSLAM structure which will be discussed in more detail in the chapter
+on loop closing (Chapter~\ref{chpt:LoopClosing}).
 
 %While each transtion between adjacent maps 
 
