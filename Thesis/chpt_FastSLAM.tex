@@ -276,7 +276,7 @@ is likely to fail if the system is highly non-linear. However there
 are many successful applications of the EKF in various fields of
 research. In robotics the EKF has been successfully used for
 localisation \cite{Jensfelt99} and SLAM \cite{dissanayake01,
-  bosse02atlas,guivant00:_auton_navig_map_using_laser} problems.
+  bosse03atlas,guivant00:_auton_navig_map_using_laser} problems.
 
 
 \section{Particle Filter}
@@ -648,7 +648,7 @@ required. FastSLAM can be implemented in $O(M\log K)$, where $M$ is
 the number of particles, and $K$ is the number of landmarks. FastSLAM
 produces a better estimate of the posterior distribution, given enough
 particles. The main advantage of FastSLAM is its ability to handle
-multiple data association decisions \cite{Montemerlo02d}, which we
+multiple data association decisions \cite{Montemerlo2003}, which we
 believe makes it a more robust algorithm. It is also a conceptually
 straightforward approach.
 
@@ -827,7 +827,7 @@ determine the robot pose at any given time.
 
 All of the methods presented so far build a map of the whole
 environment in a single global reference frame. Recently, Bosse \etal\
-\cite{bosse02atlas} suggest a mapping approach, \Atlas, that does not
+\cite{bosse03atlas} suggest a mapping approach, \Atlas, that does not
 require a global reference frame. The map structure used in this
 approach is a hybrid topological/metric map.  Each node is a local map
 and every link in the topological map represents a spatial
@@ -892,7 +892,7 @@ Various optimisation techniques and faster hardware can expand the
 capabilities of existing algorithms, but to really overcome these
 limitations new map representations are required. In particular new
 ways to model uncertainty should be explored. Some recent research in
-this area include \cite{bosse02atlas,fergusson2003}.
+this area include \cite{bosse03atlas,fergusson2003}.
 
 % LocalWords:  Kalman odometry EKF FastSLAM Bayes MCL Lu Milios Konolige Gutman
 % LocalWords:  Thrun Bosse Ferguson resampling Gaussians linearisation

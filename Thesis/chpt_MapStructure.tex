@@ -11,7 +11,7 @@ dividing the world into a set of local maps appears to approximate the
 way that humans reason \cite{psycho_kuipers82}. Second, it ensures
 that the mapping scheme scales to large environments.  The scalability
 limitations of a single map SLAM methods are well known
-\cite{guivant03,guivant01,guivant02} and prohibit real-time SLAM for
+\cite{guivant04,guivant01,guivant02} and prohibit real-time SLAM for
 maps of practical size.  The third and final motivation is that a
 robot does not require a single, global, metric description of the
 world for navigation. For example, in the ``fetch me a beer from the
@@ -73,7 +73,7 @@ HTSLAM map for an indoor environment, and
 \refFigure{fig:htslam_structure_outdoor} for an outdoor environment.
 
 The structure used in HTSLAM is similar to that of \Atlas\
-\cite{bosse02atlas}, however HTSLAM uses different uncertainty
+\cite{bosse03atlas}, however HTSLAM uses different uncertainty
 representations, both for the coordinate transformations between
 adjacent map frames and for the local maps.  \Atlas, as a framework,
 allows the use of an arbitrary mapping model, although the two
@@ -105,7 +105,7 @@ determining the extents of each local map.
 \label{sec:local_map}
 
 To understand how uncertainty is represented within the local map, one
-needs to be familiar with the FastSLAM \cite{Montemerlo02d} mapping
+needs to be familiar with the FastSLAM \cite{Montemerlo2003} mapping
 scheme.
 An overview of FastSLAM appers in
 chapter~\ref{chpt:Overview}. In summary, FastSLAM uses particles to

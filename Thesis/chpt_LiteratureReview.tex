@@ -175,7 +175,7 @@ or they can represent the environment as an occupancy grid. Each cell
 of an occupancy grid map is assigned a probability value of being
 ``occupied by an obstacle''. A hybrid metric map, that combines
 landmarks and occupancy grids has also been proposed in
-\cite{guivant03}.  
+\cite{guivant04}.  
 
 The most common approach to Simultaneous Localisation and Mapping
 (SLAM) is based on Extended Kalman Filter
@@ -298,7 +298,7 @@ problem of unbounded complexity and also reduce the effects of
 approximation errors.
 
 Hybrid topological/metric maps
-\cite{fergusson2003,bosse02atlas,Thrun98a} allow for accurate local
+\cite{fergusson2003,bosse03atlas,Thrun98a} allow for accurate local
 positioning by virtue of the metric component, yet are easier to
 construct since computational complexity per local map is bounded. It
 is also easier to close large cycles since closing a cycle in such a
@@ -327,7 +327,7 @@ nodes is purely topological. Metric information is only used inside
 the local maps.
 
 The approaches that I consider ``more hybrid'' include \Atlas\ by
-Bosse \etal\ \cite{bosse02atlas} and the one described in this thesis.
+Bosse \etal\ \cite{bosse03atlas} and the one described in this thesis.
 These approaches incorporate metric information into the topological
 structure of the map. Every link in the topological structure stores
 the spatial relation between the two nodes (local maps) as a
@@ -387,7 +387,7 @@ thrun02:_robot_mappin,
  nieto2003, 
  konolige99,
  doucetraoblackwellised,
- guivant03,
+ guivant04,
  newman03,
  vandermerwe00_tr,
  vandermerwe2000,
