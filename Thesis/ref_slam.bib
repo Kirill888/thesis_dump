@@ -10,15 +10,16 @@
   pages =        {972--999},
 }
 
-@InProceedings{fastslam,
+@article{fastslam,
   author =       {Michael Montemerlo and Sebastian Thrun and Daphne
                   Koller and Ben Wegbreit},
   title =        {{FastSLAM}: A Factored Solution to the Simultaneous
                   Localization and Mapping Problem},
-  booktitle =    {AAAI-2002},
   year =         2002,
   address =      {Vancouver, BC},
   month =        {July},
+  journal={Proceedings of the AAAI National Conference on Artificial Intelligence},
+  pages={593--598}
 }
 
 
@@ -53,6 +54,7 @@
   month =        {June}
 }
 
+%TODO: pages,volume
 @Article{SOG-Slam01,
   title={{An Approximate Bayesian Method for Simultaneous Localisation and Mapping}},
   author={Majumder, S. and Durrant-Whyte, H. and Thrun, S. and de Battista, M.},
@@ -73,16 +75,18 @@
 }
 
 
-@InProceedings{guivant02,
+@article{guivant02,
   author =       {Jose Guivant and Eduardo Nebot},
   title =        {Improving Computational and Memory Requirements of
                   Simultaneous Localization and Map Building
                   Algorithms},
-  booktitle =    {IEEE Intl. Conf on Robotics and Automation},
+  journal=       {Robotics and Automation, 2002. Proceedings. ICRA'02.
+                  IEEE International Conference on},
   pages =        {2731--2736},
-  year =         2002,
+  volume = {3},
+  year =         {2002},
   address =      {Washington DC},
-  month =        {May},
+  month =        {May}
 }
 
 
@@ -91,6 +95,9 @@
   title =        {Simultaneous localization and map building using
                   natural features and absolute information},
   journal =      {Robotics and Autonomous Systems},
+  volume={40},
+  number={2-3},
+  pages={79--90},
   year =         2002
 }
 
@@ -130,8 +137,7 @@
   author =       {Sebastian Thrun and Daphne Koller and Zoubin
                   Ghahmarani and Hugh Durrant-Whyte},
   title =        {{SLAM} Updates Require Constant Time},
-  institution =  {School of Computer Science, Carnegie Mellon
-                  University},
+  institution =  {School of Computer Science, Carnegie Mellon University},
   year =         {2002}
 }
 
@@ -143,7 +149,7 @@
                   Systems -- MFI-2001},
   pages =        {67--72},
   year =         2001,
-  address =      {Baden-Baden},
+  address =      {Baden-Baden}
 }
 
 @Article{JensfeltKristensen01,
@@ -155,18 +161,17 @@
   volume =       17,
   number =       5,
   pages =        {748--760},
-  month =        {October},
+  month =        {October}
 }
 
-@InProceedings{JensfeltWijkAustin00a,
-  author =       {Patric Jensfelt and Olle Wijk and David Austin and
-                  Magnus Andersson},
-  title =        {Experiments on Augmenting Condensation for Mobile
-                  Robot Localization},
-  booktitle =    {IEEE Intl. Conf. on Robotics and Automation},
-  year =         2000,
+@article{JensfeltWijkAustin00a,
+  author = {Patric Jensfelt and Olle Wijk and David Austin and Magnus Andersson},
+  title =  { Experiments on Augmenting Condensation for Mobile Robot Localization },
+  journal= {Robotics and Automation, 2000. Proceedings. ICRA'00. IEEE International Conference on},
+  volume = {3},
+  year =         {2000},
   month =        {May},
-  pages =        {2518--2524},
+  pages =        {2518--2524}
 }
 
 @InProceedings{JensfeltAustinWijk00b,
@@ -188,10 +193,11 @@
   title =        {Learning Hierarchical Object Maps Of Non-Stationary
                   Environments With Mobile Robots},
   booktitle =    {UAI-02},
-  year =         2002,
+  year =         {2002},
+  pages=         {10--17},
   address =      {Calgary, CA},
   month =        {August},
-  organization = {AAAI},
+  organization = {AAAI}
 }
 
 
@@ -223,11 +229,10 @@
                   Armin B. Cremers},
   title =        {Tracking Multiple Moving Objects with a Mobile
                   Robot},
-  booktitle =    {CVAP-01},
-  year =         2001,
+  booktitle =    {Proc. of the IEEE Computer Society Conference on Computer Vision and Pattern Recognition (CVPR)},
+  year =         {2001},
   address =      {Kauai, HW},
   month =        {December},
-  organization = {IEEE},
 }
 
 @Article{castellanos99:_spmap,
@@ -282,19 +287,21 @@
   author =       {G. Dudek and D. Jegessur},
   title =        {Robust Place Recognition using Local Appearance
                   based Methods},
-  booktitle =    {ICRA-2002},
+  booktitle=       {Robotics and Automation, 2002. Proceedings. ICRA'02.
+                  IEEE International Conference on},
+
   pages =        {466-474},
   year =         200,
   address =      {San Francisco, CA},
   organization = {IEEE}
 }
 
-@InProceedings{konolige99:_increm_mappin_large_cyclic_envir,
+@article{konolige99:_increm_mappin_large_cyclic_envir,
   author =       {K. Konolige and S. Gutmann},
   title =        {Incremental Mapping of Large Cyclic Environments},
-  booktitle =    {Intl. Symp. on Comp Intell. in Rob and Aut. --
-                  CIRA-99},
-  year =         1999,
+  journal={Computational Intelligence in Robotics and Automation, 1999. CIRA'99. Proceedings. 1999 IEEE International Symposium on},
+  pages={318--325},
+  year={1999},
   address =      {Monterey, CA},
   month =        {November}
 }
@@ -309,13 +316,13 @@
   pages =        {333-349}
 }
 
-@InProceedings{gutmann96:_amos,
+@article{gutmann96:_amos,
   author =       {S. Gutmann and C. Schlegel},
   title =        {AMOS: Comparison of Scan-Matching Approaches for
                   Self-Localization in Indoor Environments},
-  booktitle =    {1st Euromicro Conf on Adv. Mobile Robotics},
+  journal={Advanced Mobile Robot, Proceedings of the First Euromicro Workshop on},
+  pages={61--67},
   year =         1996,
-  organization = {IEEE}
 }
 
 
@@ -333,7 +340,8 @@
   author =       {Williams, S. and Dissanayake, G. and Durrant-Whyte, H.},
   title =        {Towards Multi-Vehicle Simulataneous Localisation 
                   and Mapping},
-  booktitle =    {ICRA-2002},
+  booktitle=       {Robotics and Automation, 2002. Proceedings. ICRA'02.
+                  IEEE International Conference on},
   pages =        {2743-2748},
   year =         2002,
   organization = {IEEE}
@@ -435,9 +443,9 @@
                     dynamic environments. },
   YEAR           = {1999},
   JOURNAL        = {Journal of Artificial Intelegence Research},
-  VOLUME         = {8},
-  NUMBER         = {},
-  PAGES          = {391-427}
+  volume         ={11},
+  pages          ={391-427},
+  number         ={27},
 }
 
 @ARTICLE{Cox91,
@@ -468,10 +476,11 @@
   pages     = {157-162}
 }
 
-@Inproceedings{kk2004,
+@article{kk2004,
   author    = {Kirill Kouzoubov and David Austin},
   title     = {{Hybrid Topological/Metric Approach to SLAM}},
-  booktitle = {IEEE International Conference on Robotics and Automation},
+  journal={Robotics and Automation, 2004. Proceedings. ICRA'04. IEEE International Conference on},
+
   year      = {2004},
   month     = {April},
   address   = {New Orleans},
@@ -518,8 +527,10 @@
                    Acquiring Multi-Planar Maps of Indoor Environments 
                    with Mobile Robots},
   JOURNAL	= {{IEEE} Transactions on Robotics and Automation},
-  YEAR		= {2003},
-  NOTE          = {To Appear}
+  volume={20},
+  number={3},
+  pages={433--443},
+  year={2004}
 }
 
 @INPROCEEDINGS{Bennewitz02a,
@@ -529,6 +540,8 @@
   YEAR           = {2002},
   BOOKTITLE      = {Proceedings of the Conference on Intelligent Robots and 
                     Systems (IROS)},
+  volume         = {1},
+  pages          = {502--507},
   ADDRESS        = {Lausanne, Switzerland}
 }
 
@@ -581,6 +594,8 @@
                Artificial Intelligence (IJCAI)}, 
   address = {Stockholm, Sweden}, 
   year    = {1999}, 
+  volume={113},
+  pages={1154--1159},
   organisation = {IJCAI}
 }
 
@@ -678,7 +693,7 @@ pages = {1442-1447}
 }
 
 
-@inproceedings{fastslam2,
+@article{fastslam2,
   title={{FastSLAM 2.0: An improved particle filtering algorithm for simultaneous localization and mapping that provably converges}},
   author={Montemerlo, M. and Thrun, S. and Koller, D. and Wegbreit, B.},
   journal={Proceedings of the Sixteenth International Joint Conference on Artificial Intelligence (IJCAI)},
@@ -692,7 +707,9 @@ title = {Constrained Initialisation for Bearing-Only SLAM},
 author = {T. Bailey},
 booktitle= {IEEE International Conference on Robotics and Automation },
 moth = {September}, 
-year = {2003}, 
+year = {2003},
+pages = {1966--1971},
+volume = {2},
 address = {Taipei, Taiwan}
 }
 
@@ -704,12 +721,11 @@ school = {University of Sydney, Australian Centre for Field Robotics},
 year   = {2002}
 } 
 
-@InProceedings{Cho01,
+@article{Cho01,
   title={{Topological simultaneous localization and mapping (SLAM): towards exact localization without explicit localization}},
   author={Choset, H. and Nagatani, K.},
   journal={Robotics and Automation, IEEE Transactions on},
   volume={17},
-  number={2},
   pages={125--137},
   year={2001}
 }
@@ -778,8 +794,8 @@ year   = {2002}
   title={{Robust Tracking of Human Motion}},
   author={Buzan, D.},
   year={2004},
-  publisher={CSTR-2004-016, Boston University}
-  institution =  {{CS Department, Boston University}},
+  publisher={CSTR-2004-016, Boston University},
+  institution =  {{CS Department, Boston University}}
 }
 
 @article{ uhlmann97nondivergent,
@@ -862,10 +878,12 @@ year   = {2002}
     publisher = "Cambridge University Press, ISBN: 0521540518"
 } 
 
-@Misc{VP_dataset, 
+@article{VP_dataset, 
 author={Jose Guivant and Eduardo Nebot},
 title={Simultaneous Localization and Map Building: Test case for
 Outdoor Applications},
+journal={Australian Center for Field Robotics, Department of Mechanical and Mechatronic Engineering, The University of Sydney},
+year = {2002},
 url = {http://www.acfr.usyd.edu.au/homepages/academic/enebot/publications/slam/IJRR_slam.htm}
 }
 
@@ -882,6 +900,8 @@ pages = {2512-2517}
 @InProceedings{Kuipers2004,
 author={Benjamin Kuipers and Joseph Modayil and Patrick Beeson and Matt MacMahon and Francesco Savelli},
 year = { 2004},
+pages = {4845--4851},
+volume = {5},
 title = {Local metrical and global topological maps in the Hybrid Spatial Semantic Hierarchy},
 booktitle = {IEEE International Conference on Robotics and Automation}
 }
