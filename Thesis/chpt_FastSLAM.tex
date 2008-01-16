@@ -755,13 +755,19 @@ much better than the EKF.
   % Detect
   % Correct
 
-The problem of loop closing, arises when mapping a large cyclic
-environment. As the robot moves through an unexplored environment
-while building the map, it becomes more and more uncertain about its
-pose relative to the regions it mapped in the past. The increase in
-the uncertainty makes it hard for the robot to detect when it comes
-back to the region it has mapped already. Failure to detect revisiting
-results in an inconsistent map.
+The problem of loop closing arises when mapping a large cyclic
+environment. When the robot returns to a previously mapped region via
+a large loop, rather than by back-tracing its own steps, it needs to
+recognise the place as previously mapped. Failure to do so will result
+in incosistent map.  As the robot moves through an unexplored
+environment while building the map, it becomes more and more uncertain
+about its pose relative to the regions it mapped in the past.
+Increased uncertainty of the robot pose makes it more difficult to
+detect the place the robot has already mapped.
+
+%The increase in the uncertainty makes it hard for the robot to detect when it comes
+%back to the region it has mapped already. 
+%Failure to detect revisiting results in an inconsistent map.
 
 In order to build a consistent map, the robot needs to be able to
 detect the places it has been to before and correct its estimate of
