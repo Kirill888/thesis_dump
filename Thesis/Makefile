@@ -35,6 +35,7 @@ EPSf = map_example_indoor.eps corner_scan_example_a.eps \
        trees_map_300p.eps trees_odo_300p.eps trees_odo_all_300p.eps\
        xr4000_raw_odo.eps hump.eps hump_xy.eps post_example.eps post_obs.eps\
        post_obsodo.eps post_odo.eps post_odo_ekf.eps post_odo_pf.eps\
+       post_obs_.eps post_obsodo_.eps\
        post_odo_pf_.eps subway_map.eps rsise_level3_map.eps\
        barrel_distortion.eps undist_barrel_distortion.eps
 

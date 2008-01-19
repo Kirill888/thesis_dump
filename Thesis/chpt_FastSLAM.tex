@@ -623,40 +623,48 @@ that the estimation error can be modelled by a Gaussian distribution.
 The computation complexity of the algorithm is $O(K^2)$, where $K$ is
 the number of features in the map \cite{ekf_slam}.
 
-Sub-optimal implementations reduce this complexity significantly by
+Non-trivial implementations reduce this complexity significantly by
 restricting the update of the covariance matrix to a local map
-(Compressed Filter) \cite{williams:acra2001}. The most important
-limitation of the EKF approach is its inability to model multiple data
-association decisions. Every observation has to be classified as
-either noise, a new feature or an observation of an existing feature.
-It is possible to postpone the final decision by running multiple
-Kalman filters in parallel. Alternatively one can try to improve data
-association, for example using the Joint Compatibility test
-\cite{neira01:_data_assoc_stoch_mappin_using}.  Both approaches reduce
-the probability of an incorrect data association decision, but
+(Compressed Filter) \cite{williams:acra2001}.
+
+The most important limitation of the EKF approach is its inability to
+model multiple data association decisions. Every observation has to be
+classified as either noise, a new feature or an observation of an
+existing feature.  It is possible to postpone the final decision by
+running multiple Kalman filters in parallel. Alternatively one can try
+to improve data association, for example using the Joint Compatibility
+test \cite{neira01:_data_assoc_stoch_mappin_using}.  Both approaches
+reduce the probability of an incorrect data association decision, but
 ultimately produce a unimodal distribution.
 
 \subsection{Particle Filter Approach}
 FastSLAM uses particles to approximate the posterior distribution
-\cite{fastslam}. Every particle maintains it's own path,
-data association decisions and the resulting map. The map is a
-collection of independent landmarks. Their locations are estimated
-using Kalman filters, one for every landmark. FastSLAM requires
-linearisation of the perception model, but it samples directly from
-the motion model. As a result, no change to the motion model is
-required. FastSLAM can be implemented in $O(M\log K)$, where $M$ is
-the number of particles, and $K$ is the number of landmarks. FastSLAM
-produces a better estimate of the posterior distribution, given enough
-particles. The main advantage of FastSLAM is its ability to handle
-multiple data association decisions \cite{Montemerlo2003}, which we
-believe makes it a more robust algorithm. It is also a conceptually
-straightforward approach.
+\cite{fastslam}. Every particle maintains it's own path, data
+association decisions and the resulting map. The map is a collection of
+independent landmarks. Their locations are estimated using Kalman
+filters, one for every landmark. FastSLAM requires linearisation of the
+perception model, but it samples directly from the motion model. As a
+result, no change to the motion model is required. FastSLAM can be
+implemented in $O(M\log K)$, where $M$ is the number of particles, and
+$K$ is the number of landmarks. FastSLAM produces a better estimate of
+the posterior distribution, given enough particles. The main advantage
+of FastSLAM is its ability to handle multiple data association decisions
+\cite{Montemerlo2003}, which makes it a more robust algorithm.
+
+%FastSLAM is a conceptually straightforward approach.
+
+%TODO: talk about multi-core and how it is piss easy to parallelise
+%FastSLAM, and not so easy with EKF.
+
+
+%TODO: many people worked on EKF, fewer on FastSLAM, no work on PF +
+%hybrid map models. Need to explore new data structures, not just keep
+%trying to patch up EKF approach.
 
 %We therefore chose to use FastSLAM to perform local mapping tasks.
 
 \subsection{Particle Filter vs Extended Kalman Filter}
 \label{sec:PFvsEKF}
-
 \begin{figure}
 \begin{center}
 \subfigure[Experiment setup]{
@@ -667,24 +675,33 @@ straightforward approach.
 \includegraphics[width=6cm]{Pics/post_odo}
 \label{fig:post_odo}
 }\\
-\subfigure[$p({\bf x} | {\bf z})$]{
+\subfigure[Known data association: $p({\bf x} | {\bf z})$ ]{
 \includegraphics[width=6cm]{Pics/post_obs}
 \label{fig:post_obs}
 }\quad\space
-\subfigure[$p({\bf x} | {\bf u},{\bf z})$]{
+\subfigure[Known data association: $p({\bf x} | {\bf u},{\bf z})$]{
 \includegraphics[width=6cm]{Pics/post_obsodo}
 \label{fig:post_obsodo}
+}\\
+\subfigure[Ambiguous data association: $p({\bf x} | {\bf z})$ ]{
+\includegraphics[width=6cm]{Pics/post_obs_}
+\label{fig:post_obs_}
+}\quad\space
+\subfigure[Ambiguous data association: $p({\bf x} | {\bf u},{\bf z})$]{
+\includegraphics[width=6cm]{Pics/post_obsodo_}
+\label{fig:post_obsodo_}
 }
 \end{center}
-\caption[Robot pose uncertainty, example]
-{In \ref{fig:post_example} robot makes observation at point (0,0),
-then moves 1 meter forward and makes another observation. The square
-shows the region for which pose uncertainty was computed. The
-resulting uncertainty just before second measurement is shown in
-\ref{fig:post_odo}, the uncertainty due to the measurement is
-\ref{fig:post_obs}, and the robot's uncertainty after incorporating
-the measurement is \ref{fig:post_obsodo}.}
-\label{fig:post_all}
+\caption[Robot pose uncertainty, example]{In \ref{fig:post_example}
+robot makes observation at point (0,0), then moves 1 meter forward and
+makes another observation. The square shows the region for which pose
+uncertainty was computed. The resulting uncertainty of robot pose just
+before second measurement is shown in \ref{fig:post_odo}. Two scenarios
+are considered: known and ambiguous data association (rows two and three
+respectively).  The uncertainty due to the measurement is shown in
+\ref{fig:post_obs} and \ref{fig:post_obs_}. The robots pose uncertainty
+after incorporating the measurement is presented in
+\ref{fig:post_obsodo} and \ref{fig:post_obsodo_}.}\label{fig:post_all}
 \end{figure}
 
 The main limitation of the EKF approach is the assumption that
@@ -692,9 +709,6 @@ uncertainty can be modelled as a Gaussian distribution. Many real life
 systems are non-linear, as a result even purely Gaussian noise in
 actuation or observation will result in a non-Gaussian posterior
 distribution.  
-
-TODO: change example figure to include two uncertainty peaks (data
-association uncertainty). 
 
 \refFigure{fig:post_all} illustrates uncertainties involved in the 
 robotic mapping system. The robot makes an observation at point (0,0),
