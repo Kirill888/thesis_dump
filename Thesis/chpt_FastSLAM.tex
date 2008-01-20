@@ -4,11 +4,10 @@ problem of simultaneous localisation and mapping (SLAM). First a
 notation that will be used throughout this document is introduced in
 Section~\ref{sec:Notation}. Section~\ref{sec:Kalman} gives a brief
 overview of Kalman filter and Extended Kalman (Section~\ref{sec:EKF}).
-Particle filter is introduced in Section~\ref{sec:PF}. A comparison of
-Particle filter vs EKF follows in Section~\ref{sec:PFvsEKF}. A brief
+Particle filter is introduced in Section~\ref{sec:PF}. A brief
 overview of Localisation is given in Section~\ref{sec:Localisation},
 followed by an overview of SLAM in Section~\ref{sec:SLAM}. Finally a
-problem of revisiting or ``loop closing'' is discussed in
+problem of cycle detection or ``loop closing'' is discussed in
 Section~\ref{sec:back_loop}.
 
 
@@ -623,9 +622,25 @@ that the estimation error can be modelled by a Gaussian distribution.
 The computation complexity of the algorithm is $O(K^2)$, where $K$ is
 the number of features in the map \cite{ekf_slam}.
 
-Non-trivial implementations reduce this complexity significantly by
-restricting the update of the covariance matrix to a local map
-(Compressed Filter) \cite{williams:acra2001}.
+Many reseacrches worked on improving computational performance of the
+EKF approach to SLAM
+\cite{williams:acra2001,
+williams2001esa,
+knight2001tct,
+guivant01,
+tim_bailey,
+uhlmann97nondivergent,
+tardos02:_mappin_local_indoor_envir_using_sonar_data}.
+It is possible to exploit the fact that only a small subset of the
+whole map is observed at any given time to reduce computation burden.
+Compressed EKF \cite{williams:acra2001} is an optimal approach that
+reduces computation cost of measurment update to $O(K_a^2)$, where
+$K_a$ is a number of features in the local region of the global map.
+This approach still requires a costly $O(K^2)$ global registration
+stage when robot changes from one local region to the next. A
+sub-optimal version of the same algorithm bounds a cost of the global
+registration stage.
+
 
 The most important limitation of the EKF approach is its inability to
 model multiple data association decisions. Every observation has to be
@@ -640,31 +655,34 @@ ultimately produce a unimodal distribution.
 \subsection{Particle Filter Approach}
 FastSLAM uses particles to approximate the posterior distribution
 \cite{fastslam}. Every particle maintains it's own path, data
-association decisions and the resulting map. The map is a collection of
-independent landmarks. Their locations are estimated using Kalman
-filters, one for every landmark. FastSLAM requires linearisation of the
-perception model, but it samples directly from the motion model. As a
-result, no change to the motion model is required. FastSLAM can be
-implemented in $O(M\log K)$, where $M$ is the number of particles, and
-$K$ is the number of landmarks. FastSLAM produces a better estimate of
-the posterior distribution, given enough particles. The main advantage
-of FastSLAM is its ability to handle multiple data association decisions
-\cite{Montemerlo2003}, which makes it a more robust algorithm.
+association decisions and the resulting map. The map is a collection
+of independent landmarks. Their locations are estimated using Kalman
+filters, one for every landmark. FastSLAM requires linearisation of
+the perception model, but it samples directly from the motion model.
+As a result, no change to the motion model is required. FastSLAM can
+be implemented in $O(M\log K)$, where $M$ is the number of particles,
+and $K$ is the number of landmarks.
 
-%FastSLAM is a conceptually straightforward approach.
+Given enough particles, FastSLAM produces a better estimate of the
+posterior distribution.  Unfortunately it is not clear how many
+particles are needed for a particular problem. A modified version of
+FastSLAM algorithm \cite{fastslam2} uses a different sampling
+technique to generate particles where they are needed most, therefore
+reducing the number of particles needed. Authors of \cite{fastslam2},
+claim that even one particle is enough in some cases.
 
-%TODO: talk about multi-core and how it is piss easy to parallelise
-%FastSLAM, and not so easy with EKF.
+The main advantage of FastSLAM is its ability to handle multiple data
+association decisions \cite{Montemerlo2003}, which makes it a more
+robust algorithm. From the implementation perspective, FastSLAM is
+trivial to parallelise, since computation per particle is independent
+of other particles. Given that the progress of computer hardware in a
+near future is likely to involve more ``cores'' per CPU, rather than
+faster CPUs, algorihtms that are best suited to exploit new computer
+architecture will see the most improvement from progress in hardware.
 
 
-%TODO: many people worked on EKF, fewer on FastSLAM, no work on PF +
-%hybrid map models. Need to explore new data structures, not just keep
-%trying to patch up EKF approach.
-
-%We therefore chose to use FastSLAM to perform local mapping tasks.
-
-\subsection{Particle Filter vs Extended Kalman Filter}
-\label{sec:PFvsEKF}
+\subsection{Effect of Ambiguous Data Association on Posterior Distribution}
+\label{sec:AmbiguousDA}
 \begin{figure}
 \begin{center}
 \subfigure[Experiment setup]{
@@ -704,11 +722,14 @@ after incorporating the measurement is presented in
 \ref{fig:post_obsodo} and \ref{fig:post_obsodo_}.}\label{fig:post_all}
 \end{figure}
 
-The main limitation of the EKF approach is the assumption that
-uncertainty can be modelled as a Gaussian distribution. Many real life
-systems are non-linear, as a result even purely Gaussian noise in
-actuation or observation will result in a non-Gaussian posterior
-distribution.  
+%The main limitation of the EKF approach is the assumption that
+%uncertainty can be modelled as a Gaussian distribution. Many real life
+%systems are non-linear, as a result even purely Gaussian noise in
+%actuation or observation will result in a non-Gaussian posterior
+%distribution.
+
+
+
 
 \refFigure{fig:post_all} illustrates uncertainties involved in the 
 robotic mapping system. The robot makes an observation at point (0,0),
@@ -891,6 +912,11 @@ environment.
   than what they used?}
 
 \section{Summary}
+%TODO: many people worked on EKF, fewer on FastSLAM, no work on PF +
+%hybrid map models. Need to explore new data structures, not just keep
+%trying to patch up EKF approach.
+
+%We therefore chose to use FastSLAM to perform local mapping tasks.
 
 The past few decades of mobile robotics research provide us with
 the tools for mapping and localisation. Unfortunately, existing
