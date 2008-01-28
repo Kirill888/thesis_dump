@@ -677,12 +677,31 @@ robust algorithm. From the implementation perspective, FastSLAM is
 trivial to parallelise, since computation per particle is independent
 of other particles. Given that the progress of computer hardware in a
 near future is likely to involve more ``cores'' per CPU, rather than
-faster CPUs, algorihtms that are best suited to exploit new computer
-architecture will see the most improvement from progress in hardware.
+faster CPUs, algorihtms that are best suited to exploit parallel
+computation will see the most improvement from progress in hardware.
 
 
-\subsection{Effect of Ambiguous Data Association on Posterior Distribution}
+\subsection{Effect of Ambiguous Data Association on Posterior
+  Distribution}
 \label{sec:AmbiguousDA}
+
+One of the strong points of EKF - representing a posterior
+distribution as a Gaussian, is also its weakness. On one hand
+linearisation allows for an efficient implementation and provides a
+sound mathematical background for the algorithm, on the other hand
+posterior distributions arising in SLAM can be far from Gaussian
+depending on the environment, robot dynamics and sensor
+characteristics. 
+
+One of the factors affecting the true posterior distribution is the
+quality of the data association decisions. In the case of perfect data
+association, the posterior distribution tends to have a single peak
+and can be approximated with a Gaussian quite well. When data
+association is unreliable, multiple plausible hypothesis for data
+association arise. These multiple hypothesis produce a multi-modal
+posterior distribution. 
+
+
 \begin{figure}
 \begin{center}
 \subfigure[Experiment setup]{
@@ -722,31 +741,90 @@ after incorporating the measurement is presented in
 \ref{fig:post_obsodo} and \ref{fig:post_obsodo_}.}\label{fig:post_all}
 \end{figure}
 
-%The main limitation of the EKF approach is the assumption that
-%uncertainty can be modelled as a Gaussian distribution. Many real life
-%systems are non-linear, as a result even purely Gaussian noise in
-%actuation or observation will result in a non-Gaussian posterior
-%distribution.
+To illustrate this point lets consider an atypically simple mapping
+problem: the world consists of two point landmarks and a robot living
+on a two-dimensional plane, see \refFigure{fig:post_all}. The robot
+pose is defined by its location on the plane only, for simplicity
+orientation of the robot is not modelled (one can assume that the
+robot has an extremely accurate compass). The robot is equiped with a
+sensor that reports landmark location relative to the robot pose. The
+error of the sensor is zero-mean Gaussian.
 
+The robot makes an observation at point (0,0), then moves one meter
+forward and makes another observation,
+see\refFigure{fig:post_example}. The robot dynamics are controlled by
+the following equation:
+$$
+  \Vector{x_k\\y_k} = \Vector{ x_{k-1} + r_k cos(\Theta_k)\\
+                               y_{k-1} + r_k sin(\Theta_k) },
+$$
+here control inputs at time $k$ are $r_k$ and $\Theta_k$ for distance
+and direction of travel, respectively. A Gaussian noise in actutation
+produces a banana-shaped distribution over the robot pose,
+\refFigure{fig:post_odo}.
 
+First lets consider the scenario when data association is perfect.
+After execution of the motion command the robot observes the landmarks
+once more. Since the observations were not certain for both first and
+second observation, the pose estimate that can be derived from the
+measurements has a significant uncertainty. This is illustrated in
+\refFigure{fig:post_obs}. The posterior distribution is non-Gaussian
+in this case as well, although the difference is not as apparent as in
+the motion example. The posterior distribution of the robot pose given
+observations and control input is shown in
+\refFigure{fig:post_obsodo}, while it is not strictly Gaussian, it can
+be argued that it can be approximated by a Gaussian reasonably well.
 
+In the case when data association is ambiguous, the posterior
+distribution is slightly more complicated. Lets assume the robot has
+three equally likely data association hypoptheses. 
 
-\refFigure{fig:post_all} illustrates uncertainties involved in the 
-robotic mapping system. The robot makes an observation at point (0,0),
-then moves one meter forward and makes another observation at
-approximately (1,0), see \refFigure{fig:post_example}. The environment
-consists of just two landmarks at (2,0.5) and (2,1). We assume they
-are distinct, so the robot knows the correspondences between the two
-observations. The robot motion is a stochastic process, hence the
-robot pose is not known exactly after the execution of the motion
-command (in this case move forward 1 meter). The typical resulting
-uncertainty for a robot with differential drive system is shown in
-\refFigure{fig:post_odo}. As can be seen from the plot  this 
-distribution is anything but Gaussian. The ``banana shape'' comes from
-the fact that robot is uncertain about the direction of travel, as
-well as the distance travelled. Even though the uncertainty about
-the distance and direction is zero mean Gaussian, the effect this
-uncertainty has on the pose of the robot is far from Gaussian.
+\begin{itemize}
+\item Observations 1 and 2 map to landmarks {\bf a},{\bf b}
+\item Observation 1 maps to landmark {\bf b}, observation 2 is spurious
+\item Observation 2 maps to landmakr {\bf a}, observation 1 is spurious
+\end{itemize}
+
+Each of these hypotheses by itself produces an almost Gaussian
+posterior distribution, but when combined the result is a multi-modal
+distribution shown in \refFigure{fig:post_obs_}. The posterior
+distribution of the robot pose given observations and control input is
+then as shown in \refFigure{fig:post_obsodo_}. As one can see this
+distribution differs significantly from the Gaussian.
+
+%%% \begin{table}
+%%%   \centering
+%%%   \begin{tabular}{rccc}
+%%%    obs 1 & case1 & case2 & case3\\
+%%%      1   &   a   &  b    & - \\
+%%%      2   &   b   &  -    & a 
+%%%   \end{tabular}
+%%%   \caption{Data Association Hypotheses}
+%%%   \label{tab:da_example}
+%%% \end{table}
+
+%%% \refFigure{fig:post_all} illustrates uncertainties involved in the 
+%%% robotic mapping system. The robot makes an observation at point (0,0),
+%%% then moves one meter forward and makes another observation at
+%%% approximately (1,0), see \refFigure{fig:post_example}. The environment
+%%% consists of just two landmarks at (2,0.5) and (2,1). We assume they
+%%% are distinct, so the robot knows the correspondences between the two
+%%% observations. The robot motion is a stochastic process, hence the
+%%% robot pose is not known exactly after the execution of the motion
+%%% command (in this case move forward 1 meter). The typical resulting
+%%% uncertainty for a robot with differential drive system is shown in
+%%% \refFigure{fig:post_odo}. As can be seen from the plot  this 
+%%% distribution is anything but Gaussian. The ``banana shape'' comes from
+%%% the fact that robot is uncertain about the direction of travel, as
+%%% well as the distance travelled. Even though the uncertainty about
+%%% the distance and direction is zero mean Gaussian, the effect this
+%%% uncertainty has on the pose of the robot is far from Gaussian.
+
+\refFigure{fig:post_ekf_vs_pf} illustrates the resulting uncertainty
+computed by the EKF and particle filter algorithms after applying a
+control input, as in example in \refFigure{fig:post_all}. One can see
+that particle filtering captures the banana shape of the motion model
+much better than the EKF.
 
 \begin{figure}
 \begin{center}
@@ -768,20 +846,6 @@ uncertainty has on the pose of the robot is far from Gaussian.
 \end{figure}
 
 
-After execution of the motion command the robot observes the landmarks
-once more. Since the observations were not certain for both first and
-second observation, the pose estimate that can be derived from the
-measurements has a significant uncertainty. This is illustrated in
-\refFigure{fig:post_obs}. The posterior distribution is non-Gaussian
-in this case as well, although the difference is not as apparent as in
-the motion example. The posterior distribution of the robot pose given
-observations and control input is shown in
-\refFigure{fig:post_obsodo}, and it is obviously non-Gaussian.
-\refFigure{fig:post_ekf_vs_pf} illustrates the resulting uncertainty
-computed by the EKF and particle filter algorithms after applying a
-control input, as in example in \refFigure{fig:post_all}. One can see
-that particle filtering captures the banana shape of the motion model
-much better than the EKF.
 
 
 \section{Loop Closing}
