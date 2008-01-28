@@ -752,7 +752,7 @@ error of the sensor is zero-mean Gaussian.
 
 The robot makes an observation at point (0,0), then moves one meter
 forward and makes another observation,
-see\refFigure{fig:post_example}. The robot dynamics are controlled by
+see \refFigure{fig:post_example}. The robot dynamics are controlled by
 the following equation:
 $$
   \Vector{x_k\\y_k} = \Vector{ x_{k-1} + r_k cos(\Theta_k)\\
@@ -792,59 +792,32 @@ distribution of the robot pose given observations and control input is
 then as shown in \refFigure{fig:post_obsodo_}. As one can see this
 distribution differs significantly from the Gaussian.
 
-%%% \begin{table}
-%%%   \centering
-%%%   \begin{tabular}{rccc}
-%%%    obs 1 & case1 & case2 & case3\\
-%%%      1   &   a   &  b    & - \\
-%%%      2   &   b   &  -    & a 
-%%%   \end{tabular}
-%%%   \caption{Data Association Hypotheses}
-%%%   \label{tab:da_example}
-%%% \end{table}
 
-%%% \refFigure{fig:post_all} illustrates uncertainties involved in the 
-%%% robotic mapping system. The robot makes an observation at point (0,0),
-%%% then moves one meter forward and makes another observation at
-%%% approximately (1,0), see \refFigure{fig:post_example}. The environment
-%%% consists of just two landmarks at (2,0.5) and (2,1). We assume they
-%%% are distinct, so the robot knows the correspondences between the two
-%%% observations. The robot motion is a stochastic process, hence the
-%%% robot pose is not known exactly after the execution of the motion
-%%% command (in this case move forward 1 meter). The typical resulting
-%%% uncertainty for a robot with differential drive system is shown in
-%%% \refFigure{fig:post_odo}. As can be seen from the plot  this 
-%%% distribution is anything but Gaussian. The ``banana shape'' comes from
-%%% the fact that robot is uncertain about the direction of travel, as
-%%% well as the distance travelled. Even though the uncertainty about
-%%% the distance and direction is zero mean Gaussian, the effect this
-%%% uncertainty has on the pose of the robot is far from Gaussian.
-
-\refFigure{fig:post_ekf_vs_pf} illustrates the resulting uncertainty
-computed by the EKF and particle filter algorithms after applying a
-control input, as in example in \refFigure{fig:post_all}. One can see
-that particle filtering captures the banana shape of the motion model
-much better than the EKF.
-
-\begin{figure}
-\begin{center}
-\subfigure[EKF ($1\sigma$)]{
-\includegraphics[width=6cm]{Pics/post_odo_ekf}
-\label{fig:post_odo_ekf}
-}\quad
-\subfigure[Particle Filter]{
-\includegraphics[width=6cm]{Pics/post_odo_pf}
-\label{fig:post_odo_pf}
-}
-\end{center}
-
-\caption[Comparison of uncertainty representation.]
-{Modelling of the robot pose uncertainty,
- using EKF (a) and the particle filter (b).
-}
-\label{fig:post_ekf_vs_pf}
-\end{figure}
-
+%%% \refFigure{fig:post_ekf_vs_pf} illustrates the resulting uncertainty
+%%% computed by the EKF and particle filter algorithms after applying a
+%%% control input, as in example in \refFigure{fig:post_all}. One can see
+%%% that particle filtering captures the banana shape of the motion model
+%%% much better than the EKF.
+%%% 
+%%% \begin{figure}
+%%% \begin{center}
+%%% \subfigure[EKF ($1\sigma$)]{
+%%% \includegraphics[width=6cm]{Pics/post_odo_ekf}
+%%% \label{fig:post_odo_ekf}
+%%% }\quad
+%%% \subfigure[Particle Filter]{
+%%% \includegraphics[width=6cm]{Pics/post_odo_pf}
+%%% \label{fig:post_odo_pf}
+%%% }
+%%% \end{center}
+%%% 
+%%% \caption[Comparison of uncertainty representation.]
+%%% {Modelling of the robot pose uncertainty,
+%%%  using EKF (a) and the particle filter (b).
+%%% }
+%%% \label{fig:post_ekf_vs_pf}
+%%% \end{figure}
+%%% 
 
 
 
