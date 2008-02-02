@@ -177,11 +177,570 @@ of an occupancy grid map is assigned a probability value of being
 landmarks and occupancy grids has also been proposed in
 \cite{guivant04}.  
 
-The most common approach to Simultaneous Localisation and Mapping
-(SLAM) is based on Extended Kalman Filter
-\cite{ekf_slam,dissanayake01}. A more recent development is FastSLAM
-\cite{fastslam,nieto2003} and a continuation of this work
-FastSLAM 2.0 \cite{fastslam2}.
+%%% The most common approach to Simultaneous Localisation and Mapping
+%%% (SLAM) is based on Extended Kalman Filter
+%%% \cite{ekf_slam,dissanayake01}. A more recent development is FastSLAM
+%%% \cite{fastslam,nieto2003} and a continuation of this work
+%%% FastSLAM 2.0 \cite{fastslam2}.
+
+
+\section{Localisation} 
+\label{sec:Localisation}
+
+%What is localisation
+%Typically the robot
+%uses a collection of sensors to collect observations of the 
+%Why does the robot need to localise
+%Topological vs Metric
+%Subclasses of the localisation problem
+
+Mobile robot localisation is the problem of estimating the pose of a
+robot (location and orientation, in the case of a mobile robot moving
+in a plane). Localisation is one of the fundamental problems in the
+field of mobile robotics. It is considered one of the prerequisites
+for providing autonomous capabilities for a mobile robot \cite{Cox91}.
+The localisation algorithm can face three possible problems
+
+\begin{itemize}
+\item {\bf Position tracking}\\
+      The robot's initial pose is known with relatively high
+      certainty. The robot keeps track of its pose as it moves through a
+      familiar environment.
+
+\item {\bf Global Localisation}\\ 
+      The initial pose of the robot is unknown, or is given by a
+      probability distribution $p(\x{0}{}{})$ with high variance. As
+      the robot moves through the environment and collects
+      observations, it should be able to determine its pose.
+
+\item {\bf Kidnapped robot}\\
+      The robot is moving through the environment and is reasonably
+      certain about its pose, suddenly it gets teleported to some
+      other place within a known map, without being told. The robot
+      should be able to detect that its estimate of the pose is no
+      longer correct and re-localise.
+\end{itemize}
+
+Much research has previously concentrated on position tracking - in
+fact many existing algorithms address only the first problem (see
+review in \cite{Borenstein96}). Global localisation and the Kidnapped
+robot problems have been addressed using multi-hypothesis Kalman
+filters \cite{JensfeltKristensen01,Cox94}, Markov localisation
+\cite{Fox99}, and Monte Carlo methods \cite{Thrun00j}.
+
+
+\subsection{Problem Definition}
+
+The problem of localisation can be thought of as a problem of
+estimating the probability density distribution of robot pose
+conditioned on the observation and control data.  This posterior is
+typically called {\it Belief} and is denoted
+\begin{equation}
+  Bel(\x{k}{}{}) = p(\x{k}{}{} | \Uall{k-1}{}, \Zall{k}{}),
+\label{eqn:localise_belief}
+\end{equation}
+where \Uall{k-1}{} is a set of all control inputs up to time $k-1$, and
+\Zall{k}{} is a set of all observations up to time $k$. It is usually
+desired to approximate the posterior recursively, otherwise one would
+run into computation problems very quickly.  If we make a Markov
+assumption that future data is independent of past data given the
+robot pose is known, we have
+
+\begin{eqnarray}
+ p(\z{k} | \Zall{k-1}{}, \Uall{k-1}{})    &=& p(\z{k} | \x{k}{}{}) \\
+ p(\x{k}{}{} | \Zall{k-1}{}, \Uall{k-1}{})&=& p(\x{k}{}{} | \x{k-1}{}{}, \U{k-1}{}).
+\end{eqnarray}
+
+We can transform \refEquation{eqn:localise_belief} into a recursive
+formula, by applying Bayes' rule (see \cite{Thrun00j} for a derivation)
+
+\begin{equation}
+Bel(\x{k}{}{}) = \eta p(\z{k} | \x{k}{}{}) \int 
+                     p(\x{k}{}{} | \x{k-1}{}{}, \U{k-1}{}) 
+                     Bel(\x{k-1}{}{}) d \x{k-1}{}{},
+\label{eqn:localise_recursion}
+\end{equation}
+
+where $\eta$ is a normalisation constant. To implement the recursive
+rule in \refEquation{eqn:localise_recursion} one needs to know the
+distributions $p(\z{k} | \x{k}{}{})$ and $p(\x{k}{}{} | \x{k-1}{}{},
+\U{k-1}{})$. These distributions are generally referred to as {\it
+observation} (or sometimes {\it perception}) and {\it motion} models,
+respectively. 
+
+The motion model reflects the uncertainty in robot dynamics, so it is
+generally independent of time $k$. The observation model is a function
+of robot sensors and of the environment. If sensor characteristics do
+not change with time and if features in the map are static (a common
+assumption), the same observation model can be used for every time
+step.
+
+\subsection{Common Approaches to Metric Localisation}
+
+%EKF
+Several approaches to localisation have been proposed. One family of
+algorithms use the Extended Kalman Filter\cite{Jensfelt99}. Approaches
+based on the EKF linearise motion and observation models and
+approximate the posterior distribution with a Gaussian. While being
+computationally efficient, EKF based approaches have plenty of
+drawbacks. First they are not capable of global localisation, hence
+the initial pose of the robot should be known in advance with
+relatively high confidence. An EKF is only capable of representing a
+unimodal posterior distribution, meaning that in an ambiguous
+situation only one of the position hypotheses can be considered. This
+can lead to localisation failure if the wrong choice is made.
+
+A mixture of Gaussians model can be used to allow for multiple
+hypotheses \cite{JensfeltKristensen01,Cox94}. But the problems arising
+from linearisation are still present in these approaches.
+
+%Markov
+Markov localisation uses a grid to model the posterior distribution
+\cite{Fox99}. This approach is capable of global localisation, and can
+deal with the kidnapped robot problem as well. Fox \etal\ \cite{fb99}
+have shown that Markov localisation works well, even in highly crowded
+environments. The main advantage of this approach is the ability to
+model any complex distribution. This makes the algorithm more robust
+and allows for global localisation. Drawback include finite grid size,
+computational demand and sophisticated implementation to optimise the
+observation update and increase resolution ``on the fly''.
+
+%MCL
+Monte Carlo Localisation (MCL), also known as particle filtering,
+algorithms model the posterior distributions as a set of particles
+\cite{Thrun00j, JensfeltAustinWijk00b}. MCL is capable of
+approximating any probability distribution, including multi-modal
+distributions. It can perform global localisation and can solve the
+kidnapped robot problem. Unlike grid-based algorithms, MCL has a
+floating point resolution for robot pose, and so can give more
+accurate pose estimate. Although it is computationally more demanding
+than EKF approaches, it is my belief that the increased robustness of
+this algorithm makes it worth the additional computational resources
+required. The computational complexity of the MCL algorithm is $O(N)$
+in the number of particles used to represent the robot
+pose. Increasing the number of particles will result in greater
+accuracy and robustness. It is therefore easy to trade off the
+computational resources against performance.
+
+\section{Simultaneous Localisation and Mapping}
+\label{sec:SLAM}
+
+\subsection{SLAM Problem}
+
+This section introduces the problem of Simultaneous Localisation and
+Mapping.
+
+A robot starts at time 0 at location \x{0}{}{}, executes a series of
+motion commands $\Uall{k}{} = [\U{0},\U{1}...\U{k}]$ and collects a
+set of observations at every step
+$\Zall{k}{}=[\z{0},\z{1}...\z{k}]$. In practice observation and motion
+commands are not synchronised, however this can be easily accommodated
+for in the implementation. It is therefor commonly assumed that
+observation and motion happen at the same discrete time interval.
+Control and perception of the robot are subject to noise.
+
+\SILENT{$[\mape{}{}{1},\mape{}{}{2}...\mape{}{}{n}]$}
+
+SLAM seeks to find the true path of the robot up to time $k$,
+$\Xall{k}{}{} = [\x{0}{}{}, \x{1}{}{}, ... \x{k}{}{}]$, and the true
+model of the environment, $\map{k}{}{}$. Since there is an inherent
+uncertainty in the robot's observation and motion, one generally
+cannot give an exact description of the robot's path, and a map of the
+environment. However, it is possible to construct a probabilistic
+model that would assign a likelihood to every path-map combination,
+given all of the available observations, control inputs and the
+initial pose of the robot:
+
+\begin{equation}
+ p(\Xall{k}{}{}, \map{k}{}{} | \Zall{k}{}, \Uall{k}{}, \x{0}{}{}).
+\label{eqn:map}
+\end{equation}
+
+If one makes an assumption that odometry errors are independent of the
+observation errors and of the environment model, one can separate the
+model into an observation and motion parts, so we define:
+
+\begin{enumerate}
+
+\item The model of the robot's motion $P(\x{k}{}{} | \Uall{k}{})$. \\
+If one makes a further assumption that past odometry errors have no
+effect on future errors, one can represent robot motion as a Markov
+process, with probability distribution 
+\begin{equation}
+ P(\x{k}{}{} | \Uall{k}{}) \equiv p(\x{k}{}{}| \x{k-1}{}{}, \U{k})
+\end{equation}
+
+
+\item The model of the robot's perception
+$p(\z{k}| \x{k}{}{},\map{k}{}{}, \Zall{k}{})$.\\
+Here again an assumption is made that errors in the measurements are
+independent from past errors.
+
+\SILENT{
+, and also that only one landmark has
+effect on the measurement, presence or lack of other map elements does
+not affect our observation of the landmark.}
+
+\begin{equation}
+p(\z{k}| \x{k}{}{},\map{k}{}{}, \Zall{k}{}) \equiv 
+  p(\z{k}| \x{k}{}{},\map{k}{}{})
+\end{equation}
+
+\SILENT{
+\item The data association model (depends on the environment and the sensor)
+\begin{eqnarray}
+ p(\z{k} \equiv noise), \\
+ p(\z{k} \equiv new | \x{k}{}{}, \map{k}{}{}),\\
+ p(\z{k} \equiv \mape{}{}{\asc{k}} | \x{k}{}{}, \map{k}{}{}).
+\end{eqnarray}
+}
+
+\end{enumerate}
+
+Equipped with the knowledge of these distributions one can in
+principle compute the exact posterior, by considering every possible
+path, map and data association decision combination. In practice,
+however, computing such a distribution exactly is not possible due to
+high dimensionality and non-linearity of the system. Reasonably good
+approximations can, however be obtained, and better yet they can be
+computed incrementally in real-time.
+
+The two most common approaches to solving the SLAM problem are the EKF
+based algorithm and a particle filter algorithm called ``FastSLAM''.
+
+\subsection{Kalman Filter Approach}
+The Extended Kalman Filter approach treats the SLAM problem as a state
+estimation problem, where the state consists of the robot pose and
+locations of all landmarks. Usually the number of features is not
+known in advance, so most implementations have some provision for
+adding new elements to the map as new observations arrive. EKF SLAM
+requires linearisation of the robot's motion and perception models, so
+that the estimation error can be modelled by a Gaussian distribution.
+The computation complexity of the algorithm is $O(K^2)$, where $K$ is
+the number of features in the map \cite{ekf_slam}.
+
+Many reseacrches worked on improving computational performance of the
+EKF approach to SLAM
+\cite{williams:acra2001,
+williams2001esa,
+knight2001tct,
+guivant01,
+tim_bailey,
+uhlmann97nondivergent,
+tardos02:_mappin_local_indoor_envir_using_sonar_data}.
+It is possible to exploit the fact that only a small subset of the
+whole map is observed at any given time to reduce computation burden.
+Compressed EKF \cite{williams:acra2001} is an optimal approach that
+reduces computation cost of measurment update to $O(K_a^2)$, where
+$K_a$ is a number of features in the local region of the global map.
+This approach still requires a costly $O(K^2)$ global registration
+stage when robot changes from one local region to the next. A
+sub-optimal version of the same algorithm bounds a cost of the global
+registration stage.
+
+
+The most important limitation of the EKF approach is its inability to
+model multiple data association decisions. Every observation has to be
+classified as either noise, a new feature or an observation of an
+existing feature.  It is possible to postpone the final decision by
+running multiple Kalman filters in parallel. Alternatively one can try
+to improve data association, for example using the Joint Compatibility
+test \cite{neira01:_data_assoc_stoch_mappin_using}.  Both approaches
+reduce the probability of an incorrect data association decision, but
+ultimately produce a unimodal distribution.
+
+\subsection{Particle Filter Approach}
+FastSLAM uses particles to approximate the posterior distribution
+\cite{fastslam}. Every particle maintains it's own path, data
+association decisions and the resulting map. The map is a collection
+of independent landmarks. Their locations are estimated using Kalman
+filters, one for every landmark. FastSLAM requires linearisation of
+the perception model, but it samples directly from the motion model.
+As a result, no change to the motion model is required. FastSLAM can
+be implemented in $O(M\log K)$, where $M$ is the number of particles,
+and $K$ is the number of landmarks.
+
+Given enough particles, FastSLAM produces a better estimate of the
+posterior distribution.  Unfortunately it is not clear how many
+particles are needed for a particular problem. A modified version of
+FastSLAM algorithm \cite{fastslam2} uses a different sampling
+technique to generate particles where they are needed most, therefore
+reducing the number of particles needed. Authors of \cite{fastslam2},
+claim that even one particle is enough in some cases.
+
+The main advantage of FastSLAM is its ability to handle multiple data
+association decisions \cite{Montemerlo2003}, which makes it a more
+robust algorithm. From the implementation perspective, FastSLAM is
+trivial to parallelise, since computation per particle is independent
+of other particles. Given that the progress of computer hardware in a
+near future is likely to involve more ``cores'' per CPU, rather than
+faster CPUs, algorihtms that are best suited to exploit parallel
+computation will see the most improvement from progress in hardware.
+
+\subsection{Effect of Ambiguous Data Association on Posterior
+  Distribution}
+\label{sec:AmbiguousDA}
+
+One of the strong points of EKF - representing a posterior
+distribution as a Gaussian, is also its weakness. On one hand
+linearisation allows for an efficient implementation and provides a
+sound mathematical background for the algorithm, on the other hand
+posterior distributions arising in SLAM can be far from Gaussian
+depending on the environment, robot dynamics and sensor
+characteristics. 
+
+One of the factors affecting the true posterior distribution is the
+quality of the data association decisions. In the case of perfect data
+association, the posterior distribution tends to have a single peak
+and can be approximated with a Gaussian quite well. When data
+association is unreliable, multiple plausible hypothesis for data
+association arise. These multiple hypothesis produce a multi-modal
+posterior distribution. 
+
+\begin{figure}
+\begin{center}
+\subfigure[Experiment setup]{
+\includegraphics[width=6cm]{Pics/post_example}
+\label{fig:post_example}
+}
+\subfigure[$p({\bf x} | {\bf u})$]{
+\includegraphics[width=6cm]{Pics/post_odo}
+\label{fig:post_odo}
+}\\
+\subfigure[Known data association: $p({\bf x} | {\bf z})$ ]{
+\includegraphics[width=6cm]{Pics/post_obs}
+\label{fig:post_obs}
+}\quad\space
+\subfigure[Known data association: $p({\bf x} | {\bf u},{\bf z})$]{
+\includegraphics[width=6cm]{Pics/post_obsodo}
+\label{fig:post_obsodo}
+}\\
+\subfigure[Ambiguous data association: $p({\bf x} | {\bf z})$ ]{
+\includegraphics[width=6cm]{Pics/post_obs_}
+\label{fig:post_obs_}
+}\quad\space
+\subfigure[Ambiguous data association: $p({\bf x} | {\bf u},{\bf z})$]{
+\includegraphics[width=6cm]{Pics/post_obsodo_}
+\label{fig:post_obsodo_}
+}
+\end{center}
+\caption[Robot pose uncertainty, example]{In \ref{fig:post_example}
+robot makes observation at point (0,0), then moves 1 meter forward and
+makes another observation. The square shows the region for which pose
+uncertainty was computed. The resulting uncertainty of robot pose just
+before second measurement is shown in \ref{fig:post_odo}. Two scenarios
+are considered: known and ambiguous data association (rows two and three
+respectively).  The uncertainty due to the measurement is shown in
+\ref{fig:post_obs} and \ref{fig:post_obs_}. The robots pose uncertainty
+after incorporating the measurement is presented in
+\ref{fig:post_obsodo} and \ref{fig:post_obsodo_}.}\label{fig:post_all}
+\end{figure}
+
+To illustrate this point lets consider an atypically simple mapping
+problem: the world consists of two point landmarks and a robot living
+on a two-dimensional plane, see \refFigure{fig:post_all}. The robot
+pose is defined by its location on the plane only, for simplicity
+orientation of the robot is not modelled (one can assume that the
+robot has an extremely accurate compass). The robot is equiped with a
+sensor that reports landmark location relative to the robot pose. The
+error of the sensor is zero-mean Gaussian.
+
+The robot makes an observation at point (0,0), then moves one meter
+forward and makes another observation,
+see \refFigure{fig:post_example}. The robot dynamics are controlled by
+the following equation:
+$$
+  \Vector{x_k\\y_k} = \Vector{ x_{k-1} + r_k cos(\Theta_k)\\
+                               y_{k-1} + r_k sin(\Theta_k) },
+$$
+here control inputs at time $k$ are $r_k$ and $\Theta_k$ for distance
+and direction of travel, respectively. A Gaussian noise in actutation
+produces a banana-shaped distribution over the robot pose,
+\refFigure{fig:post_odo}.
+
+First lets consider the scenario when data association is perfect.
+After execution of the motion command the robot observes the landmarks
+once more. Since the observations were not certain for both first and
+second observation, the pose estimate that can be derived from the
+measurements has a significant uncertainty. This is illustrated in
+\refFigure{fig:post_obs}. The posterior distribution is non-Gaussian
+in this case as well, although the difference is not as apparent as in
+the motion example. The posterior distribution of the robot pose given
+observations and control input is shown in
+\refFigure{fig:post_obsodo}, while it is not strictly Gaussian, it can
+be argued that it can be approximated by a Gaussian reasonably well.
+
+In the case when data association is ambiguous, the posterior
+distribution is slightly more complicated. Lets assume the robot has
+three equally likely data association hypoptheses. 
+
+\begin{itemize}
+\item Observations 1 and 2 map to landmarks {\bf a},{\bf b}
+\item Observation 1 maps to landmark {\bf b}, observation 2 is spurious
+\item Observation 2 maps to landmakr {\bf a}, observation 1 is spurious
+\end{itemize}
+
+Each of these hypotheses by itself produces an almost Gaussian
+posterior distribution, but when combined the result is a multi-modal
+distribution shown in \refFigure{fig:post_obs_}. The posterior
+distribution of the robot pose given observations and control input is
+then as shown in \refFigure{fig:post_obsodo_}. As one can see this
+distribution differs significantly from the Gaussian.
+
+
+%%% \refFigure{fig:post_ekf_vs_pf} illustrates the resulting uncertainty
+%%% computed by the EKF and particle filter algorithms after applying a
+%%% control input, as in example in \refFigure{fig:post_all}. One can see
+%%% that particle filtering captures the banana shape of the motion model
+%%% much better than the EKF.
+%%% 
+%%% \begin{figure}
+%%% \begin{center}
+%%% \subfigure[EKF ($1\sigma$)]{
+%%% \includegraphics[width=6cm]{Pics/post_odo_ekf}
+%%% \label{fig:post_odo_ekf}
+%%% }\quad
+%%% \subfigure[Particle Filter]{
+%%% \includegraphics[width=6cm]{Pics/post_odo_pf}
+%%% \label{fig:post_odo_pf}
+%%% }
+%%% \end{center}
+%%% 
+%%% \caption[Comparison of uncertainty representation.]
+%%% {Modelling of the robot pose uncertainty,
+%%%  using EKF (a) and the particle filter (b).
+%%% }
+%%% \label{fig:post_ekf_vs_pf}
+%%% \end{figure}
+%%% 
+
+
+\section{Loop Closing}
+\label{sec:back_loop}
+%Problem definition
+  % Detect
+  % Correct
+
+The problem of loop closing arises when mapping a large cyclic
+environment. When the robot returns to a previously mapped region via
+a large loop, rather than by back-tracing its own steps, it needs to
+recognise the place as previously mapped. Failure to do so will result
+in incosistent map.  As the robot moves through an unexplored
+environment while building the map, it becomes more and more uncertain
+about its pose relative to the regions it mapped in the past.
+Increased uncertainty of the robot pose makes it more difficult to
+detect the place the robot has already mapped.
+
+%The increase in the uncertainty makes it hard for the robot to detect when it comes
+%back to the region it has mapped already. 
+%Failure to detect revisiting results in an inconsistent map.
+
+In order to build a consistent map, the robot needs to be able to
+detect the places it has been to before and correct its estimate of
+the path along the loop. The problem of mapping large cyclic
+environments has been addressed by several researchers.
+
+
+%what is there now
+  %Lu Milios (scan matching + optimisation)
+  %Gutman   (scan matching + confirm + handles high uncertainty)
+  %Thrun's  (EM)
+  %Fergusson (EKF mines)
+  %Atlas
+
+
+Lu and Milios \cite{lu97:_global} propose an algorithm they call
+``consistent pose estimation''. The algorithm uses laser scan matching
+and linearised global optimisation over scan poses to build a scan map
+of the environment in a single global frame. The approach builds a
+network of robot poses at which a laser scan has been taken. The poses
+are connected by ``weak'' and ``strong'' links. The links represent
+the spatial relations between poses. Weak links are derived from
+odometry, and strong links are derived from the scan matches. The
+algorithm then finds a global configuration of the poses of the places
+by minimising a cost function. If one thinks of links as springs, the
+algorithm finds the configuration that reduces the sum of forces
+exerted by the springs. Spatial relations are modelled by Gaussians,
+and the cost function is the sum of the Mahalanobis distances.
+
+The method by Lu and Milios is very sensitive to the initial estimate
+of the robot pose just before loop closing. Since the pose estimate is
+derived from the local scan matching and odometry, it can, in
+principle, have unbounded error. If the initial estimate is too far
+from the real robot pose, the algorithm often converges to local
+minima that are not correct. Another problem with this method is the
+computational complexity, which is $O(N^3)$ in the number of poses.
+
+Konolige and Gutman
+\cite{konolige99:_increm_mappin_large_cyclic_envir} provide a method
+based on the ideas of Lu and Milios, but try to address these
+problems. Instead of using single laser scan to find relations between
+places they use a map correlation technique \cite{konolige99}. This
+makes the system more robust to false correspondences. After detecting
+loop closing, the algorithm runs consistent pose estimation. 
+
+Another interesting scan matching based mapping technique is
+\cite{fergusson2003} by Ferguson \etal. In this approach loop closing
+can be undone if the observations further down the track do not
+support it.
+
+Thrun \etal \cite{slam_thrun98b,Thrun98a,thrun98:_probab} suggest an
+approach that uses an Expectation Maximisation (EM) algorithm for
+constructing maps of cyclic environments. The algorithm is given a
+relatively small set of observations of sparsely positioned non-unique
+landmarks and a set of all control inputs. In the expectation step the
+algorithm computes the most likely robot path given the map and the
+data. In the maximisation step the most likely map is computed, given
+the robots path from the E-step. The Expectation and Maximisation
+steps are repeated until the map converges to the maximum likelihood
+solution. This algorithm cannot be implemented in real-time, because
+it needs to have access to all of the future and past data to
+determine the robot pose at any given time.
+
+All of the methods presented so far build a map of the whole
+environment in a single global reference frame. Recently, Bosse \etal\
+\cite{bosse03atlas} suggest a mapping approach, \Atlas, that does not
+require a global reference frame. The map structure used in this
+approach is a hybrid topological/metric map.  Each node is a local map
+and every link in the topological map represents a spatial
+relationship between the two places it connects.  Spatial
+relationships are derived from the residual robot pose uncertainty of
+the mapping process used to build the local maps. \Atlas\ supports variuos 
+underlying mapping modules the two EKF SLAM with line and point features extracted from
+either laser or sonar range data. The uncertainty in spatial
+relationships are modelled as Gaussians.
+
+\Atlas\ uses a combination of map matching and uncertainty projection
+to detect when the robot re-enters a previously explored
+area. Uncertainty projection computes the relative poses between the
+two non-adjacent local maps. If according to this estimate, the two
+maps might be overlapping, \Atlas\ tries to find the landmark
+correspondences between the two maps. If the two maps match, the new
+link is added to the topological map. The pose relation for this link
+is computed from the landmark correspondences. \Atlas\ does not
+attempt to correct spatial relations between the map frames along the
+closed loop. In order to decrease the probability of incorrect data
+association, \Atlas\ runs several hypotheses at any given time. If,
+after closing the loop, the observations do not match the map well
+enough, the loop closing hypothesis will be discarded in favour of the
+new map hypothesis.
+
+The main advantage of \Atlas\ is the map structure it uses. Moving
+away from the single reference frame allows the mapping of large
+environments with huge cycles in real time. There are some
+deficiencies in their approach though. For instance, when the robot
+returns to the previously mapped region it gains new knowledge about
+relative positions of the local maps. The robot can use this knowledge
+to update the links in the map. \Atlas\ does not perform this update
+because of the computational requirements involved, although the
+authors mention that such update can be performed after the mapping is
+complete. \Atlas\ uses metrics to test loop closing hypotheses. These
+metrics do not necessarily correspond to the true likelihood, making
+it difficult to predict the behaviour of the algorithm in a new
+environment. 
+
+\SILENT{how do you tune these metrics if you have a different sensor,
+  than what they used?}
 
 
 
@@ -272,25 +831,18 @@ resources.
 Another important limitation comes from the approximation error. Every
 mapping algorithm is trying to compute the map as a joint posterior
 distribution of robot poses and a map given all the observations and
-control inputs. Formal definition of the problem is given in the next
-chapter.
+control inputs. Since computing such a distribution in its true form
+is rather impractical, all existing approaches try to approximate it.
+As the environment size increases the effect of approximation becomes
+more significant.
 
-%\begin{equation}
-%\nonumber
-%p(\Xall{k}{}{}, \map{k}{}{} | \Zall{k}{}, \Uall{k}{},\x{0}{}{}).
-%\end{equation}
-
-Since computing such a distribution in its true form is rather
-impractical, all existing approaches try to approximate it. EKF SLAM
-linearises the motion and observation models. FastSLAM approximates
-the robot pose by the set of particles, and assumes a Gaussian
-observation model. EM based SLAM has to make some assumptions about
-the environment and the robot motion. As the environment size
-increases the effect of approximation becomes more significant.
+%%% EKF SLAM linearises the motion and observation models. FastSLAM
+%%% approximates the robot pose by the set of particles, and assumes a
+%%% Gaussian observation model. EM based SLAM has to make some assumptions
+%%% about the environment and the robot motion. 
 
 
-
-\subsection{Divide and Conquer} 
+\section{Hybrid Approaches to SLAM} 
 
 If one segments the environment into a number of smaller regions, and
 maps each region separately (build local maps), one can avoid the
@@ -326,6 +878,7 @@ the topological map as an after thought. The relationships between
 nodes is purely topological. Metric information is only used inside
 the local maps.
 
+\subsection{Atlas}
 The approaches that I consider ``more hybrid'' include \Atlas\ by
 Bosse \etal\ \cite{bosse03atlas} and the one described in this thesis.
 These approaches incorporate metric information into the topological
