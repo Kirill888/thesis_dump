@@ -5,11 +5,7 @@ simultaneous localisation and mapping (SLAM). First, a notation that
 will be used throughout this document is introduced in
 Section~\ref{sec:Notation}. Section~\ref{sec:Kalman} gives a brief
 overview of the Kalman and Extended Kalman filters (Section~\ref{sec:EKF}).
-The particle filter is introduced in Section~\ref{sec:PF}. A brief
-overview of Localisation is given in Section~\ref{sec:Localisation},
-followed by an overview of SLAM in Section~\ref{sec:SLAM}. Finally the
-problem of cycle detection or ``loop closing'' is discussed in
-Section~\ref{sec:back_loop}.
+The particle filter is introduced in Section~\ref{sec:PF}. 
 
 
 \section {Notation}
@@ -386,35 +382,6 @@ every observation.
 resampling strategies, entropy based maybe?}
 
 
-
-\section{Summary}
-%TODO: many people worked on EKF, fewer on FastSLAM, no work on PF +
-%hybrid map models. Need to explore new data structures, not just keep
-%trying to patch up EKF approach.
-
-%We therefore chose to use FastSLAM to perform local mapping tasks.
-
-The past few decades of mobile robotics research provide us with
-the tools for mapping and localisation. Unfortunately, existing
-algorithms work only in relatively small environments. The main
-limiting factors are:
-
-\begin{itemize}
-\item The computational burden: as size of the environment grows, so do
-  the computational requirements of existing algorithms.
-
-\item The data association problem in the face of uncertainty: 
-   in large environments the uncertainty of the landmarks far away
-  from the origin is high. That makes it difficult to perform correct
-  data association.
-
-\end{itemize}
-
-Various optimisation techniques and faster hardware can expand the
-capabilities of existing algorithms, but to really overcome these
-limitations new map representations are required. In particular new
-ways to model uncertainty should be explored. Some recent research in
-this area include \cite{bosse03atlas,fergusson2003}.
 
 % LocalWords:  Kalman odometry EKF FastSLAM Bayes MCL Lu Milios Konolige Gutman
 % LocalWords:  Thrun Bosse Ferguson resampling Gaussians linearisation

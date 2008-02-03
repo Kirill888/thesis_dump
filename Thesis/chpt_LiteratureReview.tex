@@ -1,3 +1,7 @@
+% A brief overview of Localisation is given in
+% Section~\ref{sec:Localisation}, followed by an overview of SLAM in
+% Section~\ref{sec:SLAM}. Finally the problem of cycle detection or
+% ``loop closing'' is discussed in Section~\ref{sec:back_loop}.
 
 \section{Lessons from Biology}
 
@@ -118,13 +122,13 @@ subjective component; thus it is problematic to infer relative
 location directly between minor points in different systems. One must
 rather go up and down in the hierarchy.
 
-I personally tend to agree more with Golledge's point of view. For
-instance I can easily point in the direction of the coffee machine
-when I am in my office at university, in addition, I can tell how it
-is oriented relative to my desk.  However I can provide only a rough
-estimate of the direction to my house, and a rather poor distance
-estimate, and I am really uncertain about the orientation of my house
-relative to the coffee machine in the university. 
+%%% I personally tend to agree more with Golledge's point of view. For
+%%% instance I can easily point in the direction of the coffee machine
+%%% when I am in my office at university, in addition, I can tell how it
+%%% is oriented relative to my desk.  However I can provide only a rough
+%%% estimate of the direction to my house, and a rather poor distance
+%%% estimate, and I am really uncertain about the orientation of my house
+%%% relative to the coffee machine in the university. 
 
 %\SILENT{need a summary on the observation that local things are
 %  metric, but further things are topological.}
@@ -215,10 +219,11 @@ The localisation algorithm can face three possible problems
 
 \item {\bf Kidnapped robot}\\
       The robot is moving through the environment and is reasonably
-      certain about its pose, suddenly it gets teleported to some
-      other place within a known map, without being told. The robot
-      should be able to detect that its estimate of the pose is no
-      longer correct and re-localise.
+      certain about its pose, suddenly it gets moved by external force
+      (think of a robotic vacuum cleaner) to some other place within a
+      known map, without being told. The robot should be able to
+      detect that its estimate of the pose is no longer correct and
+      re-localise.
 \end{itemize}
 
 Much research has previously concentrated on position tracking - in
@@ -306,7 +311,7 @@ computational demand and sophisticated implementation to optimise the
 observation update and increase resolution ``on the fly''.
 
 %MCL
-Monte Carlo Localisation (MCL), also known as particle filtering,
+Monte Carlo Localisation (MCL, also known as particle filtering),
 algorithms model the posterior distributions as a set of particles
 \cite{Thrun00j, JensfeltAustinWijk00b}. MCL is capable of
 approximating any probability distribution, including multi-modal
@@ -314,13 +319,12 @@ distributions. It can perform global localisation and can solve the
 kidnapped robot problem. Unlike grid-based algorithms, MCL has a
 floating point resolution for robot pose, and so can give more
 accurate pose estimate. Although it is computationally more demanding
-than EKF approaches, it is my belief that the increased robustness of
-this algorithm makes it worth the additional computational resources
-required. The computational complexity of the MCL algorithm is $O(N)$
-in the number of particles used to represent the robot
-pose. Increasing the number of particles will result in greater
-accuracy and robustness. It is therefore easy to trade off the
-computational resources against performance.
+than EKF approaches, the increased robustness of this algorithm makes
+it worth the additional computational resources. The computational
+complexity of the MCL algorithm is $O(N)$ in the number of particles
+used to represent the robot pose. Increasing the number of particles
+will result in greater accuracy and robustness. It is therefore easy
+to trade off the computational resources against performance.
 
 \section{Simultaneous Localisation and Mapping}
 \label{sec:SLAM}
@@ -690,7 +694,7 @@ constructing maps of cyclic environments. The algorithm is given a
 relatively small set of observations of sparsely positioned non-unique
 landmarks and a set of all control inputs. In the expectation step the
 algorithm computes the most likely robot path given the map and the
-data. In the maximisation step the most likely map is computed, given
+data. In the maximisation step the most likely map is computed given
 the robots path from the E-step. The Expectation and Maximisation
 steps are repeated until the map converges to the maximum likelihood
 solution. This algorithm cannot be implemented in real-time, because
@@ -703,45 +707,20 @@ environment in a single global reference frame. Recently, Bosse \etal\
 require a global reference frame. The map structure used in this
 approach is a hybrid topological/metric map.  Each node is a local map
 and every link in the topological map represents a spatial
-relationship between the two places it connects.  Spatial
-relationships are derived from the residual robot pose uncertainty of
-the mapping process used to build the local maps. \Atlas\ supports variuos 
-underlying mapping modules the two EKF SLAM with line and point features extracted from
-either laser or sonar range data. The uncertainty in spatial
-relationships are modelled as Gaussians.
+relationship between the two places it connects. 
 
 \Atlas\ uses a combination of map matching and uncertainty projection
-to detect when the robot re-enters a previously explored
-area. Uncertainty projection computes the relative poses between the
-two non-adjacent local maps. If according to this estimate, the two
-maps might be overlapping, \Atlas\ tries to find the landmark
+to detect when the robot re-enters a previously explored area.
+Uncertainty projection computes the relative poses between the two
+non-adjacent local maps. If according to this estimate, the two maps
+might be overlapping, \Atlas\ tries to find the landmark
 correspondences between the two maps. If the two maps match, the new
 link is added to the topological map. The pose relation for this link
-is computed from the landmark correspondences. \Atlas\ does not
-attempt to correct spatial relations between the map frames along the
-closed loop. In order to decrease the probability of incorrect data
-association, \Atlas\ runs several hypotheses at any given time. If,
-after closing the loop, the observations do not match the map well
-enough, the loop closing hypothesis will be discarded in favour of the
-new map hypothesis.
-
-The main advantage of \Atlas\ is the map structure it uses. Moving
-away from the single reference frame allows the mapping of large
-environments with huge cycles in real time. There are some
-deficiencies in their approach though. For instance, when the robot
-returns to the previously mapped region it gains new knowledge about
-relative positions of the local maps. The robot can use this knowledge
-to update the links in the map. \Atlas\ does not perform this update
-because of the computational requirements involved, although the
-authors mention that such update can be performed after the mapping is
-complete. \Atlas\ uses metrics to test loop closing hypotheses. These
-metrics do not necessarily correspond to the true likelihood, making
-it difficult to predict the behaviour of the algorithm in a new
-environment. 
-
-\SILENT{how do you tune these metrics if you have a different sensor,
-  than what they used?}
-
+is computed from the landmark correspondences. In order to decrease
+the probability of incorrect data association, \Atlas\ runs several
+hypotheses at any given time. If, after closing the loop, the
+observations do not match the map well enough, the loop closing
+hypothesis will be discarded in favour of the new map hypothesis.
 
 
 \section{Limitations of Metric Approaches to Mapping}
@@ -751,8 +730,8 @@ environment.
 %Problems with global mapping.
 %Building an accurate metric map is not a trivial matter. 
 
-There exist several good methods for building metric maps, but they do
-not scale up to big environments. The main restricting factors are:
+While there exist several good methods for building metric maps, they
+do not scale up to big environments. The main restricting factors are:
 
 \begin{enumerate}
  \item Increase in the computational complexity. The larger the
@@ -782,7 +761,7 @@ requirements relatively constant, irrespective of the environment
 size. The underlying mapping algorithm used in this approach is EKF
 SLAM.
 
-Increasing uncertainty is another fundamental problem, when a map is
+Increasing uncertainty is another fundamental problem when a map is
 built incrementally, i.e. new measurements are added to the existing
 map as they arrive. In order to add a measurement the robot needs to
 solve a data association problem: is this observation from one of the
@@ -857,12 +836,11 @@ is also easier to close large cycles since closing a cycle in such a
 map is just a matter of adding a link between two places in the
 topological structure of the map.
 
-Existing hybrid approaches can be grouped into three broad
-categories: mainly metric, mainly topological, and truly hybrid. They
-are all hybrid, they all use both metric and topological
-representations, but some are more hybrid than others.
+%%% Existing hybrid approaches can be grouped into three broad
+%%% categories: mainly metric, mainly topological, and truly hybrid. 
+%%% 
 
-Mainly metric approaches desire to build a global metric map
+Some of the hybrid methods desire to build a global metric map
 \cite{Thrun98a, slam_thrun98b}. These approaches use topological
 structure as an intermediate step only. The environment is split into
 local maps, each local map is explored separately, and all maps are
@@ -872,32 +850,96 @@ used to enforce consistency of the global map. The main advantage of
 such methods is a more robust loop closing behaviour. This is due to
 the fact that loop closing is performed based on map matching.
 
-Approaches that are more topological than metric build a topological
-map \cite{Cho01,Kuipers00}. Metric maps are built for every node of
-the topological map as an after thought. The relationships between
-nodes is purely topological. Metric information is only used inside
-the local maps.
+Other methods build topological maps with independent metric maps for
+each node \cite{Cho01,Kuipers00}. Metric maps are built for every node of the
+topological map as an after thought. The relationships between nodes
+is purely topological. Metric information is only used inside the
+local maps.
+
+More recently a more tight integration of metric and topological
+information started to appear in robotic research. A hybrid mapping
+approach called \Atlas\ by Bosse \etal\ \cite{bosse03atlas} incorporates
+metric information into the topological structure of the map. Every
+link in the topological structure stores the spatial relation between
+the two nodes (local maps) as a stochastic variable. 
+
+%%% \Atlas\ is described in more detail in the next section.
+
 
 \subsection{Atlas}
-The approaches that I consider ``more hybrid'' include \Atlas\ by
-Bosse \etal\ \cite{bosse03atlas} and the one described in this thesis.
-These approaches incorporate metric information into the topological
-structure of the map. Every link in the topological structure stores
-the spatial relation between the two nodes (local maps) as a
-stochastic variable. In the case of \Atlas\ spatial relationships are
-approximated by a Gaussian. There is no single global reference
-frame, but it is possible to compute the relative poses of any two
-local maps with some certainty, hence it is possible to project the
-robot pose estimate from one reference frame to any other, along with
-the uncertainty.
 
-\Atlas\ is capable of mapping large cyclic environments. When closing
-large cycles, this approach relies on place recognition (map matching)
-and a robot pose estimate to detect a revisiting event. If the two
-maps match, and the robot pose derived from the match is likely, a new
-link can be added to the topological structure. In order to avoid
-false positives, a loop closing hypothesis is first tested by
-considering how well the observations match the map.
+\Atlas\ by Bosse \etal\ \cite{bosse03atlas} is a hybrid
+topological/metric approach to SLAM. \Atlas\ models environment as a
+set of local maps of bound size. There is no single global reference
+frame, only local transformations between adjacent local maps are
+maintained. Spatial relationships are approximated by a Gaussian,
+derived from the residual robot pose uncertainty of the mapping
+process used to build the local maps.
+
+\Atlas\ supports variuos underlying mapping modules for building local
+maps. The two mapping modules presented in \cite{bosse03atlas} were
+based on EKF SLAM using line and point features extracted from either
+laser or sonar range data.
+
+The main advantage of \Atlas\ is the map structure it uses. Moving
+away from the single reference frame allows the mapping of large
+environments with huge cycles in real time. Even though there is no
+global reference frame, it is still possible to compute the relative
+poses of any two local maps with some certainty, hence it is possible
+to project the robot pose estimate from one reference frame to any
+other, along with the uncertainty.
+
+
+When closing large cycles, \Atlas\ relies on place recognition
+(map matching) and the robot pose estimate to detect a revisiting
+event. If the two maps match, and the robot pose derived from the
+match is likely, a new link can be added to the topological structure.
+In order to avoid false positives, a loop closing hypothesis is first
+tested by considering how well the observations match the map.
+
+There are some deficiencies in their approach though. For instance,
+when the robot returns to the previously mapped region it gains new
+knowledge about the relative positions of the local maps. The robot can
+use this knowledge to update the links in the map. \Atlas\ does not
+perform this update because of the computational requirements
+involved, although authors mention that such update can be performed
+after the mapping is complete. \Atlas\ uses metrics to test loop
+closing hypotheses. These metrics do not necessarily correspond to the
+true likelihood, making it difficult to predict the behaviour of the
+algorithm in a new environment.
+
+\section{Summary}
+%TODO: many people worked on EKF, fewer on FastSLAM, no work on PF +
+%hybrid map models. Need to explore new data structures, not just keep
+%trying to patch up EKF approach.
+
+%We therefore chose to use FastSLAM to perform local mapping tasks.
+
+The past few decades of mobile robotics research provide us with
+the tools for mapping and localisation. Unfortunately, existing
+algorithms work only in relatively small environments. The main
+limiting factors are:
+
+\begin{itemize}
+\item The computational burden: as size of the environment grows, so do
+  the computational requirements of existing algorithms.
+
+\item The data association problem in the face of uncertainty: 
+   in large environments the uncertainty of the landmarks far away
+  from the origin is high. That makes it difficult to perform correct
+  data association.
+
+\end{itemize}
+
+Various optimisation techniques and faster hardware can expand the
+capabilities of existing algorithms, but to really overcome these
+limitations new map representations are required. In particular new
+ways to model uncertainty should be explored. 
+
+% Some recent research in
+% this area include \cite{bosse03atlas,fergusson2003}.
+
+
 
 
 \nocite{tim_bailey,
