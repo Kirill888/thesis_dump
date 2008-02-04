@@ -9,32 +9,23 @@ with other existing mapping techniques is given.
 HTSLAM is a novel mapping technique that addresses some of the
 limitations of traditional mapping approaches. HTSLAM decomposes the
 environment into a number of interconnected regions. Each region is
-mapped separately. There is no global reference frame in HTSLAM, only
+mapped separately. There is no global reference frame, only
 metric relationships between neighbouring regions are stored in the
 HTSLAM map. Local mapping is performed using a particle filter based
 approach called FastSLAM \cite{fastslam, fastslam2}. The particle filter
 allows HTSLAM to deal with mapping ambiguities in a rigorous
-probabilistic framework. The advantage of a particle filter over a more
-traditional EKF approach becomes especially apparent when performing
-loop closing. In a general case of unknown data associations
-(non-unique landmarks), loop closing gives rise to a multi-modal
-probability density over robot pose, due to ambiguities arising in
-data association decisions. The EKF is incapable of dealing with
-multi-modal distributions directly. As a result one has to run
-a separate EKF for each competing hypothesis, this however can be
-computationally expensive. It is not practical to create new EKF for
-every ambiguous data association decision, as the number of filters
-running in parallel will increase exponentially. A pruning mechanism
-is required, however comparing two EKF mapping filters is not an
-obvious task. Generally one needs to define some heuristic
-comparison criteria, and some thresholds to overcome this problem.
+probabilistic framework.
 
-In contrast to the EKF, particle filters deal with multi-modal
-distributions natively. HTSLAM exploits this ability of particle
-filters, to run multiple mapping hypothesis in parallel. There is no
-need to define fancy comparison metrics to prune out invalid
-hypothesis. Pruning of unlikely hypothesis happens automatically as
-part of a resampling step of the particle filter. 
+
+In a general case of unknown data associations (non-unique landmarks),
+probability density over robot pose is often multi-modal, due to
+ambiguities arising in the data association decisions. Particle filters
+deal with multi-modal distributions natively. HTSLAM benefits from this
+ability of particle filters. This advantage is especially apparent when
+closing large cycles. When closing the loop HTSLAM runs multiple mapping
+hypothesis in parallel. Pruning of unlikely hypothesis happens
+automatically as part of a resampling step of the particle filter.
+
 
 
 \section{Comparison}
@@ -42,110 +33,130 @@ part of a resampling step of the particle filter.
 \subsection{Global Mapping Approaches}
 %Short!
 
-%\subsubsection{EKF SLAM}
+%The advantage of a particle filter over a more
+%traditional EKF approach becomes especially apparent when performing
+%loop closing. 
+%The EKF is incapable of dealing with multi-modal distributions directly. As a
+%result one has to run a separate EKF for each competing hypothesis, this
+%however can be computationally expensive. It is not practical to create
+%new EKF for every ambiguous data association decision, as the number of
+%filters running in parallel will increase exponentially. A pruning
+%mechanism is required, however comparing two EKF mapping filters is not
+%an obvious task. Generally one needs to define some heuristic comparison
+%criteria, and some thresholds to overcome this problem.
 
-Without doubt, the most common mapping approach to date is EKF based
-SLAM. It is a well-understood technique with neat mathematical
-background. The computational complexity of a pure EKF SLAM is
-quadratic in the number of landmarks. However it has been shown that
-the computational complexity can be reduced to almost constant time,
-by exploiting locality of observations \cite{Thrun03d,guivant04}.
-These techniques still require merging of the local information back
-into a global map once in a while, this update step is quadratic in
-the number of landmarks.
+%%\subsubsection{EKF SLAM}
+%
+%Without doubt, the most common mapping approach to date is EKF based
+%SLAM. It is a well-understood technique with neat mathematical
+%background. The computational complexity of a pure EKF SLAM is
+%quadratic in the number of landmarks. However it has been shown that
+%the computational complexity can be reduced to almost constant time,
+%by exploiting locality of observations \cite{Thrun03d,guivant04}.
+%These techniques still require merging of the local information back
+%into a global map once in a while, this update step is quadratic in
+%the number of landmarks.
+%
+%EKF makes some seriously limiting assumptions \cite{fixme}. In
+%particular, it is assumed that the data association is
+%unambiguous. This is generally false even for well behaved sensors
+%like laser range scanners. Batch data association techniques like
+%\cite{neira01:_data_assoc_stoch_mappin_using,
+%tardos02:_mappin_local_indoor_envir_using_sonar_data} can reduce the
+%ambiguity of data association, but it is impossible to eliminate this
+%problem completely. It is impossible to undo incorrect data
+%association in EKF, as a result EKF is quite sensitive to data
+%association errors. Loop closing in particular is a very difficult
+%problem for EKF SLAM, due to the inability to deal with ambiguous data
+%association.
+%
+%EKF SLAM assumes that noise in sensor and motion models can be
+%approximated with a Gaussian. Such an approximation works reasonably
+%well for small maps. The effect of approximation becomes more apparent
+%in larger environments. Generally the sensor range is finite. The
+%robot is able to observe only a small local region around its current
+%pose. As the robot moves further away from the starting point, the
+%uncertainty of the robot pose increases, because it cannot observe
+%landmarks near the origin, and relocalise with respect to
+%them. Uncertainty in the pose propagates to the new landmarks being
+%added to the map. Maps produced by EKF SLAM usually have highly
+%certain landmarks near the origin, while landmarks far away have much
+%larger uncertainties. In theory the map will converge as number of
+%observations increases to infinity. \NOTE{this is not exactly true,
+%since there is no proof that EKF should converge, however it does so
+%in practice.} In practice increasing uncertainty and accumulation of
+%approximation errors is a huge problem, as it makes data association
+%more difficult, or even impossible, leading to inconsistent maps and
+%divergence.
+%
+%
+%%\subsubsection{FastSLAM and FastSLAMII}
+%
+%FastSLAM is a more recent mapping technique based on a modified
+%Rao-Blackwellised particle filter \cite{fastslam, fastslam2}. It
+%avoids some of the problems of an EKF approach. The computational
+%complexity of FastSLAM is logarithmic in the number of landmarks $N$,
+%scaled by the number of particles $K$,$O(K \log N)$. Being a particle
+%based approach FastSLAM can model multi-modal probability distribution
+%functions (PDF). FastSLAM can also deal with ambiguous data
+%associations \cite{Montemerlo2003}, since every particle is free to
+%choose data association most compatible with it's state. Furthermore
+%new particles can be added when data association is
+%ambiguous. FastSLAM deals with the loop closing problem seamlessly
+%(given there are enough particles in the right place). Like the EKF,
+%FastSLAM linearises the observation model,and assumes thae errors are
+%Gaussian. However the motion model does not need to be linear, as a result
+%non-linear behaviours like wheel slippage can be modelled
+%probabilistically. FastSLAM was shown to work even when no odometry
+%information is available \cite{fastslam}.
+%
+%Like the EKF approach FastSLAM has one global reference frame, as a
+%result it suffers from similar problems when operating in a large
+%environment. Increasing uncertainty as the robot moves away from the
+%origin, leads to the particle deprivation problem. The higher the
+%uncertainty the more particles are needed to model it accurately.
+%Approximation errors also tend to accumulate and become more obvious.
+%As a result the performance of the filter degrades and this in turn
+%can lead to inconsistent maps. FastSLAM 2.0 \cite{fastslam2} deals
+%with the particle deprivation problem by merging observation and
+%odometry information during the motion propagation stage of the filter,
+%effectively generating samples where they are needed most. However
+%this just decreases the effect of the particle deprivation problem and
+%does not eliminate it entirely.
 
-EKF makes some seriously limiting assumptions \cite{fixme}. In
-particular, it is assumed that the data association is
-unambiguous. This is generally false even for well behaved sensors
-like laser range scanners. Batch data association techniques like
-\cite{neira01:_data_assoc_stoch_mappin_using,
-tardos02:_mappin_local_indoor_envir_using_sonar_data} can reduce the
-ambiguity of data association, but it is impossible to eliminate this
-problem completely. It is impossible to undo incorrect data
-association in EKF, as a result EKF is quite sensitive to data
-association errors. Loop closing in particular is a very difficult
-problem for EKF SLAM, due to the inability to deal with ambiguous data
-association.
+%HTSLAM is capable of modelling multi-modal PDFs, which in turn allows
+%the system to capture ambiguity arising from data association
+%decisions. 
 
-EKF SLAM assumes that noise in sensor and motion models can be
-approximated with a Gaussian. Such an approximation works reasonably
-well for small maps. The effect of approximation becomes more apparent
-in larger environments. Generally the sensor range is finite. The
-robot is able to observe only a small local region around its current
-pose. As the robot moves further away from the starting point, the
-uncertainty of the robot pose increases, because it cannot observe
-landmarks near the origin, and relocalise with respect to
-them. Uncertainty in the pose propagates to the new landmarks being
-added to the map. Maps produced by EKF SLAM usually have highly
-certain landmarks near the origin, while landmarks far away have much
-larger uncertainties. In theory the map will converge as number of
-observations increases to infinity. \NOTE{this is not exactly true,
-since there is no proof that EKF should converge, however it does so
-in practice.} In practice increasing uncertainty and accumulation of
-approximation errors is a huge problem, as it makes data association
-more difficult, or even impossible, leading to inconsistent maps and
-divergence.
+Global mapping approaches include EKF SLAM and FastSLAM. These methods
+and their limitations were described in detail in
+Chapter~\ref{chpt:LiteratureReview}.
 
+The main advantage of HTSLAM over global methods is scalability. HTSLAM
+performance does not degrade as the robot moves further away from the
+origin; the quality of the local maps is a function of the environment
+and the sensors, and is independent of the distance from the
+origin. Assuming a sensible exploration strategy that avoids unnecessary
+long loops, or venturing into feature-less spaces, the area that can be
+covered is only limited by the robot storage capacity. A smart
+implementation that swaps out unused maps from memory to disk can indeed
+cover large areas with this approach.
 
-%\subsubsection{FastSLAM and FastSLAMII}
+Since HTSLAM only updates a small local region (or some times
+several small local regions) at any given time, the computational
+complexity is bounded.
 
-FastSLAM is a more recent mapping technique based on a modified
-Rao-Blackwellised particle filter \cite{fastslam, fastslam2}. It
-avoids some of the problems of an EKF approach. The computational
-complexity of FastSLAM is logarithmic in the number of landmarks $N$,
-scaled by the number of particles $K$,$O(K \log N)$. Being a particle
-based approach FastSLAM can model multi-modal probability distribution
-functions (PDF). FastSLAM can also deal with ambiguous data
-associations \cite{Montemerlo2003}, since every particle is free to
-choose data association most compatible with it's state. Furthermore
-new particles can be added when data association is
-ambiguous. FastSLAM deals with the loop closing problem seamlessly
-(given there are enough particles in the right place). Like the EKF,
-FastSLAM linearises the observation model,and assumes thae errors are
-Gaussian. However the motion model does not need to be linear, as a result
-non-linear behaviours like wheel slippage can be modelled
-probabilistically. FastSLAM was shown to work even when no odometry
-information is available \cite{fastslam}.
+HTSLAM provides a robust method for loop closing. In HTSLAM loop
+closing can be postponed until enough information supporting it is
+available. In fact it is possible to post-pone loop detection and
+closing until mapping is complete and update the map at a later time. In
+contrast, EKF and FastSLAM have to rely on observation to map
+correspondence alone when closing the loop.
 
-Like the EKF approach FastSLAM has one global reference frame, as a
-result it suffers from similar problems when operating in a large
-environment. Increasing uncertainty as the robot moves away from the
-origin, leads to the particle deprivation problem. The higher the
-uncertainty the more particles are needed to model it accurately.
-Approximation errors also tend to accumulate and become more obvious.
-As a result the performance of the filter degrades and this in turn
-can lead to inconsistent maps. FastSLAM 2.0 \cite{fastslam2} deals
-with the particle deprivation problem by merging observation and
-odometry information during the motion propagation stage of the filter,
-effectively generating samples where they are needed most. However
-this just decreases the effect of the particle deprivation problem and
-does not eliminate it entirely.
-
-HTSLAM is based on FastSLAM, so like FastSLAM it is capable of
-modelling multi-modal PDFs, which in turn allows the system to capture
-ambiguity arising from data association decisions. Since HTSLAM
-only updates a small local region (or some times several small local
-regions) at any given time, the computational complexity is
-bounded. HTSLAM provides a more robust method for loop closing. In
-HTSLAM loop closing can be postponed until enough information
-supporting it is available. In fact it is possible to post-pone loop
-detection and closing until mapping is complete and update the map at
-a later time. In contrast EKF and FastSLAM have to rely on observation
-to map correspondence alone when closing the loop.
-
-The main advantage of HTSLAM is scalability. HTSLAM performance does
-not degrade as the robot moves further away from the origin; the
-quality of the local maps is a function of the environment and the
-sensors, and is independent of the distance from the origin. Assuming
-a sensible exploration strategy that avoids unnecessary long loops, or
-venturing into feature-less spaces, the area that can be covered is
-only limited by the robot storage capacity. A smart implementation
-that swaps out unused maps from memory to disk can indeed cover large
-areas with this approach.
 
 \subsection{Atlas}
 
-HTSLAM and Atlas share a similar hybrid map structure. Both approaches
+HTSLAM and \Atlas\ share a similar hybrid map structure. Both approaches
 do without a global reference frame and instead rely on local metric
 information only. There are also significant differences between the
 two approaches
@@ -158,22 +169,22 @@ two approaches
   between map frames.
 \end{itemize}
 
-Atlas uses the EKF as its local mapping module, while HTSLAM uses
+\Atlas\ uses the EKF as its local mapping module, while HTSLAM uses
 FastSLAM. FastSLAM has a number of advantages over EKF. FastSLAM is
-computationally more efficient and also provides a richer
-representation of uncertainty as it can model multi-modal
-distributions, while the EKF is restricted to a single mode. For a local
-mapping module computational complexity is not as important, as map
-size is bounded. The EKFs inability to handle multi-modal distributions
-make it unusable in some environments, even if the size of the map is
-limited. In the case of a cluttered environment, data association can be
-highly ambiguous leading to data association errors. Incorrect data
-association is known to lead to inconsistent maps when using EKF.
-FastSLAM can deal with data association ambiguity by sampling over all
-plausible data association decisions
-\cite{fastslam,Montemerlo2003,nieto2003}. The authors of Atlas do mention
-the possibility of using mapping modules other than EKF, however as of
-time of the writing I am not aware of any such implementations.
+computationally more efficient and also provides a richer representation
+of uncertainty as it can model multi-modal distributions, while the EKF
+is restricted to a single mode. For a local mapping module computational
+complexity is not as important, as map size is bounded. The EKFs
+inability to handle multi-modal distributions make it unusable in some
+environments, even if the size of the map is limited. In the case of a
+high clutter, data association can be highly ambiguous leading to data
+association errors. Incorrect data association is known to lead to
+inconsistent maps when using EKF. FastSLAM can deal with data
+association ambiguity by sampling over all plausible data association
+decisions \cite{fastslam,Montemerlo2003,nieto2003}. The authors of
+\Atlas\ do mention the possibility of using mapping modules other than
+EKF, however as of time of the writing no such implementations have been
+reported.
 
 %Transitions and Local Map region boundary.
 
@@ -182,9 +193,9 @@ extra data allows HTSLAM to perform map transitions in a simple
 way. In HTSLAM the estimate of the robot pose in a current reference
 frame is all that is needed to make a decision on whether to stay in
 the current frame, perform a transition into a neighbouring region or
-to start a new map. In contrast, Atlas runs multiple localisation
+to start a new map. In contrast, \Atlas\ runs multiple localisation
 hypothesis in all neighbouring regions in order to determine which
-region provides a better explanation to current observations. Atlas
+region provides a better explanation to current observations. \Atlas\
 uses some quality metric to judge the fitness of each
 alternative. Generally when traversing a region that has been mapped
 previously, the robot is well localised, and so there is no ambiguity with
@@ -196,21 +207,20 @@ robot pose.
 %write a paragraph or so on how HTSLAM is more elegant
 %Multiple Hypotheses
 
-Both Atlas and HTSLAM use multiple hypothesis to prove or disprove
-the validity of loop closing. Atlas uses some performance metrics to
-compare different hypothesis, and to prune out the weak ones. In
-HTSLAM mapping hypothesis are compared directly with each other within
-a common particle filter framework. Importance
-sampling is used to prune out the unlikely hypotheses. There is no
-need to invent performance metrics. It is therefore the author's belief
-that HTSLAM provides a more formal approach to management of
-uncertainty arising due to loop closing than Atlas.
+Both \Atlas\ and HTSLAM use multiple hypothesis to prove or disprove the
+validity of loop closing. \Atlas\ uses some performance metrics to
+compare different hypothesis, and to prune out the weak ones. In HTSLAM
+mapping hypothesis are compared directly with each other within a common
+particle filter framework. Importance sampling is used to prune out the
+unlikely hypotheses. There is no need to invent performance
+metrics. HTSLAM provides a more formal approach to management of
+uncertainty arising due to loop closing.
 
 
 %\subsubsection{Rigorous/Proper/Formal Approach}
 %Cross-correlations!
 
-Atlas does not maintain correlations between local maps, nor does it
+\Atlas\ does not maintain correlations between local maps, nor does it
 keep correlations between maps and transitions. By construction the
 transition is a dependent variable of a local map. In HTSLAM this
 dependence is captured in a sample.

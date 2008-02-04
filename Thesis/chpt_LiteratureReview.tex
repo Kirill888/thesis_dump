@@ -438,13 +438,19 @@ global registration stage.
 
 The most important limitation of the EKF approach is the inability to
 model multiple data association decisions. Every observation has to be
-classified as noise, a new feature or an observation of an
-existing feature.  It is possible to postpone the final decision by
-running multiple Kalman filters in parallel. Alternatively, one can try
-to improve data association, for example using the Joint Compatibility
-test \cite{neira01:_data_assoc_stoch_mappin_using}.  Both approaches
-reduce the probability of an incorrect data association decision, but
-ultimately produce a unimodal distribution.
+classified as noise, a new feature or an observation of an existing
+feature.  It is possible to postpone the final decision by running
+multiple Kalman filters in parallel. Alternatively, one can try to
+improve the quality of data association decisions. Batch data
+association techniques like
+\cite{neira01:_data_assoc_stoch_mappin_using,
+tardos02:_mappin_local_indoor_envir_using_sonar_data} can reduce the
+ambiguity of data association, but it is impossible to eliminate this
+problem completely. It is impossible to undo incorrect data association
+in EKF, as a result EKF is quite sensitive to data association
+errors. Detecting large cycles is a very difficult problem for EKF SLAM,
+due to the inability to deal with ambiguous data association.
+
 
 \subsection{Particle Filter Approach}
 FastSLAM uses particles to approximate the posterior distribution
