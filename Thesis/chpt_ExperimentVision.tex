@@ -65,10 +65,10 @@ an image. A camera detecting vertical edges is effectively a planar
 bearing only sensor. 
 %\NOTE{i.e. working in a plane only, is it a right word?}
 
-By reducing the dimensionality of the sensor we simplify the
-observation model, making modelling of uncertainty much more
-straightforward. Since the robot motion is restricted to the plane,
-the dimension corresponding to up and down can be safely ignored.
+By reducing the dimensionality of the sensor the observation model is
+simplified. Which in turn makes modelling of uncertainty much more
+straightforward. Since the robot motion is restricted to the plane, the
+dimension corresponding to up and down can be safely ignored.
 
 The most problematic part of the bearing only SLAM is landmark
 creation. One needs at least two bearing observations from different
@@ -195,7 +195,7 @@ variations in the lightning conditions.
 There are several sources for uncertainty in the sensor. Some
 uncertainty comes from the fact that camera calibration is not
 perfect. The cameras focal length $F$ and centre point $C$ are not
-known exactly, and might also vary slightly during the experiment. A
+known exactly and might also vary slightly during the experiment. A
 second source of uncertainty is the feature extraction mechanism. As
 point of view changes, the edge might be picked up from a slightly
 different part of the landmark. Pixel error in the right image is even
