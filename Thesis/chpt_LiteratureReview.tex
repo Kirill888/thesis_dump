@@ -13,7 +13,7 @@ limited resources, and we can learn how it can be done by studying
 biological systems.
 
 Of particular interest to this thesis are the navigational skills that
-many organisms posses. It is generally assumed that sophisticated
+many organisms posess. It is generally assumed that sophisticated
 navigational behaviour can only be made possible if an organism
 maintains some form of map of the environment in their brain.  A good
 overview of robotics research that mimics the navigational behaviour
@@ -312,18 +312,18 @@ fly''.
 %PF
 Particle filter localisation (also known as Monte Carlo localisation)
 algorithms model the posterior distributions as a set of particles
-\cite{Thrun00j, JensfeltAustinWijk00b}. Particle filter is capable of
+\cite{Thrun00j, JensfeltAustinWijk00b}. A particle filter is capable of
 approximating any probability distribution, including multi-modal
 distributions. It can perform global localisation and can be used to
 solve the kidnapped robot problem. Unlike grid-based algorithms,
-particle filter has a floating point resolution for robot pose, and so
-can give more accurate pose estimate. Although it is computationally
+particle filters have a floating point resolution for robot pose, and so
+can give a more accurate pose estimate. Although it is computationally
 more demanding than EKF approaches, the increased robustness of this
 algorithm makes it worth the additional computational resources. The
 computational complexity of the particle filtering algorithm is $O(N)$
-in the number of particles used to represent the robot
-pose. Increasing the number of particles will result in greater
-accuracy and robustness. It is therefore straightforward to trade off the
+in the number of particles used to represent the robot pose. Increasing
+the number of particles will result in greater accuracy and
+robustness. It is therefore straightforward to trade off the
 computational resources against performance.
 
 \section{Simultaneous Localisation and Mapping}
@@ -332,14 +332,14 @@ computational resources against performance.
 \subsection{SLAM Problem}
 
 This section introduces the problem of Simultaneous Localisation and
-Mapping.
+Mapping. %TODO: expand some refs
 
 A robot starts at time 0 at location \x{0}{}{}, executes a series of
 motion commands $\Uall{k}{} = [\U{0},\U{1}...\U{k}]$ and collects a
 set of observations at every step
 $\Zall{k}{}=[\z{0},\z{1}...\z{k}]$. In practice observation and motion
 commands are not synchronised, however this can be easily accommodated
-for in the implementation. It is therefor commonly assumed that
+in the implementation. It is therefore commonly assumed that
 observation and motion happen at the same discrete time interval.
 Control and perception of the robot are subject to noise.
 
@@ -407,7 +407,8 @@ can, however be obtained, and can be computed incrementally in
 real-time.
 
 The two most common approaches to solving the SLAM problem are the EKF
-based algorithm and a particle filter algorithm called ``FastSLAM''.
+based algorithm \cite{ekf_slam} and a particle filter algorithm called
+``FastSLAM'' \cite{fastslam}.
 
 \subsection{Kalman Filter Approach}
 The Extended Kalman Filter approach treats the SLAM problem as a state
@@ -463,13 +464,13 @@ As a result, no change to the motion model is required. FastSLAM can
 be implemented in $O(M\log K)$, where $M$ is the number of particles
 and $K$ is the number of landmarks.
 
-Given enough particles, FastSLAM produces an estimate of the posterior
-distribution (TODO: qualify). Unfortunately it is not clear how many
-particles are needed for a particular problem. A modified version of
-the FastSLAM algorithm \cite{fastslam2} uses an alternative sampling
-technique to generate particles where they are needed most, therefore
-reducing the number of particles needed. The authors \cite{fastslam2},
-demonstrate that in some cases even one particle is enough.
+Given enough particles, FastSLAM produces a reasonable estimate of the
+posterior distribution. Unfortunately it is not clear how many particles
+are needed for a particular problem. A modified version of the FastSLAM
+algorithm \cite{fastslam2} uses an alternative sampling technique to
+generate particles where they are needed most, therefore reducing the
+number of particles needed. The authors \cite{fastslam2}, demonstrate
+that in some cases even one particle is enough.
 
 The main advantage of FastSLAM is its ability to handle multiple data
 association decisions \cite{Montemerlo2003}, which makes it a more
@@ -589,7 +590,7 @@ distribution of the robot pose given observations and control input is
 then as shown in \refFigure{fig:post_obsodo_}. Clearly this
 distribution differs significantly from a Gaussian.
 
-TODO: closing sentence
+%TODO: closing sentence
 
 
 %%% \refFigure{fig:post_ekf_vs_pf} illustrates the resulting uncertainty
@@ -855,7 +856,7 @@ topological map as an after thought. The relationships between nodes
 is purely topological. Metric information is only used inside the
 local maps.
 
-More recently a more tight integration of metric and topological
+More recently a tighter coupling of metric and topological
 information started to appear in robotic research. A hybrid mapping
 approach called \Atlas\ by Bosse \etal\ \cite{bosse03atlas} incorporates
 metric information into the topological structure of the map. Every

@@ -111,53 +111,53 @@ which is higher than that of BFT.
 Due to approximation errors, Dijkstra's algorithm might not actually
 compute the most certain path. As a result, the benefit of using
 Dijkstra's algorithm for this problem is questionable. Experimentation
-with vision data (Chapter~\ref{chpt:Vision_Results}) has shown that
-the Gaussian approximation for the transition uncertainty can be poor.
-An alternative distance metric should be used for the Dijkstra
-algorithm, one involving the number of transitions along the path as well
-as the estimate of the uncertainty. However no experimentation in that
-regard were performed.
+with vision data (Chapter~\ref{chpt:Vision_Results}) has shown that the
+Gaussian approximation for the transition uncertainty can be poor.  An
+alternative distance metric should be used for the Dijkstra algorithm,
+one involving the number of transitions along the path as well as the
+estimate of the uncertainty. However no experimentation with transition
+uncertainty representation was conducted.
 
 In the experiments presented in this thesis the BFT algorithm was
-used, and it proved to be sufficient.
+used, and was proven to be sufficient.
 
 
-\SILENT{ I think one should choose the shortest path in the number of
-hops, as this is probably the most reliable way to compare the total
-uncertainty of the path.  Gaussian approximation just doesn't cut it
-(especially with vision data)
-
-Alternatively one has to sample and compare the spread of the two
-distributions.  Either way the number of hops has to come in to the
-equation as a kind of penalty term, if you will, this is due to the
-fact that the more hops there are, the more different the true and
-estimated distributions become. It doesn't really matter if the
-estimate is a Gaussian or a sample. In case of the Gaussian estimate
-linearisation errors accumulate, and in case of the sample there is
-particle deprivation problem, the more hops there are the more
-particles one needs to represent the relative poses accurately.  
-
-}
+%\SILENT{ I think one should choose the shortest path in the number of
+%hops, as this is probably the most reliable way to compare the total
+%uncertainty of the path.  Gaussian approximation just doesn't cut it
+%(especially with vision data)
+%
+%Alternatively one has to sample and compare the spread of the two
+%distributions.  Either way the number of hops has to come in to the
+%equation as a kind of penalty term, if you will, this is due to the
+%fact that the more hops there are, the more different the true and
+%estimated distributions become. It doesn't really matter if the
+%estimate is a Gaussian or a sample. In case of the Gaussian estimate
+%linearisation errors accumulate, and in case of the sample there is
+%particle deprivation problem, the more hops there are the more
+%particles one needs to represent the relative poses accurately.  
+%
+%}
 
 
 \section{Map Matching}
 \label{sec:map_matching}
 
-\SILENT{
-\begin{enumerate}
-\item Problem definition: search for a maxima in the landmark
-   correspondence space. Evaluation criteria is defined by the edge
-   matches.  
-\item Problem is equivalent to finding a branch in a decision tree with
-   the highest score.
-\item Depth first brute force approach is impractical. Order N factorial.
-\item Early exit criteria are used : no need to process all
-   branches. Two categories: spatial compatibility + maximum
-   achievable score.
-\item Preprocessing steps allow to traverse good branches first, that
-   makes early exit more efficient.
-\end{enumerate}
-}
+%\SILENT{
+%\begin{enumerate}
+%\item Problem definition: search for a maxima in the landmark
+%   correspondence space. Evaluation criteria is defined by the edge
+%   matches.  
+%\item Problem is equivalent to finding a branch in a decision tree with
+%   the highest score.
+%\item Depth first brute force approach is impractical. Order N factorial.
+%\item Early exit criteria are used : no need to process all
+%   branches. Two categories: spatial compatibility + maximum
+%   achievable score.
+%\item Preprocessing steps allow to traverse good branches first, that
+%   makes early exit more efficient.
+%\end{enumerate}
+%}
 
 Given two local maps, a method is required to assess the probability
 that they correspond to the same region in the environment and find
@@ -377,7 +377,7 @@ maps. The algorithm is presented in pseudo-code.
 The distance between two landmarks is not known exactly, and the
 uncertainty is a non-Gaussian distribution. It is approximated by a
 Gaussian using first order Taylor series expansion. An alternative is to
-use an unscented transform \cite{unscented}. Unscented transform
+use an unscented transform \cite{unscented}. The unscented transform
 provides a more accurate estimate, with similar computation
 requirements. In this work however, Taylor series approximation was
 used.
@@ -957,7 +957,7 @@ $$
 
 This is however quite problematic. There are $N^2$ possible map pairs
 and the relative pose of each pair is not directly available. The
-relative pose can be computed through the process of map alignment,
+relative pose can be computed through the process of map alignment, as
 described earlier. While it is theoretically possible to sample relative
 poses for every map pair, in practice $O(N^2)$ computation will take too
 much time.

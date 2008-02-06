@@ -175,34 +175,32 @@ computationally more efficient and also provides a richer representation
 of uncertainty as it can model multi-modal distributions, while the EKF
 is restricted to a single mode. For a local mapping module computational
 complexity is not as important, as map size is bounded. The EKFs
-inability to handle multi-modal distributions make it unusable in some
-environments, even if the size of the map is limited. In the case of a
-high clutter, data association can be highly ambiguous leading to data
-association errors. Incorrect data association is known to lead to
-inconsistent maps when using EKF. FastSLAM can deal with data
-association ambiguity by sampling over all plausible data association
-decisions \cite{fastslam,Montemerlo2003,nieto2003}. The authors of
-\Atlas\ do mention the possibility of using mapping modules other than
-EKF, however as of time of the writing no such implementations have been
-reported.
+inability to handle multi-modal distributions makes it unusable in some
+environments, even if the size of the map is limited.  In high clutter
+environments data association errors are more likely. Incorrect data
+association is known to lead to inconsistent maps when using
+EKF. FastSLAM can deal with data association ambiguity by sampling over
+all plausible data association decisions
+\cite{fastslam,Montemerlo2003,nieto2003}. The authors of \Atlas\ do
+mention the possibility of using mapping modules other than EKF, however
+as of time of the writing no such implementations have been reported.
 
 %Transitions and Local Map region boundary.
 
-HTSLAM maintains map extent information for every local map. This
-extra data allows HTSLAM to perform map transitions in a simple
-way. In HTSLAM the estimate of the robot pose in a current reference
-frame is all that is needed to make a decision on whether to stay in
-the current frame, perform a transition into a neighbouring region or
-to start a new map. In contrast, \Atlas\ runs multiple localisation
-hypothesis in all neighbouring regions in order to determine which
-region provides a better explanation to current observations. \Atlas\
-uses some quality metric to judge the fitness of each
-alternative. Generally when traversing a region that has been mapped
-previously, the robot is well localised, and so there is no ambiguity with
-regards to which local map the robot should be updating. It is therefore
-unnecessary to run multiple hypotheses in such a situation. HTSLAM only
-generates multiple hypothesis if there is significant ambiguity in the
-robot pose.
+HTSLAM maintains map extent information for every local map. This extra
+data allows HTSLAM to perform map transitions in a simple way. In HTSLAM
+the estimate of the robot pose in a current reference frame is all that
+is needed to make a decision on whether to stay in the current frame,
+perform a transition into a neighbouring region or to start a new
+map. In contrast, \Atlas\ runs multiple localisation hypothesis in all
+neighbouring regions in order to determine which region provides a
+better explanation to current observations. \Atlas\ uses some quality
+metric to judge the fitness of each alternative. Generally, when
+traversing a region that has been mapped previously, the robot is well
+localised, there is no ambiguity with regards to which local map
+the robot should be updating. It is therefore unnecessary to run
+multiple hypotheses in such a situation. HTSLAM only generates multiple
+hypothesis if there is significant ambiguity in the robot pose.
 
 %write a paragraph or so on how HTSLAM is more elegant
 %Multiple Hypotheses
@@ -226,16 +224,16 @@ transition is a dependent variable of a local map. In HTSLAM this
 dependence is captured in a sample.
 
 
-\SILENT{
-A. Transition from current map to new map is by construction a
-dependent variable of current map.
-B. They update transitions based on localisation within the two maps,
-localisation depends on the maps, that makes transition dependent on
-both maps.
-C. The process of ``seeding'' pose clearly introduces the dependence,
-and no matter how long they run localisation afterwards, that
-dependence is not going to go away.
-}
+%\SILENT{
+%A. Transition from current map to new map is by construction a
+%dependent variable of current map.
+%B. They update transitions based on localisation within the two maps,
+%localisation depends on the maps, that makes transition dependent on
+%both maps.
+%C. The process of ``seeding'' pose clearly introduces the dependence,
+%and no matter how long they run localisation afterwards, that
+%dependence is not going to go away.
+%}
 
 
 
