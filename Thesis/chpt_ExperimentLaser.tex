@@ -52,7 +52,7 @@ laser scan (7 readings wide, that is only 3 degrees) and computes the
 probability that this portion of the scan has been reflected from a
 planar surface. This is achieved by fitting a line to the portion of
 the laser scan and computing the average error. High error implies low
-likelihood of the planar surface within the region. The algroithm starts
+likelihood of the planar surface within the region. The algorithm starts
 at the right most region of the laser scan and moves counter-clockwise
 at one laser reading increment.
 
@@ -121,7 +121,7 @@ and the orientations of the corner arms. Overall there are four metric
 parameters that define the corner: two parameters for the location and
 two for the orientation of the corner arms. While it is possible to
 compute the uncertainty directly from the laser readings, it is not
-very obvious how to propogate the uncretainty of individual lase beams
+very obvious how to propagate the uncertainty of individual laser beams
 through a line fitting process. In this work errors in the estimation
 of the corner position and the orientation of the corner arms are
 assumed to be independent zero mean Gaussians.
@@ -131,7 +131,7 @@ Range and bearing measurements are assumed to be independent.
 
 Three standard deviations in the range measurement is set to 5 per
 cent of the measured distance to the corner plus some constant. Three
-standard deviations in the bearing measuremnt is set to 2 degrees.
+standard deviations in the bearing measurement is set to 2 degrees.
 Error in the estimate of the orientation of each arm is set to 3
 degrees for three standard deviations. While this is a very simplistic
 model of the uncertainty, in practice it performs surprisingly well.
@@ -195,7 +195,7 @@ $$
 
 For clarity lets define the estimate of the landmark location in the
 sensor centric coordinate frame as $\hat{x}' = \hat{x} - x_s$ and
-$\hat{y}' = \hat{y} - y_s$. The Jacobian above is then equal euqual to:
+$\hat{y}' = \hat{y} - y_s$. The Jacobian above is then equal equal to:
 
 $$
 H = 
@@ -215,7 +215,7 @@ V_{[i,j]} = \frac{\partial h_{[i]}}{\partial v_{[j]}}
              \left(\hat{\bf x}_k , 0 \right) = I.
 $$
 
-These Jacobians evaluated at the curren state are used to update the
+These Jacobians evaluated at the current state are used to update the
 state of the landmark when a new observation becomes available.
 
 
@@ -528,6 +528,8 @@ particles. While the majority of the runs have produced a correct map,
 some have failed. Table~\ref{tab:results_victoria_park} shows the
 proportion of successful runs for 100 and 300 particles.
 
+%TODO: expand results
+
 \begin{table}[ht]
 \center
 \begin{tabular}{r|c|c|c}
@@ -596,4 +598,5 @@ projected in to the reference frame of the first map.
 
 
 % LocalWords:  Odometry HTSLAM Pics odo EKF XR holonomic matlab ACFR FastSLAM
-% LocalWords:  Kalman RSISE ANU
+% LocalWords:  Kalman RSISE ANU Jacobian Jacobians odometry Ackerman RMS priori
+% LocalWords:  Gaussians

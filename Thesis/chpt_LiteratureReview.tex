@@ -13,11 +13,11 @@ limited resources, and we can learn how it can be done by studying
 biological systems.
 
 Of particular interest to this thesis are the navigational skills that
-many organisms posess. It is generally assumed that sophisticated
+many organisms possess. It is generally assumed that sophisticated
 navigational behaviour can only be made possible if an organism
 maintains some form of map of the environment in their brain.  A good
-overview of robotics research that mimics the navigational behaviour
-of biological systems is given in \cite{bio_franz00}.
+overview of robotics research that mimics the navigational behaviour of
+biological systems is given in \cite{bio_franz00}.
 
 It is generally a difficult problem to decipher the exact
 representation an animal is using to describe the environment. There
@@ -288,7 +288,7 @@ approximate the posterior distribution with a Gaussian. While being
 computationally efficient, EKF based approaches have some
 limitations. They are not capable of global localisation, hence the
 initial pose of the robot should be known with relatively high
-confidence. An EKF is only capable of representing a unimodal
+confidence. An EKF is only capable of representing a uni-modal
 posterior distribution, meaning that in an ambiguous situation only
 one of the position hypotheses can be considered. This can lead to
 localisation failure if the wrong choice is made.
@@ -429,7 +429,7 @@ the EKF approach to SLAM \cite{williams:acra2001, williams2001esa,
 possible to exploit the fact that only a small subset of the whole map
 is observed at any given time to reduce the computational burden.
 Compressed EKF \cite{williams:acra2001} is an optimal approach that
-reduces the computational cost of measurment update to $O(K_a^2)$,
+reduces the computational cost of measurement update to $O(K_a^2)$,
 where $K_a$ is a number of features in the local region of the global
 map.  This approach still requires a costly $O(K^2)$ global
 registration stage when robot changes from one local region to the
@@ -544,7 +544,7 @@ consists of two point landmarks and a robot living on a
 two-dimensional plane, as shown in \refFigure{fig:post_all}. Robot
 pose is defined by its location on the plane only, ignoring the
 orientation of the robot (one can assume that the robot has an
-extremely accurate compass). The robot is equiped with a sensor that
+extremely accurate compass). The robot is equipped with a sensor that
 reports landmark location relative to the robot pose. The error of the
 sensor is zero-mean Gaussian.
 
@@ -575,12 +575,12 @@ be argued that it can be approximated by a Gaussian reasonably well.
 
 In the case when data association is ambiguous, the posterior
 distribution is slightly more complicated. Lets assume the robot has
-three equally likely data association hypoptheses. 
+three equally likely data association hypotheses. 
 
 \begin{itemize}
 \item Observations 1 and 2 map to landmarks {\bf a},{\bf b}
 \item Observation 1 maps to landmark {\bf b}, observation 2 is spurious
-\item Observation 2 maps to landmakr {\bf a}, observation 1 is spurious
+\item Observation 2 maps to landmark {\bf a}, observation 1 is spurious
 \end{itemize}
 
 Each of these hypotheses by itself produces an almost Gaussian
@@ -590,34 +590,10 @@ distribution of the robot pose given observations and control input is
 then as shown in \refFigure{fig:post_obsodo_}. Clearly this
 distribution differs significantly from a Gaussian.
 
-%TODO: closing sentence
-
-
-%%% \refFigure{fig:post_ekf_vs_pf} illustrates the resulting uncertainty
-%%% computed by the EKF and particle filter algorithms after applying a
-%%% control input, as in example in \refFigure{fig:post_all}. One can see
-%%% that particle filtering captures the banana shape of the motion model
-%%% much better than the EKF.
-%%% 
-%%% \begin{figure}
-%%% \begin{center}
-%%% \subfigure[EKF ($1\sigma$)]{
-%%% \includegraphics[width=6cm]{Pics/post_odo_ekf}
-%%% \label{fig:post_odo_ekf}
-%%% }\quad
-%%% \subfigure[Particle Filter]{
-%%% \includegraphics[width=6cm]{Pics/post_odo_pf}
-%%% \label{fig:post_odo_pf}
-%%% }
-%%% \end{center}
-%%% 
-%%% \caption[Comparison of uncertainty representation.]
-%%% {Modelling of the robot pose uncertainty,
-%%%  using EKF (a) and the particle filter (b).
-%%% }
-%%% \label{fig:post_ekf_vs_pf}
-%%% \end{figure}
-%%% 
+The example presented shows that non-Gaussian distributions in robot
+posterior can arise as a result of an ambiguous data
+association. Approaches to SLAM that can deal with such distributions
+therefore might have an advantage in such situations.
 
 
 \section{Loop Closing}
@@ -909,11 +885,6 @@ true likelihood, making it difficult to predict the behaviour of the
 algorithm in a new environment.
 
 \section{Summary}
-%TODO: many people worked on EKF, fewer on FastSLAM, no work on PF +
-%hybrid map models. Need to explore new data structures, not just keep
-%trying to patch up EKF approach.
-
-%We therefore chose to use FastSLAM to perform local mapping tasks.
 
 The past few decades of mobile robotics research provide powerful
 tools for mapping and localisation. Existing algorithms tend to be
@@ -937,6 +908,10 @@ new map representations are required. In particular new ways to model
 uncertainty should be explored.
 
 % TODO: my contribution in a paragraph 1-2 sentences.
+%TODO: many people worked on EKF, fewer on FastSLAM, no work on PF +
+%hybrid map models. Need to explore new data structures, not just keep
+%trying to patch up EKF approach.
+%We therefore chose to use FastSLAM to perform local mapping tasks.
 
 % Some recent research in
 % this area include \cite{bosse03atlas,fergusson2003}.
@@ -945,6 +920,8 @@ uncertainty should be explored.
 
 
 \nocite{tim_bailey,
+bosse03atlas,
+fergusson2003
 thrun00,
 dissanayake01,
 SOG-Slam01,
@@ -1006,4 +983,6 @@ thrun02:_robot_mappin,
 
 
 
-% LocalWords:  Sensorimotor Preoperational odometry EKF FastSLAM Kalman
+% LocalWords:  Sensorimotor Preoperational odometry EKF FastSLAM Kalman Siegel
+% LocalWords:  Kuipers Golledge linearise Gaussians linearisation Milios
+% LocalWords:  Mahalanobis minima Konolige Gutman Thrun Bosse Submap

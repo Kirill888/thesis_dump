@@ -67,7 +67,7 @@ the left and right images using vertical Sobel edge detector
 are discarded as these are more likely to be spurious. Edges that are
 only few pixels apart are also removed at this stage.
 
-In the second step correspondances between edges in the left and right
+In the second step correspondences between edges in the left and right
 images are established. The cameras on the robot are aligned to be
 parallel, and as a result epipolar lines are along the $x$
 axis\cite{Hartley2004}. Normalised cross-correlation is used to
@@ -87,13 +87,13 @@ other.
 One can visualise this problem as a graph: every pair of matched edges
 defines a node in the graph. Nodes of the graph that do not share a
 common edge in both images are connected. The largest fully connected
-subgraph of this graph (commonly referred as ``clique'' or ``maximal
+sub-graph of this graph (commonly referred as ``clique'' or ``maximal
 clique'' of a graph) corresponds to the largest set of compatible edge
 matches. The problem of finding the clique of a graph is NP complete
 \cite{cook1971ctp}, which is intractable for a large set of
 features. There are, however, methods that can find an approximate
 solution \cite{balas1986fmc,pardalos1994mcp}. The approach adopted in
-this work is a simple greedy search algorithm with the follwoing steps:
+this work is a simple greedy search algorithm with the following steps:
 
 \begin{enumerate}
 \item Sort matches in descending order according to their normalised
@@ -126,13 +126,13 @@ An example of vertical edge detection is shown in
 indicated by colour: a blue edge in the left corresponds to a blue
 edge in the right image, green to green, and so forth. Locations of
 the features in the reference frame of the left camera are also
-shown. Landmark uncertainty is also shown. Note that cartesian
+shown. Landmark uncertainty is also shown. Note that Cartesian
 uncertainty is only used for initialisation of landmarks. Landmark
 update equations assume a bearing-only model.
 
 The appearance of a feature provides important information to the
 mapping module by assisting in data association. This is especially
-usefull in situations when two edges are very close spatially (like
+useful in situations when two edges are very close spatially (like
 the cyan and magenta edges (edges 4 and 5, counting from the left) in
 the \refFigure{fig:example_edge_detector}).
 
@@ -408,7 +408,7 @@ The landmark template is initialised to that of the observation.
 
 Unlike laser range sensors, vision sensors cannot provide free space
 information easily. It is therefore assumed that no free space
-information is available. The approach for defining region bundaries
+information is available. The approach for defining region boundaries
 is identical to that used for the Victoria park data set, with an
 exception of the size of the initial region and the size of grid
 cells, which were set to be smaller.
@@ -559,8 +559,10 @@ sets. In corner based SLAM occupancy grid was used to define a local
 region. In the case of vision based experiment no free space
 information was available, hence regions were assigned to be of fixed
 size. Using free-space information for local region assignment is
-advantageous as it partitions the space in a more sensible way. As a
-result local region transitions are more reliable.
+advantageous as it partitions the space in a more sensible
+way. Consequently local map transitions are less reliable for a vision
+data set.
+
 
 % LocalWords:  epipolar EKF Jacobians Gaussians IDE Sobel  cyan discretisation
-% LocalWords:  HTSLAM odometric odometry
+% LocalWords:  HTSLAM odometric odometry Jacobian
