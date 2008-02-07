@@ -219,7 +219,6 @@ is denoted $x_c,y_c$ and camera orientation is $\theta_c$. For clarity,
 define $x'=x-x_c$ and $y'=y-y_c$. Observation $z_k$ and
 landmark states are related by the non-linear function $h$, defined by
 ($v = N(0,\sigma_{v}^2)$ is a measurement noise)
-
 $$
 z_k = h({\bf x},v) =
 \frac{-x'\sin \theta_c + y' \cos \theta_c }
@@ -377,7 +376,7 @@ Computing the Jacobian of $f$ with respect to each of the
 observation elements,
 $$
 {\bf J}_{[i,j]} = \frac{\partial f_{[i]}}
-{\partial z_{[j]}}\left(z \right)
+{\partial z_{[j]}}\left(z \right),
 $$
 the initial uncertainty of the feature is then:
 $$

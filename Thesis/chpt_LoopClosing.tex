@@ -236,7 +236,7 @@ Preprocessing step: let $E^a_{i,k}$ be the edge between landmarks $i$
 and $k$ in the map $a$. For every landmark correspondence compute an
 upper bound on the size of the correspondence set it can belong to
 $$
-u_{ij} = \sum_{k \ne i} \sum_{l \ne j} {\bf MATCH}(E^a_{i,k}, E^b_{j,l})
+u_{ij} = \sum_{k \ne i} \sum_{l \ne j} {\bf MATCH}(E^a_{i,k}, E^b_{j,l}).
 $$
 
 Here function ${\bf MATCH}$ returns 1 if edges match and zero
@@ -839,7 +839,7 @@ regions far apart.
 In order to create a link between the maps a sample from the following
 distribution is needed
 $$
-\prob{\mapA,\tr{}{A}{E},\mapE} 
+\prob{\mapA,\tr{}{A}{E},\mapE}. 
 $$
 
 This is however quite problematic. There are $N^2$ possible map pairs

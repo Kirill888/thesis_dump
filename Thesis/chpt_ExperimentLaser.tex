@@ -161,10 +161,10 @@ association and for the computation of the probability of an
 observation, given a landmark.
 
 The point landmark is defined by its pose in the local reference
-frame.
+frame
 
 $$
-{\bf x} = \left[ \begin{array}{c} x\\y \end{array} \right]
+{\bf x} = \left[ \begin{array}{c} x\\y \end{array} \right].
 $$
 
 The true state of the landmark is not known, the estimate of the
@@ -179,7 +179,7 @@ $$
 \sqrt{(x-x_s)^2 + (y-y_s)^2}\\ \noalign{\medskip}
 \tan^{-1} \frac{y-y_s}{x-x_s} + \theta_s
 \end{array}
-\right] + v
+\right] + v,
 $$
 here $x_s$, $y_s$ and $\theta_s$ denote the location and heading of
 the sensor in the local reference frame and $v$ is the observation noise,
@@ -187,7 +187,6 @@ assumed to be zero mean Gaussian.
 
 The Jacobian of partial derivatives of $h$ with respect to landmark
 state is
-
 $$
 H_{[i,j]} = \frac{\partial h_{[i]}}{\partial {\bf x}_{[j]}}
              \left(\hat{\bf x}_k , 0 \right).
@@ -196,20 +195,18 @@ $$
 For clarity lets define the estimate of the landmark location in the
 sensor centric coordinate frame as $\hat{x}' = \hat{x} - x_s$ and
 $\hat{y}' = \hat{y} - y_s$. The Jacobian above is then equal equal to:
-
 $$
 H = 
  \left[ \begin {array}{cc}
    \frac{\hat{x}'}{ \sqrt{\hat{x}'^2+\hat{y}'^2} } & 
    \frac{\hat{y}'}{ \sqrt{\hat{x}'^2+\hat{y}'^2} } \\ \noalign{\medskip}
    \frac{-\hat{y}'}{ \hat{x}'^2+\hat{y}'^2 } & 
-   \frac{ \hat{x}'}{ \hat{x}'^2+\hat{y}'^2 }.
-\end{array} \right] 
+   \frac{ \hat{x}'}{ \hat{x}'^2+\hat{y}'^2 }
+\end{array} \right].
 $$
 
 The Jacobian of partial derivatives of $h$ with respect
 to noise is also required by the EKF, in this case it is trivial
-
 $$
 V_{[i,j]} = \frac{\partial h_{[i]}}{\partial v_{[j]}}
              \left(\hat{\bf x}_k , 0 \right) = I.
@@ -248,7 +245,6 @@ a simplified model is devised.
 
 The state of the robot at time $k$ is its position and orientation in a
 local reference frame
-
 $$
 \x{k}{}{} = \left[\begin{array}{c} 
     x_k \\ 
@@ -264,14 +260,12 @@ robot at time $k$. Translational velocity is expressed in polar
 coordinates $[v_k,\psi_k]^T$ in the robot centred frame. $\omega_k$ is a
 rate of rotation of the robot centred frame relative to the reference
 frame
-
 $$
 \U{k} = \Vector{v_k\\ \psi_k \\ \omega_k}.
 $$
 
 In the case of the XR4000, the state evolves according to the following
 rule
-
 $$
 \x{k}{}{} = f(\x{k-1}{}{} ,\U{k-1}) = \x{k-1}{}{} + \Delta {\bf t}
 \Vector{v_k\cos(\theta_{k-1} + \psi_{k-1})\\

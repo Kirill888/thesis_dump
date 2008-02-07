@@ -103,22 +103,18 @@ point, to reappear later in a completely different spot. To a mapping
 module this ``teleportation'' of the robot from one spot at time $k_1$
 to another at time $k_2$ appears as a special kind of control input
 \Teleport{k_1}, where the robot position at time $k_2$ is taken to be 
-
 $$
-\x{k_2}{}{a} \sample{}{} \prob{\x{k_1}{}{a} | \Teleport{k_1}}
+\x{k_2}{}{a} \sample{}{} \prob{\x{k_1}{}{a} | \Teleport{k_1}}.
 $$
 
 The set of all such teleportations is denoted \TeleportAll{k}{a}. For
 each local map HTSLAM estimates the probability density
-
 $$
 \prob{\map{k}{}{a},\Xall{k}{}{a} | 
 \Zall{k}{a},\Uall{k}{a},\TeleportAll{k}{a},\x{k_0}{}{a}},
 $$
 where \map{k}{}{a} is a map of the region $a$ and \x{k_0}{}{a} is an
 arbitrary initial robot pose (typically at the origin).
-
-
 
 
 \section{Monitoring Robot Location in the Topological Map}
