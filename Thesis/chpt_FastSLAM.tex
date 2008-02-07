@@ -159,36 +159,29 @@ Kalman Filter.
 
 Assume that state \x{k}{}{} evolves according to a non-linear stochastic
 difference equation, subject to noise $w_{k}$:
-
 \begin{equation}
    \x{k}{}{} = f (\x{k-1}{}{}, \U{k-1}, w_{k-1}).
 \label{eqn:ekf_process}
 \end{equation}
-
 No direct measurement of the state is available. Instead the state is
 observed via a non-linear function $h$, subject to some noise $v_k$
-
 \begin{equation}
    \z{k} = h (\x{k}{}{}, v_k).
 \end{equation}
-
 Process and measurement noise are assumed to be independent and drawn from zero mean
 Normal distribution.
 
 The update stage of the EKF computes an preliminary estimate of the state
 and updates the uncertainty of the estimate as follows:
-
 \begin{eqnarray}
 \label{eqn:ekf_x_u}
 \hat{\x{}{}{}}_k^\prime &=& f(\hat{\x{}{}{}}_{k-1},\U{k-1},0)\\
 \label{eqn:ekf_sigma_u}
 \Sigma_k^\prime &=& A_k \Sigma_{k-1} A_k^T + W_k Q_{k} W_k^T
 \end{eqnarray}
-
 Matrices $A_k$ and $W_k$ in the equations above are partial
 derivatives of the state evolution function evaluated at
 $\hat{\x{}{}{}}_{k-1}$ :
-
 \begin{eqnarray}
 A_{k[i,j]} &=& \frac{\partial f_{[i]}}{\partial \x{[j]}{}{}}
               (\hat{\x{}{}{}}_{k-1}, \U{k-1}, 0) \\
@@ -201,7 +194,6 @@ The measurement update stage requires a projection of the state
 uncertainty into the observation space. Since the observation function $h$
 is non-linear, the uncertainty of the projection is not Gaussian. The
 EKF approximates it by a Gaussian as follows:
-
 \begin{eqnarray}
 \label{eqn:ekf_gain}
 K_k &=& \Sigma_k^\prime H_k^T(H_k\Sigma_k^\prime H_k^T + V_k R_k
@@ -212,10 +204,8 @@ V_k^T)^{-1}\\
 \label{eqn:ekf_sigma_obs}
 \Sigma_k &=& (I - K_k H_k) \Sigma_k^\prime
 \end{eqnarray}
-
 Here matrices $H_k$ and $V_k$ are partial derivatives of the
 observation function:
-
 \begin{eqnarray}
 H_{k[i,j]} &=& \frac{\partial h_{[i]}}{\partial \x{[j]}{}{}}
               (\hat{\x{}{}{}}_{k-1}^\prime, 0)\\
@@ -265,7 +255,6 @@ Markov chain at time $k$ is denoted by \x{k}{}{}. The state depends on
 the previous state
 \x{k-1}{}{} and the control $\U{k-1}$ asserted in the time interval
 $(k-1;k]$, according to the probabilistic law
-
 \begin{equation}
 p( \x{k}{}{} | \x{k-1}{}{}, \U{k-1}).
 \label{eqn:pf_px}
@@ -277,7 +266,6 @@ expressed in the form of a probability like the one above. The state
 of the Markov chain is not directly observable, instead a stochastic
 projection \z{k} of the true state \x{k}{}{} generated via the
 probabilistic law is available
-
 \begin{equation}
 p (\z{k} | \x{k}{}{}).
 \label{eqn:pf_pz}

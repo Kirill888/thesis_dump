@@ -248,22 +248,19 @@ desired to approximate the posterior recursively, otherwise one would
 run into computation problems very quickly. Making a Markov
 assumption that future data is independent of past data given the
 robot pose:
-
 \begin{eqnarray}
  p(\z{k} | \Zall{k-1}{}, \Uall{k-1}{})    &=& p(\z{k} | \x{k}{}{}) \\
  p(\x{k}{}{} | \Zall{k-1}{}, \Uall{k-1}{})&=& p(\x{k}{}{} | \x{k-1}{}{}, \U{k-1}{}).
 \end{eqnarray}
-
-By applying Bayes' rule \refEquation{eqn:localise_belief} is transformed
-into a recursive formula (see \cite{Thrun00j} for a derivation)
-
+By applying Bayes' rule equation~\refEquation{eqn:localise_belief} is
+transformed into a recursive formula (see \cite{Thrun00j} for a
+derivation)
 \begin{equation}
 Bel(\x{k}{}{}) = \eta p(\z{k} | \x{k}{}{}) \int 
                      p(\x{k}{}{} | \x{k-1}{}{}, \U{k-1}{}) 
                      Bel(\x{k-1}{}{}) d \x{k-1}{}{},
 \label{eqn:localise_recursion}
 \end{equation}
-
 where $\eta$ is a normalisation constant. To implement the recursive
 rule in \refEquation{eqn:localise_recursion} one needs to know the
 distributions $p(\z{k} | \x{k}{}{})$ and $p(\x{k}{}{} | \x{k-1}{}{},
@@ -369,7 +366,7 @@ If one makes a further assumption that past odometry errors have no
 effect on future errors, one can represent robot motion as a Markov
 process, with probability distribution 
 \begin{equation}
- P(\x{k}{}{} | \Uall{k}{}) \equiv p(\x{k}{}{}| \x{k-1}{}{}, \U{k})
+ P(\x{k}{}{} | \Uall{k}{}) \equiv p(\x{k}{}{}| \x{k-1}{}{}, \U{k}).
 \end{equation}
 
 
@@ -380,7 +377,7 @@ independent of past errors, hence
 
 \begin{equation}
 p(\z{k}| \x{k}{}{},\map{k}{}{}, \Zall{k}{}) \equiv 
-  p(\z{k}| \x{k}{}{},\map{k}{}{})
+  p(\z{k}| \x{k}{}{},\map{k}{}{}).
 \end{equation}
 
 \end{enumerate}

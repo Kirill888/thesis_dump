@@ -1,27 +1,29 @@
 This thesis has presented a novel approach to mapping that combines
 metric and topological information to build maps of medium to large
 environments. In HTSLAM metric and topological representations are
-equally important. Unlike many other hybrid approaches, HTSLAM does
-not aim to build a global metric map with a single reference
-frame. Instead, each local region has its own reference
-frame. Relative poses of neighbouring regions are maintained in the
-topological structure of a HTSLAM map. The proposed map structure
-facilitates computation of relative poses between any two local
-regions, effectively allowing a ``global'' reference frame to be
-selected in any of the regions. A common problem for global SLAM is an
-increasing uncertainty as the robot moves further away from the
-origin. The HTSLAM map structure moves the origin into the current local
-region, providing a more efficient representation of spatial
-uncertainty.
+equally important. HTSLAM does not aim to build a global metric map
+with a single reference frame. Instead, each local region has its own
+reference frame. Relative poses of neighbouring regions are maintained
+in the topological structure of a HTSLAM map. The proposed map
+structure facilitates computation of relative poses between any two
+local regions, effectively allowing a ``global'' reference frame to be
+selected in any of the regions. 
 
-HTSLAM uses particles to represent spatial uncertainty between local
-regions. To the best of my knowledge there is no other published
-research that combines topological mapping with particle filter metric
-mapping. The main advantage of using particles is the ability to
-efficiently represent multi-modal non-linear distributions. Approaches
-that assume Gaussian uncertainty, suffer from accumulation of
-approximation errors. The effect of linearisation becomes especially
-significant in large scale environments. 
+
+A common problem for global SLAM is an increasing uncertainty as the
+robot moves further away from the origin. The HTSLAM map structure
+moves the origin into the current local region, providing a more
+efficient representation of spatial uncertainty. HTSLAM uses particles
+to represent spatial uncertainty between local regions. To the best of
+my knowledge there is no other published research that combines
+topological mapping with particle filter metric mapping. The main
+advantage of using particles over more traditional Guassian
+representation is the ability to efficiently represent multi-modal
+non-linear distributions. Approaches that assume Gaussian uncertainty,
+suffer from accumulation of approximation errors. The effect of
+linearisation becomes especially significant in large scale
+environments.
+
 
 %Correlation between maps and transitions
 It is generally impossible to partition a realistic environment into a
@@ -86,10 +88,10 @@ needed to build a map of a particular environment. It would be
 beneficial to automatically adjust the number of particles during
 mapping, increasing the number of particles when the situation is
 ambiguous (loop closing, or transition), and decreasing it when things
-are going smoothly. Varying sample size has been used for the problem
-of localisation \cite{KLDSampling}, it would be interesting to see if
-such an approach can be applied to Rao-Blackwellised particle filters
-as well.
+are going smoothly. Automatic adjustment of sample size has been used
+for the problem of localisation \cite{KLDSampling}, it would be
+interesting to see if such an approach can be applied to
+Rao-Blackwellised particle filters as well.
 
 Most environments contain static, semi-static and dynamic
 features. Static features are always present, for example walls in the
@@ -100,7 +102,7 @@ example. Traditional approaches to mapping assume a static
 world. While these approaches can tolerate a small number of dynamic
 objects, changes to the environment due to semi-static objects will
 render the map unusable eventually, requiring a complete rebuild.
-HTSLAM map structure provides a good platform for a long term map
+HTSLAM map structure provides a good framework for a long term map
 management system.
 
 

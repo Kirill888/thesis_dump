@@ -161,15 +161,12 @@ errors might add noise as well.
 
 Bearing observation is computed from the column pixel $p$ using the
 following equation
-
 $$
 z = f([p,C,F]^T) = \frac{p - C}{F}.
 $$
-
 The Jacobian of $f$ with respect to $[p,C,F]^T$ ,$\bigtriangledown f$, is used to compute the
 approximate Gaussian uncertainty of $z$ from the uncertainties of
 $[p,C,F]^T$:
-
 $$
 \bigtriangledown f = \left[ 
 \frac{1}{F},
@@ -177,9 +174,7 @@ $$
 \frac{-p + C}{F^2}
 \right].
 $$
-
 The uncertainty of the bearing is then 
-
 $$
 \sigma^2_z = \bigtriangledown f \left[ \begin{array}{ccc}
       \sigma^2_p & & \\
@@ -239,14 +234,11 @@ $\hat{x_k}'=\hat{x_k}-x_c$ and $\hat{y_k}'=\hat{y_k}-y_c$.
 
 Additionally, define a Jacobian of partial derivatives of $h$ with
 respect to the landmark state:
-
 $$
 H_{[i,j]} = \frac{\partial h_{[i]}}{\partial {\bf x}_{[j]}}
              \left(\hat{\bf x}_k , 0 \right).
 $$
-
 It is equal to
-
 $$
   H = \left[ 
 \begin{array}{c}
@@ -264,7 +256,6 @@ to project landmark uncertainty into the observation space.
 
 The Jacobian of partial derivatives of $h$ with respect
 to noise is also needed by the EKF, and in this case it is trivially
-
 $$
 V_{[i,j]} = \frac{\partial h_{[i]}}{\partial v_{[j]}}
              \left(\hat{\bf x}_k , 0 \right) = 1.
@@ -280,14 +271,11 @@ landmark is found using the nearest neighbour search.
 
 The quality of a match between a landmark and a single bearing
 observation is computed using the following:
-
 $$
   {\bf w}_k = \int p(z_k|^z{\bf x}_k)p(^z{\bf x}_k) d^z{\bf x}.
 $$
-
 Here $^z{\bf x}_k$ is a landmark projected into the camera plane, and
 $p(^z{\bf x_k})$ is approximated to be a Gaussian, EKF style:
-
 $$
 p(^z{\bf x}_k) = N(h(\hat{\bf x}_k,0), H P_k H^T).
 $$
@@ -353,7 +341,6 @@ left one and $\theta_r$ be the orientation of the right camera
 relative to the left one. Let $u_l,u_r$ be the bearing observations
 (tangent of the angle) from the left and right cameras
 respectively. Observation is defined to be
-
 $$
 {\bf z} =  \left[
     \begin{array}{c}
@@ -364,7 +351,6 @@ $$
 
 The landmark state can be computed from the observation using the
 following:
-
 $$
 {\bf x} = f\left({\bf z}\right) 
 = \left[\begin{array}{c}
@@ -377,7 +363,6 @@ $$
 
 Assume that the uncertainty of the observation is a Gaussian with
 the following block-diagonal covariance matrix:
-
 $$
 C_z = \left[
   \begin{array}{ccc}
@@ -390,14 +375,11 @@ $$
 
 Computing the Jacobian of $f$ with respect to each of the
 observation elements,
-
 $$
 {\bf J}_{[i,j]} = \frac{\partial f_{[i]}}
 {\partial z_{[j]}}\left(z \right)
 $$
-
 the initial uncertainty of the feature is then:
-
 $$
 P = {\bf J} C_z {\bf J}^T.
 $$

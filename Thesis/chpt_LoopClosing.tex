@@ -109,15 +109,14 @@ which is higher than that of BFT.
 Due to approximation errors, Dijkstra's algorithm might not actually
 compute the most certain path. As a result, the benefit of using
 Dijkstra's algorithm for this problem is questionable. Experimentation
-with vision data (Chapter~\ref{chpt:Vision_Results}) has shown that the
-Gaussian approximation for the transition uncertainty can be poor.  An
-alternative distance metric should be used for the Dijkstra algorithm,
-one involving the number of transitions along the path as well as the
-estimate of the uncertainty. However no experimentation with transition
-uncertainty representation was conducted.
-
-In the experiments presented in this thesis the BFT algorithm was
-used, and was proven to be sufficient.
+with vision data (Chapter~\ref{chpt:Vision_Results}) has shown that
+the Gaussian approximation for the transition uncertainty can be poor.
+An alternative distance metric should be used for the Dijkstra
+algorithm, one involving the number of transitions along the path as
+well as the estimate of the uncertainty. However no experimentation
+with transition uncertainty representation was conducted. In the
+experiments presented in this thesis the BFT algorithm was used, and
+was proven to be sufficient.
 
 
 \section{Map Matching}
@@ -214,7 +213,6 @@ from frame $a$ to frame $b$. Assume also that a prior $p\left({\bf
 R},{\bf t}\right)$ is available. The reconstruction process needs to
 find $\left[\theta_1,...\theta_n, {\bf R},{\bf t}\right]$ that
 maximises
-
 \begin{equation}
 p\left({\bf R},{\bf t}\right)
 \prod_{i}^n p\left(\theta_i | \theta_i^a\right)
@@ -237,7 +235,6 @@ hypotheses.
 Preprocessing step: let $E^a_{i,k}$ be the edge between landmarks $i$
 and $k$ in the map $a$. For every landmark correspondence compute an
 upper bound on the size of the correspondence set it can belong to
-
 $$
 u_{ij} = \sum_{k \ne i} \sum_{l \ne j} {\bf MATCH}(E^a_{i,k}, E^b_{j,l})
 $$
@@ -370,20 +367,17 @@ following approximation:
 
 Here $\bigtriangledown f$ is a Jacobian of $f$, evaluated at
 $[x_1,y_1,x_2,y_2]^T$. $\Sigma_1$ and $\Sigma_2$ are the two landmark
-covariances. \refEquation{eqn:dist_estimate_mu} and
+covariances. Equations \refEquation{eqn:dist_estimate_mu} and
 \refEquation{eqn:dist_estimate_cov} can be simplified by introducing
 variables $\Delta x = x_1 - x_2$, and $\Delta y = y_1 - y_2$, the
 uncertainty of $\Vector{\Delta x\\ \Delta y}$is equal to a sum of
 uncertainties of the two landmarks $\Sigma_\Delta = \Sigma_1 +
-\Sigma_2$.
-
+\Sigma_2$:
 \begin{eqnarray}
 \mu_d &=& \sqrt{\Delta x^2 +\Delta y^2}\\
 \sigma_d^2 &=& \bigtriangledown f \Sigma_\Delta \bigtriangledown f^T
 \end{eqnarray}
-
 where
-
 $$ 
 \bigtriangledown f = \left[
 \frac{\Delta x}{\sqrt{\Delta x^2 + \Delta y^2}}, 
@@ -435,7 +429,6 @@ landmark in frames $a$ and $b$ respectively, and $\theta^a_k,
 \theta^b_l$ are observations of the second. Ideally, relative map
 pose and the locations of landmarks have to be computed
 simultaneously to find the configuration that maximises
-
 \begin{equation}
 p(\theta^a_1, \theta^a_2, {\bf R},{\bf t}|
   \theta^a_i, \theta^b_j, \theta^a_k, \theta^b_l) =
@@ -448,7 +441,6 @@ p({\bf R}\theta^a_2+{\bf t} | \theta^b_l).
 
 In this thesis an approximation is used instead.
 Rotation from frame $a$ to frame $b$ is approximated to be
-
 $$
   \phi^{a \rightarrow b} = \tan^{-1} \frac{\Delta y^a}{ \Delta x^a}
   -\tan^{-1} \frac{\Delta y^b}{ \Delta x^b},
@@ -476,15 +468,12 @@ alignment used in the experiments presented in
 chapters~\ref{chpt:Laser_Results} and \ref{chpt:Vision_Results}.
 
 HTSLAM requires a sample from the following distribution
-
 \begin{equation}
 p({\bf R},{\bf t}) = \prod_{l=1}^{n} \int
 p(\mape{}{a}{l})p(\mape{}{b}{l}|{\bf R},{\bf t})d\mape{}{}{}
 \label{eqn:align_w}
 \end{equation}
-
 Taking $\log$s of both sides
-
 \begin{equation}
 \log p({\bf R},{\bf t}) = \sum_{l=1}^{n} \log \int
 p(\mape{}{a}{l})p(\mape{}{b}{l}|{\bf R},{\bf t})d\mape{}{}{}.
@@ -500,7 +489,6 @@ $\mapB=[(b_1,B_1),...(b_n,B_n)]$ be a set of common landmarks in the two
 maps. The mean of the landmark $i$ is denoted vy $a_i$ and $A_i$ is the
 inverse of the corresponding covariance. It is required to find ${\bf
 R,t},\theta_1, \theta_2 ...\theta_n$ that maximise
-
 \begin{equation}
 \begin{array}{ll}
 p([\theta_1, ...\theta_n],{\bf R},{\bf t} | \mapA, \mapB) =
@@ -512,7 +500,6 @@ p([\theta_1, ...\theta_n],{\bf R},{\bf t} | \mapA, \mapB) =
 \end{equation}
 where $\eta$ is a normalisation constant, independent of ${\bf
 R,t},\theta_1, \theta_2 ...\theta_n$. Taking $\log$s: 
-
 \begin{equation}
 \begin{array}{l}
 \log p([\theta_1, ...\theta_n],{\bf R},{\bf t} | \mapA, \mapB) =\\
@@ -525,7 +512,6 @@ R,t},\theta_1, \theta_2 ...\theta_n$. Taking $\log$s:
 \end{equation}
 
 The term that needs to be minimised is
-
 $$
 F = \left[ \sum_i (\theta_i - a_i)^T A_i (\theta_i - a_i) +
 \sum_i ({\bf R}\theta_i + {\bf t} - b_i)^T B_i ({\bf R}\theta_i + {\bf t} - b_i)
@@ -533,14 +519,11 @@ F = \left[ \sum_i (\theta_i - a_i)^T A_i (\theta_i - a_i) +
 $$
 
 $F$ can be rewritten in matrix form
-
 $$
 F =  {\bf x}^T{\bf Gx} -2{\bf Hx} + {\bf c}
 $$
-
 where ${\bf x}^T = [\theta_1^T,...,\theta_n^T, {\bf t}^T]$ and
 matrices ${\bf G},{\bf H}$ and scalar ${\bf c}$ are:
-
 \begin{eqnarray}
 {\bf G} &=& \left[ \begin{array}{ccccc}
 A_1 + {\bf R}^TB_1{\bf R}&
@@ -567,21 +550,18 @@ symmetric matrix as well.
 
 For a fixed rotation, a configuration that minimises $F$ is found by
 solving
-
 $$
 2{\bf x}^T{\bf G} - 2{\bf H} = 0.
 $$
 
 Which is equivalent (${\bf G}$ is symmetric, ${\bf G} = {\bf G}^T$) to
 solving
-
 $$
  {\bf Gx} = {\bf H}^T.
 $$
 
 Due to the structure of matrix ${\bf G}$, ${\bf x}$ can be solved for
 by back-substitution. First, define
-
 \begin{equation}
 \begin{array}{rcl}
 M_i &=& A_i + {\bf R}^TB_i{\bf R}\\
@@ -593,7 +573,6 @@ W   &=& \left[ \sum_i b_i^TB_i \right]^T
 \end{equation}
 
 The problem can then be rewritten as a series of linear equations
-
 \begin{equation}
 \begin{array}{rcr}
 M_1\theta_1 + Y_1^T{\bf t} &=& K_1\\
@@ -607,7 +586,6 @@ M_n\theta_n + Y_n^T{\bf t} &=& K_n\\
 
 Expressing $\theta_i$ in terms of ${\bf t}$, substituting it in to
 (\ref{eqn:hjhjk}), after some rearranging 
-
 \begin{eqnarray}
 \theta_i &=& M_i^{-1}K_i - M_i^{-1}Y_i^T{\bf t}\\
 {\bf t} &=& \left( S -\sum_i^n Y_iM_i^{-1}Y_i^T \right)^{-1}
@@ -618,7 +596,6 @@ Having solved for ${\bf t}$, it is possible to back-substitute to
 solve for every landmark location as well. Denoting the solution as
 ${\bf \mu}$, ${\bf H}={\bf \mu}^T{\bf G}$. $F$ can then be rewritten
 as
-
 \begin{equation}
 \begin{array}{rcr}
 F &=& {\bf x}^T{\bf Gx} - 2{\bf \mu}^T{\bf Gx} + {\bf c}\\
@@ -628,7 +605,6 @@ F &=& {\bf x}^T{\bf Gx} - 2{\bf \mu}^T{\bf Gx} + {\bf c}\\
 \end{equation}
 
 For a fixed rotation ${\bf R}$ 
-
 $$
 \log p\left(\left[\theta_1, ...\theta_n,{\bf t} \right]^T | 
 \mapA, \mapB,{\bf R} \right) =
@@ -638,7 +614,6 @@ $$
 
 From this it follows that under a fixed rotation the error in
 translation and landmark locations is a scaled Gaussian
-
 $$
 p\left(\left[\theta_1, ...\theta_n,{\bf t}\right]^T | 
 \mapA,\mapB,{\bf R}\right) 
@@ -828,7 +803,6 @@ $K$, it is impractical to generate all the paths, since there is such
 a large number of them. As a result one would have to resort to some
 form of approximation in order to obtain a sample. For example a
 genetic algorithm: 
-
 \begin{enumerate}
 \item Start with a small random sample of paths. 
 \item Generate new samples by mutating (mutation is performed by
@@ -864,7 +838,6 @@ regions far apart.
 
 In order to create a link between the maps a sample from the following
 distribution is needed
-
 $$
 \prob{\mapA,\tr{}{A}{E},\mapE} 
 $$
