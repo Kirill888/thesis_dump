@@ -270,12 +270,13 @@ high certainty, the transformation is performed using the mean of the
 relative poses of the two regions.
 
 
-Whenever a new map is started, an initial region for the map is defined.
-The size and shape of the region depends on the environment and the
-available sensors. For the indoor experiment with the laser range
-sensor described in \ref{chpt:fixme}, free space information from the laser sensor is used to
-initialise the region. For the outdoor data set, the region is set to a
-rectangle of a fixed size aligned with the initial robot pose.
+Whenever a new map is started, an initial region for the map is
+defined.  The size and shape of the region depends on the environment
+and the available sensors. For the indoor experiment with the laser
+range sensor described in Section~\ref{sec:corner_detector}, free
+space information from the laser sensor is used to initialise the
+region. For the outdoor data set, the region is set to a rectangle of
+a fixed size aligned with the initial robot pose.
 
 When mapping is complete for a given map, the region of influence is
 cropped to minimise area that was not actually

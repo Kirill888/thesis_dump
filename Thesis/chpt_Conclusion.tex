@@ -30,11 +30,10 @@ likely to share common landmarks. Local maps cannot be truly
 decorrelated. HTSLAM captures these inter region correlations in a
 sample of map particles.
 
-
 Loop closing is one of the difficult problems for SLAM. This thesis
 presents an elegant solution that deals with the inherent ambiguities
 of loop closing situation in a formal rigorous manner. HTSLAM does not
-rely on some ``performance metrics'' that might be sensor/environment
+rely on any ``performance metrics'' that might be sensor/environment
 specific, instead multiple mapping hypothesis are evaluated against
 each other directly as part of a single particle filter. The hybrid
 structure of HTSLAM makes it possible to delay loop closing until
@@ -59,22 +58,27 @@ environment. Corners and doorways were used as landmarks.
 
 \end{itemize}
 
-%the results show...
+The results show that HTSLAM is capable of building maps of medium
+sized environments. Computational requirements stay constant due to
+the structure used by the algorithm, therefore potentially mapping of
+large environments should be possible. HTSLAM is capable of using
+vision sensors. Vision sensors are generally considered to be
+challenging for SLAM due to highly ambiguous data association.
 
 %An estimate of the position of a region close to the current one is
 %generally more certain than an estimate of the region far away.
 
 \section{Future work}
 
-There are a number of improvements to the current algorithms that I
-believe can make mapping more robust and efficient. Experiments with
-real data have shown that most failures occur after the transition
-between local regions. This is because the process of transition
-between regions generates a large proportion of weak particles. The
-process of re-sampling will generally favour good particles and prune
-out weak ones, however there is a danger that there will not be any
-particles in the right place. A smarter sampling strategy that takes
-into account recent observations, or overlap between local maps, can
+There are a number of improvements to the current algorithm that can
+make mapping more robust and efficient. Experiments with real data
+have shown that most failures occur after the transition between local
+regions. This is because the process of transition between regions
+generates a large proportion of weak particles. The process of
+re-sampling will generally favour good particles and prune out weak
+ones, however there is a danger that there will not be any particles
+in the right place. A smarter sampling strategy that takes into
+account recent observations, or overlap between local maps, can
 provide a significant improvement over the current approach.
 
 At the moment there is no obvious answer to how many particles are
@@ -92,11 +96,11 @@ features. Static features are always present, for example walls in the
 indoor environment. Dynamic features include moving objects like
 humans or other robots. Semi-static features are those that change
 their position from time to time, a couch or a desk for
-example. Traditional approaches to mapping assume a static world. While
-these approaches can tolerate a small number of dynamic objects,
-changes to the environment due to semi-static objects will render the
-map unusable eventually, requiring a complete rebuild. I believe that
-the HTSLAM map structure provides a good platform for a long term map
+example. Traditional approaches to mapping assume a static
+world. While these approaches can tolerate a small number of dynamic
+objects, changes to the environment due to semi-static objects will
+render the map unusable eventually, requiring a complete rebuild.
+HTSLAM map structure provides a good platform for a long term map
 management system.
 
 
