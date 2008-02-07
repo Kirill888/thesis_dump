@@ -37,7 +37,7 @@ The corner detector algorithm consists of two stages. During the first
 stage the algorithm looks for regions in the laser scan that might
 correspond to corners. During the second stage each corner hypotheses
 is analysed more closely. Hypotheses that do not pass the tests are
-discarded, those that remain are classified to be either convex,
+discarded. Those that remain are classified to be either convex,
 concave, jump or convex hidden corners.
 
 \begin{figure}[htbp]
@@ -69,9 +69,9 @@ properties of the surface. If there are any ``no return'' rays within
 the window, the quality of the line for this window is set to the
 lowest. One can see in \refFigure{fig:corner_scan_example_c}, the
 effect it has. While most hypothesis actually correspond to true
-corners in the environment, there is also a false hypothesis arising
-from the sensor range limitations. However the second stage of the
-algorithm successfully removes the false hypothesis.
+corners in the environment, there maybe false hypothesis arising from
+sensor range limitations. However, the second stage of the algorithm
+successfully removes any false hypothesis.
 \refFigure{fig:corner_scan_example_d} demonstrates this point.
 
 \begin{figure}[htbp]
@@ -115,23 +115,26 @@ ray corresponds to the ``convex hidden'' corner.
 
 \subsubsection{Uncertainty Representation}
 
-A corner is considered to be a point landmark with extra attributes.
-The extra attributes include the type of the corner and the
-orientations of the corner arms. Overall there are four metric
+A corner is considered to be a point landmark with additional
+attributes. The additional attributes include the type of the corner
+and the orientations of the corner arms. Overall there are four metric
 parameters that define the corner: two parameters for the location and
 two for the orientation of the corner arms. While it is possible to
 compute the uncertainty directly from the laser readings, it is not
-very obvious how to model error propagation. In this work errors in the
-estimation of the corner position and the orientation of the corner
-arms are assumed to be independent.
+very obvious how to propogate the uncretainty of individual lase beams
+through a line fitting process. In this work errors in the estimation
+of the corner position and the orientation of the corner arms are
+assumed to be independent zero mean Gaussians.
 
 Observation of the corner location is expressed in polar coordinates.
-Range and bearing measurements are assumed to be independent. Range
-uncertainty is set to 5 per cent of the measured distance to the
-corner plus some constant term.  Bearing uncertainty is set to 2
-degrees. Uncertainty of the orientation of each arm is set to 3
-degrees. While this is a very simplistic model of the uncertainty, in
-practice it performs surprisingly well.
+Range and bearing measurements are assumed to be independent. 
+
+Three standard deviations in the range measurement is set to 5 per
+cent of the measured distance to the corner plus some constant. Three
+standard deviations in the bearing measuremnt is set to 2 degrees.
+Error in the estimate of the orientation of each arm is set to 3
+degrees for three standard deviations. While this is a very simplistic
+model of the uncertainty, in practice it performs surprisingly well.
 
 
 \subsection{Tree Trunk Detector}
@@ -142,9 +145,9 @@ matlab code available from the ACFR website \cite{VP_dataset}.
 
 \section{Mapping}
 
-This section describes the implementation of the FastSLAM. It defines
-the landmark update equations. Odometry models of vehicles used in the
-experiment are also described.
+This section describes the implementation of FastSLAM algorithm. It
+defines the landmark update equations. Odometry models of vehicles
+used in the experiment are also described.
 
 
 \subsection{Point Landmarks}
@@ -164,9 +167,9 @@ $$
 {\bf x} = \left[ \begin{array}{c} x\\y \end{array} \right]
 $$
 
-The true state of the landmark is not known, the estimate of the landmark
-state is maintained instead. The estimate of the landmark state at
-time $k$ is $\hat{\bf x}_k$. The error covariance for the landmark
+The true state of the landmark is not known, the estimate of the
+landmark state is maintained instead. The estimate of the landmark
+state at time $k$ is $\hat{\bf x}_k$. The covariance for the landmark
 state is also maintained and is denoted $P_k$.
 
 The landmark state is related to the observation by the following equation
@@ -191,8 +194,8 @@ H_{[i,j]} = \frac{\partial h_{[i]}}{\partial {\bf x}_{[j]}}
 $$
 
 For clarity lets define the estimate of the landmark location in the
-sensor centred coordinate frame as $\hat{x}' = \hat{x} - x_s$ and
-$\hat{y}' = \hat{y} - y_s$. The Jacobian above is then equal
+sensor centric coordinate frame as $\hat{x}' = \hat{x} - x_s$ and
+$\hat{y}' = \hat{y} - y_s$. The Jacobian above is then equal euqual to:
 
 $$
 H = 
@@ -205,20 +208,20 @@ H =
 $$
 
 The Jacobian of partial derivatives of $h$ with respect
-to noise is also needed by EKF, in this case it is trivial
+to noise is also required by the EKF, in this case it is trivial
 
 $$
 V_{[i,j]} = \frac{\partial h_{[i]}}{\partial v_{[j]}}
              \left(\hat{\bf x}_k , 0 \right) = I.
 $$
 
-These Jacobians are used to update the state of the landmark when a
-new observation becomes available.
+These Jacobians evaluated at the curren state are used to update the
+state of the landmark when a new observation becomes available.
 
 
 \subsubsection{Observation Update}
 
-Every time the landmark is observed, its pose estimate is updated to
+Every time a landmark is observed, its pose estimate is updated to
 take into account the new information. This update is performed using
 the standard Extended Kalman filter equations.
 
@@ -243,7 +246,7 @@ due to the accumulation of errors in the process of integration. It is
 difficult to model such a system from the physical principles, instead
 a simplified model is devised.
 
-The state of the robot at time $k$ is it's position and orientation in a
+The state of the robot at time $k$ is its position and orientation in a
 local reference frame
 
 $$
@@ -324,10 +327,11 @@ $$
   \theta_{k-1} \\ \frac{\tan \alpha}{L}} \Delta T.
 $$
 
-
 In the above: L=2.83m - the distance between the front and rear axles,
-H=0.76m - half the distance between the rear wheels. Laser sensor is
-mounted at 3.78m, 0.5m.
+H=0.76m - half the distance between the rear wheels. Truck coordinate
+system is set at the middle of the rear axle with $x$ axis pointing
+forward and $y$ axis pointing left. The laser sensor is mounted at 3.78m,
+0.5m.
 
 \subsection{Region Model: Indoors}
 
@@ -340,13 +344,14 @@ grid.
 
 \subsection{Region Model: Victoria Park}
 
-In the outdoor environments free space dominates. It is therefore
-possible to assign any region to the local map. A grid map with the
-resolution of 50cm is used. Initial map region is a rectangle aligned
-with robot heading direction. At the end of the mapping the region is
-trimmed, refer to \refFigure{fig:initial_region_vision}, it is set to
-the intersection of the initial region and the region formed by the
-convex hull of the map.
+In outdoor environments free space dominates. It is therefore possible
+to assign any region to the local map. A grid map with a resolution of
+50cm is used. The initial map region is a rectangle aligned with the
+robot heading direction. At the end of the mapping process the region
+is trimmed, as shown in \refFigure{fig:initial_region_vision}. Trimmed
+region is set to the intersection of the initial region and the region
+formed by the convex hull of the map. When computing the convex hull
+of the map any uncertainty in landmark estimates is ignored.
 
 \begin{figure}[htbp]
   \centering
@@ -361,7 +366,7 @@ convex hull of the map.
 \section{Experiment Setup and Analysis}
 
 Particle filters produce different output for the same input (it is
-the nature of the filter). As a result the performance of a particle
+the nature of the filter). As a result, the performance of a particle
 filter can not be judged based on just one execution of the
 algorithm. 
 
@@ -377,13 +382,13 @@ approaches this metric is of little use, since the RMS error is likely
 to increase as the robot travels further away from the starting point.
 High RMS error on the fringes of the map does not always suggest a bad
 map, while even relatively low RMS error near the origin of the map
-can indicate an inconsistent map.
+may indicate an inconsistent map.
 
 Self-consistency is a more important measure of the quality of the
 map, though it is harder to define and measure. In the ideal world the
-definition can be simple: the map should contain all and only those
-landmarks that exist in the environment and have been observed during
-the experiment, all observations should be assigned to the correct
+definition can be simple: the map should contain only those landmarks
+that exist in the environment and have been observed during the
+experiment. All observations should be assigned to the correct
 landmark. In real life experiments this condition will never hold.
 Sensors do produce erroneous readings. Data association is often
 ambiguous, especially in the environments where landmark density is
@@ -396,28 +401,29 @@ prohibitively laborious task.
   \includegraphics[width=5cm]{Pics/fig_inconsistent_map}
   \caption[Example of an inconsistent map]
   {Example of an inconsistent map. On a second pass through
-    the region (dashed line), the robot failed data association and
+    the region (dashed line), data association failed and the robot
     erroneously added new landmarks (squares).}
   \label{fig:inconsistent_map}
 \end{figure}
 
 
-The map self-consistency requirement needs to be relaxed to accommodate
-for a realistic situation. In this work the following definition is
-used: if the filter experiences systematic data association errors,
-and divergence from the ground truth path, then the map is considered
-to be inconsistent. \refFigure{fig:inconsistent_map} shows an example
-of an inconsistent map. Errors like these are easy to spot for a human
-operator with a priori knowledge of the environment.
+The map self-consistency requirement needs to be relaxed to
+accommodate for a realistic situation. In this work the following
+definition is used: if the filter experiences systematic data
+association errors, and diverges from the ground truth path, then the
+map is considered to be inconsistent. \refFigure{fig:inconsistent_map}
+shows an example of an inconsistent map. Errors such as these are easy
+to spot for a human operator with a priori knowledge of the
+environment.
 
 The HTSLAM map is considered to be consistent if all local maps are
 consistent, and if all relative map transformations are consistent.
 Inconsistencies in relative local map poses can arise during loop
 closing, when incorrect map correspondences are established.
 Generally, inconsistent relative poses lead to inconsistent local
-maps, and are therefor easy to detect. Failure to close the loop does
+maps, and are therefore easy to detect. Failure to close the loop does
 not result in the inconsistent map, however such a map provides less
-information about the environment, and is therefor inferior to a
+information about the environment, and is therefore inferior to a
 proper map.
 
 \section {Results Indoors}
@@ -427,9 +433,10 @@ Indoor experiments were performed on the third floor of the RSISE
 building in ANU. A schematic of the environment is shown in
 \refFigure{fig:rsise_level3_map}.
 
-The HTSLAM algorithm ran 100 times on each data set. The map from each
-run was classified as one of: consistent and proper (closed loop),
-consistent but improper (failed to close the loop) or inconsistent.
+The HTSLAM algorithm was run 100 times on each data set. The map from
+each run was classified as one of: consistent and proper (closed
+loop), consistent but improper (failed to close the loop) or
+inconsistent.
 
  
 \begin{figure}[htbp]
@@ -444,14 +451,14 @@ hundred runs, each with a different random seed, were taken to discard
 the possibility of a ``lucky run''. All of the runs have produced
 correct maps on this particular data set.
 
-\refFigure{fig:corner_map_100p} shows one of the maps built with
-one hundred particles. Local maps are projected into the reference frame
-of the first map. Note that no post-processing was done to align the
-maps. \refFigure{fig:corner_map_300p} shows one of the maps produced
-with 300 particles. The paths of all runs projected into the reference
-frame of the first map are presented in
-\refFigure{fig:corner_odo_all}. As expected, there is more variance
-further from the origin.
+\refFigure{fig:corner_map_100p} shows one of the maps built with one
+hundred particles. Local maps are projected into the reference frame
+of the first map. Note that no post-processing was performed to align
+the maps. \refFigure{fig:corner_map_300p} shows one of the maps
+produced with 300 particles. The paths of all runs projected into the
+reference frame of the first map are presented in
+\refFigure{fig:corner_odo_all}. As expected, the path estimate differs
+more between runs further from the origin.
 
 
 \begin{figure}[htbp]
@@ -462,7 +469,7 @@ further from the origin.
   \subfigure[Topological path of the robot.]{
     \includegraphics[width=10cm]{Pics/corner_odo_100p}
   }
-  \caption{Map of corners (100 particles)}
+  \caption{Laser indoors: Map of corners (100 particles)}
   \label{fig:corner_map_100p}
 \end{figure}
 
@@ -474,7 +481,7 @@ further from the origin.
   \subfigure[Topological path of the robot.]{
     \includegraphics[width=10cm]{Pics/corner_odo_300p}
   }
-  \caption{Map of corners (300 particles)}
+  \caption{Laser indoors: Map of corners (300 particles)}
   \label{fig:corner_map_300p}
 \end{figure}
 
@@ -486,7 +493,7 @@ further from the origin.
   \subfigure[300 particles]{
     \includegraphics[width=15cm]{Pics/corner_odo_all_300p}
   }
-  \caption{Global Path over 100 test runs.}
+  \caption{Laser indoors: Global Path over 100 test runs.}
   \label{fig:corner_odo_all}
 \end{figure}
 
@@ -498,7 +505,7 @@ further from the origin.
   \centering
   \includegraphics[width=15cm]{Pics/corners_execution_time}
   
-  \caption{Execution time 100 particles.}
+  \caption{Laser indoors: Execution time 100 particles.}
 %map 33
   \label{fig:corners_execution_time}
 \end{figure}
@@ -507,10 +514,11 @@ further from the origin.
 time per laser reading for one of the runs (100 particles were used).
 The spikes in the execution time correspond to the creation of the new
 region. Most of this time is spent computing the occupancy grid of the
-region. Note that the graph never goes above 0.2 seconds, which is a
+region. Note that the graph never exceeds 0.2 seconds, which is the
 time between observations in case of the SICK laser range finder. The
 algorithm runs faster than real-time. An important observation is that
 computation time remains constant throughout the experiment.
+%TODO: brag about constant time
 
 \section {Results Victoria Park}
 
@@ -528,7 +536,7 @@ Num. Particles & Consistent & Consistent but improper & Inconsistent\\
 100 & 75  & 0 & 25 \\
 300 & 93  & 0 & 7\\
 \end{tabular}
-\caption{Summary of the experiments on the Victoria Park data set.}
+\caption{Laser outdoors: Summary of the experiments on the Victoria Park data set.}
 \label{tab:results_victoria_park}
 \end{table}
 
@@ -551,7 +559,7 @@ projected in to the reference frame of the first map.
   }
 
 
-  \caption{Map of corners (100 particles)} %map 33
+  \caption{Laser outdoors: Map of corners (100 particles)} %map 33
   \label{fig:trees_map_100p}
 \end{figure}
 
@@ -565,7 +573,7 @@ projected in to the reference frame of the first map.
   }
 
 
-  \caption{Map of corners (300 particles)} %map 33
+  \caption{Laser outdoors: Map of corners (300 particles)} %map 33
   \label{fig:trees_map_300p}
 \end{figure}
 
@@ -577,7 +585,7 @@ projected in to the reference frame of the first map.
   \subfigure[300 particles]{
     \includegraphics[width=10cm]{Pics/trees_odo_all_300p}
   }
-  \caption{Global Path over 100 test runs.}
+  \caption{Laser outdoors: Global Path over 100 test runs.}
   \label{fig:trees_odo_all}
 \end{figure}
 
