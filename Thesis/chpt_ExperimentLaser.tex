@@ -451,6 +451,13 @@ hundred runs, each with a different random seed, were taken to discard
 the possibility of a ``lucky run''. All of the runs have produced
 correct maps on this particular data set.
 
+For each run HTSLAM produces one map for every particle. It is not
+practical to plot the maps for each particle, instead a single sample
+from the final distribution is displayed. There is no global reference
+frame in HTSLAM, however for display purposes a robot starting pose was
+used as a reference frame. All the local maps for a single particle
+are plotted in that reference frame.
+
 \refFigure{fig:corner_map_100p} shows one of the maps built with one
 hundred particles. Local maps are projected into the reference frame
 of the first map. Note that no post-processing was performed to align
@@ -510,15 +517,19 @@ more between runs further from the origin.
   \label{fig:corners_execution_time}
 \end{figure}
 
-\refFigure{fig:corners_execution_time} shows the plot of execution
-time per laser reading for one of the runs (100 particles were used).
-The spikes in the execution time correspond to the creation of the new
+\refFigure{fig:corners_execution_time} shows the plot of execution time
+per laser reading for one of the runs (100 particles were used).  The
+spikes in the execution time correspond to the creation of the new
 region. Most of this time is spent computing the occupancy grid of the
-region. Note that the graph never exceeds 0.2 seconds, which is the
-time between observations in case of the SICK laser range finder. The
-algorithm runs faster than real-time. An important observation is that
-computation time remains constant throughout the experiment.
-%TODO: brag about constant time
+region. It is possible to do this computation in the background, while
+robot is still processing new observations. Note that the graph never
+exceeds 0.2 seconds, which is the time between observations in case of
+the SICK laser range finder. The algorithm runs faster than
+real-time. An important thing to note is that computation time per
+observation remains constant throughout the experiment. Even though
+robot explores larger and larger area and the size of the map grows, the
+time to process an observation remains roughly the same.
+
 
 \section {Results Victoria Park}
 
@@ -528,7 +539,6 @@ particles. While the majority of the runs have produced a correct map,
 some have failed. Table~\ref{tab:results_victoria_park} shows the
 proportion of successful runs for 100 and 300 particles.
 
-%TODO: expand results
 
 \begin{table}[ht]
 \center
@@ -542,8 +552,15 @@ Num. Particles & Consistent & Consistent but improper & Inconsistent\\
 \label{tab:results_victoria_park}
 \end{table}
 
-As one would expect, an increase in the number of particles produces a
-more robust mapping. 
+The result for a run with 100 particles is quite disappointing - every
+fourth execution of an algorithm failed to build a consistent
+map. However when the number of particles is increased to 300 the
+failure rate falls to 7 per cent. This a positive sign as it indicates
+that most failures are probably due to insufficient number of particles
+used. Manual inspection of the failed maps suggests that most of the
+failures happen straight after a first transition in to a previously
+mapped region. Better sampling strategy for the first transition might
+improve the performance of the algorithm.
 
 \refFigure{fig:trees_map_100p} and \refFigure{fig:trees_map_300p} show
 an example of a correct map for 100 and 300 particles

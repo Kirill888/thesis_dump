@@ -11,8 +11,8 @@ multiple hypothesis arising from the loop closing.
 \section{Loop Detection}
 \label{sec:loop_detection}
 
-\SILENT{Describe how we decide to try map matching. Use of map regions in the
-probabilistic framework. Why is it great.}
+%% Describe how we decide to try map matching. Use of map regions in the
+%% probabilistic framework. Why is it great.
 
 %Even though there is no global
 %reference frame in the HTSLAM structure, it is possible to obtain an
@@ -52,12 +52,10 @@ the current map?
 %we have closed the loop (hooray!). Now a more detailed description of
 %how we do each of the steps.
 
+%Provide notation for examples. Assume robot starts in map $A$, goes
+%through maps $B,C,D,E$, before establishing correspondence between
+%landmarks in maps $A$ and $E$.
 
-
-\SILENT{
-Provide notation for examples. Assume robot starts in map $A$, goes
-through maps $B,C,D,E$, before establishing correspondence between
-landmarks in maps $A$ and $E$.}
 
 \subsection{Computing Relative Map Poses}
 \label{sec:relative_poses}
@@ -122,28 +120,9 @@ In the experiments presented in this thesis the BFT algorithm was
 used, and was proven to be sufficient.
 
 
-%\SILENT{ I think one should choose the shortest path in the number of
-%hops, as this is probably the most reliable way to compare the total
-%uncertainty of the path.  Gaussian approximation just doesn't cut it
-%(especially with vision data)
-%
-%Alternatively one has to sample and compare the spread of the two
-%distributions.  Either way the number of hops has to come in to the
-%equation as a kind of penalty term, if you will, this is due to the
-%fact that the more hops there are, the more different the true and
-%estimated distributions become. It doesn't really matter if the
-%estimate is a Gaussian or a sample. In case of the Gaussian estimate
-%linearisation errors accumulate, and in case of the sample there is
-%particle deprivation problem, the more hops there are the more
-%particles one needs to represent the relative poses accurately.  
-%
-%}
-
-
 \section{Map Matching}
 \label{sec:map_matching}
 
-%\SILENT{
 %\begin{enumerate}
 %\item Problem definition: search for a maxima in the landmark
 %   correspondence space. Evaluation criteria is defined by the edge
@@ -157,24 +136,22 @@ used, and was proven to be sufficient.
 %\item Preprocessing steps allow to traverse good branches first, that
 %   makes early exit more efficient.
 %\end{enumerate}
-%}
 
 Given two local maps, a method is required to assess the probability
 that they correspond to the same region in the environment and find
 their relative alignment. The choice of map matching algorithm depends
-on the type of local mapping module. In this thesis we concentrate on
-feature based maps (other types include: occupancy grids, dense point
-clouds and laser scans). In the case of feature based maps, the map
-correspondence problem is split into a number of landmark
-correspondence problems. To solve the map correspondence problem, one
-needs to find the most likely set of common landmarks between the two
-local maps. It is a requirement of HTSLAM that the correspondence
-problem can be solved without accurate knowledge of the relative map
-alignment. The nearest neighbour gating technique, commonly used for
-data association problems, will not work in this situation since the
-uncertainty in the relative alignment of the two maps is large. There
-are a number of batch data association techniques. One of them is the
-joint probability branch and bound(JPBB)
+on the type of local mapping module. This thesis deals with feature
+based maps (other types include: occupancy grids, dense point clouds and
+laser scans). In the case of feature based maps, the map correspondence
+problem is split into a number of landmark correspondence problems. To
+solve the map correspondence problem, one needs to find the most likely
+set of common landmarks between the two local maps. It is a requirement
+of HTSLAM that the correspondence problem can be solved without accurate
+knowledge of the relative map alignment. The nearest neighbour gating
+technique, commonly used for data association problems, will not work in
+this situation since the uncertainty in the relative alignment of the
+two maps is large. There are a number of batch data association
+techniques. One of them is the joint probability branch and bound(JPBB)
 \cite{neira01:_data_assoc_stoch_mappin_using} method, which is more
 robust to pose uncertainty, than nearest neighbour, however it still
 assumes that the rough alignment is known. JPBB performs a search in a
@@ -226,7 +203,7 @@ landmarks in these sets do not correspond (see
   \label{fig:mirror_sets}
 \end{figure}
 
-%\NOTE{Need a tighter integration with the rest of the text.}\\
+%TODO: Need a tighter integration with the rest of the text.
 The most direct way to evaluate a correspondence hypothesis is to
 perform a two-view reconstruction of the scene, and then compute the
 likelihood of the reconstruction. Let $\theta_i$ be a landmark
@@ -256,8 +233,6 @@ configuration. However it can be applied to compare the best few
 hypotheses.
 
 
-
-\SILENT{The actual algorithm in text and pseudo-code}
 
 Preprocessing step: let $E^a_{i,k}$ be the edge between landmarks $i$
 and $k$ in the map $a$. For every landmark correspondence compute an
@@ -490,63 +465,6 @@ is outlined in Section~\ref{sec:map_alignment} on map alignment .
 
 
 
-\SILENT{
-
- The probability that landmarks $\theta^a_i,\theta^b_j$
-correspond to landmark $\theta^a_1$ and landmark
-$\theta^a_k,\theta^b_l$ correspond to $\theta^a_2$ is given by the
-following:
-
-\begin{equation}
-p(\theta^a_1, \theta^a_2, {\bf R},{\bf t}|
-  \theta^a_i, \theta^b_j, \theta^a_k, \theta^b_l) =
-p(\theta^a_1 | \theta^a_i)
-p({\bf R}\theta^a_1+{\bf t} | \theta^b_j)
-p(\theta^a_2 | \theta^a_k)
-p({\bf R}\theta^a_2+{\bf t} | \theta^b_l).
-\label{eqn:true_alignment_prob}
-\end{equation}
-
-The true poses of landmarks, and the true alignment of the maps are
-not known, so the statement above can not be evaluated directly. It is
-however possible to find the most likely $\theta^a_1, \theta^a_2, {\bf
-R,t}$. The maximum of the statement above is a measure of the
-likelihood of the landmark correspondence hypothesis. I suspect there
-is no close form solution for the maximum, however it is probably
-possible to find maximum numerically with just a few iterations of
-Gaussian-Newton method.
-
-Rather than computing the likelihood directly it is possible to use
-rotation and translation invariant features as an estimate of the true
-likelihood. A distance between two landmarks remains the same under
-Euclidean transformation. The argument is then as follows: if two
-landmarks in a map $a$ are about $d$ meters apart, and two landmarks
-in a map $b$ are also about the same distance apart, then it is
-possible that the two landmarks correspond.
-}
-
-
-
-\SILENT{
-It is assumed that it is possible to approximate relative map
-alignment from as few as two landmark correspondences. In the case of
-point landmarks the alignment is computed using the following
-technique: first compute rotation from one frame to another, rotate
-one of the landmark pairs, then compute translation. Ignore
-correlation between rotation and translation.
-
-
-The uncertainty of the rotation is computed using linearisation. Given
-the rotation from $a$ to $b$ is fixed, relative translation after
-rotation is a Gaussian and can be found analytically. The exact
-equations are given in the section on map alignment, later on in the
-chapter Section \ref{sec:map_alignment}.
-
-What is important for now is that there exists a function that
-estimates a relative alignment of the two maps as a Gaussian given a
-pair of landmark correspondences.
-}
-
 \subsection{Final Map Alignment}
 \label{sec:map_alignment}
 
@@ -593,7 +511,7 @@ p([\theta_1, ...\theta_n],{\bf R},{\bf t} | \mapA, \mapB) =
 \end{array}
 \end{equation}
 where $\eta$ is a normalisation constant, independent of ${\bf
-R,t},\theta_1, \theta_2 ...\theta_n$. Taking $\log$s we obtain
+R,t},\theta_1, \theta_2 ...\theta_n$. Taking $\log$s: 
 
 \begin{equation}
 \begin{array}{l}
@@ -732,15 +650,13 @@ rotation and can be found numerically, for example using Golden Ratio
 search for minima algorithm \cite{Pres92}.
 
 Rather than using one optimal value to describe the relative poses of
-the two maps, HTSLAM needs a sample of the poses instead. Ideally we
-would like a sample of $({\bf R,t})$ pairs directly from the
-distribution given in the \refEquation{eqn:align_w0}. Unfortunately
-this is not possible. Instead we exploit the fact that rotation
-can be found independently of translation, so it is possible to sample
-rotation first, then sample translation conditioned on the
-rotation. For a given ${\bf R}$, ${\bf t}$ can be sampled easily,
-since it is distributed normally $N(\mu, {\bf G}^{-1})$.
-
+the two maps, HTSLAM needs a sample of the poses instead. A direct
+sample of $({\bf R,t})$ pairs from the distribution given in
+\refEquation{eqn:align_w0} is not possible. Since it is possible to find
+rotation independent of translation, it is possible to sample rotation
+first, and then sample translation condition on a given rotation. For a
+given ${\bf R}$, ${\bf t}$ is distributed normally $N(\mu, {\bf
+G}^{-1})$.
 
 
 \section{Augmenting Global Map Structure}
@@ -819,26 +735,24 @@ are observable. Quite often this is not the case, as was illustrated in
 the example above. The limitations of the perception system of an entity
 can indeed limit the certainty of the world model that can be achieved.
 
+%There are two possible ways to circumvent this problem. One solution
+%is to try to obtain a sample from the joint distribution, without
+%having to compute all the possibilities, we call it a globally
+%consistent approach. And another possibility is to ignore the joint
+%distribution and only update the map locally. Pros and cons of both
+%approaches are discussed below. Local approach was chosen in the end.
+%
+% Example: sum of K random variables (assume uniform -1 0 1) is
+%  known to be equal to be zero. What can we tell about each of the
+%  numbers? Answer is: it depends on the K. If K=2, then there is a
+%  noticeable difference, K=5 difference much less, K=10,100 almost no
+% difference. 
+%
+%Example: two random variable $a,b$, we know $p(a)$ and $p(b)$ from the
+%prior, and we assume independence, because we can not evaluate them
+%jointly. New evidence gives us access to $p(a,b)$. If $p(a,b) \ne
+%p(a)p(b)$ variables $a$ and $b$ are not independent.
 
-\SILENT{
-There are two possible ways to circumvent this problem. One solution
-is to try to obtain a sample from the joint distribution, without
-having to compute all the possibilities, we call it a globally
-consistent approach. And another possibility is to ignore the joint
-distribution and only update the map locally. Pros and cons of both
-approaches are discussed below. Local approach was chosen in the end.
-
- Example: sum of K random variables (assume uniform -1 0 1) is
-  known to be equal to be zero. What can we tell about each of the
-  numbers? Answer is: it depends on the K. If K=2, then there is a
-  noticeable difference, K=5 difference much less, K=10,100 almost no
- difference. 
-
-Example: two random variable $a,b$, we know $p(a)$ and $p(b)$ from the
-prior, and we assume independence, because we can not evaluate them
-jointly. New evidence gives us access to $p(a,b)$. If $p(a,b) \ne
-p(a)p(b)$ variables $a$ and $b$ are not independent.
-}
 
 
 
@@ -927,18 +841,18 @@ Such an approach is likely to generate an overly certain sample, which
 can lead to inconsistencies later on in the mapping process.
 
 
-\SILENT{
-Matters are complicated even more by the fact, that we don't have
-access to the full distribution, and have to resort to some form of
-approximation in order to obtain a sample. Such approximations are
-likely to introduce a bias of some sort.
 
-While I have spent significant amount of time thinking about the
-possibility of implementing some version of a globally consistent
-approach, I haven't actually done any real experimentation in that
-regard. I conclude, based purely on thought experiments, that such an
-approach is unlikely to work for all but very short loops.
-}
+%Matters are complicated even more by the fact, that we don't have
+%access to the full distribution, and have to resort to some form of
+%approximation in order to obtain a sample. Such approximations are
+%likely to introduce a bias of some sort.
+%
+%While I have spent significant amount of time thinking about the
+%possibility of implementing some version of a globally consistent
+%approach, I haven't actually done any real experimentation in that
+%regard. I conclude, based purely on thought experiments, that such an
+%approach is unlikely to work for all but very short loops.
+
 
 
 \subsection{Local Approach}

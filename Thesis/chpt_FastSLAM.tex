@@ -20,29 +20,6 @@ $\U{k}$ and an observation at time $k$ is $\z{k}$. Further notation
 will be introduced as needed, and is summarised in \refTable{tab:notation}.
 
 
-
-\SILENT{
-This section describes the notation that will be used throughout the
-rest of the document. We reserve letter $k$ to represent discrete
-time, letter $t$ will represent continuous time. Letters $a$ and $b$
-will be used to index map frames. Letter $m$ is used to represent
-particle index, the $m$-th particle or belonging to the $m$-th
-particle. Index $i$ is reserved for numbering elements of the finite
-sets, that do not directly depend on time, for example the map is a
-finite set of landmarks, that does not directly depend on time.
-
-The discrete time index will be a subscript, for example \z{k}. The
-element index $i$ will also be subscript, if both time and element
-index are present, the time index will be followed by a comma followed
-by the element index.
-
-Map and particle indices will be superscripts, if both present, the
-map index will be first, followed by a comma followed by the particle
-index. For example \x{}{a}{m} means the $m$-th particle in the $a$-th
-map. Table~\ref{tab:notation} describes variables we will be using in the
-thesis and their meaning.
-}
-
 \begin{table}[ht]
 \begin{tabular}{|l|l|}
 \hline
@@ -247,17 +224,6 @@ V_{k[i,j]} &=& \frac{\partial h_{[i]}}{\partial v_{[j]}}
 \end{eqnarray}
 
 
-
-\SILENT{
-EKF operation is similar to that of the Kalman filter: first compute
-the Kalman gain
-\refEquation{eqn:ekf_gain}, and then update the mean
-\refEquation{eqn:ekf_x_obs} and the covariance
-\refEquation{eqn:ekf_sigma_obs} of the state variable. The only
-difference is that instead of true noise covariances, first order
-Taylor series approximation is used. 
-}
-
 Unlike the Kalman filter, the EKF is not guaranteed to converge, and
 is likely to fail if the system is highly non-linear. However there
 are many successful applications of the EKF in various fields of
@@ -355,7 +321,7 @@ below.
 
 First the set of all particles ${\bf X}_0$ is initialised by drawing
 $M$ samples from the initial distribution $p(\x{0}{}{})$. For
-simplicity we assume, without loss of generality, that control
+simplicity assume, without loss of generality, that control
 inputs and observations arrive at the same time. The particle filter
 first predicts the state by sampling from the distribution
 $p(\x{k}{}{} | \x{k-1}{}{m}, \U{k-1})$. This sampling is applied to
@@ -378,8 +344,8 @@ every observation.
 %%% as this can lead to overconfident distribution. The best resampling
 %%% strategy varies from one problem to another.
  
-\SILENT{Would be good to give some reference to smart
-resampling strategies, entropy based maybe?}
+%% Would be good to give some reference to smart resampling strategies, 
+%% entropy based maybe?
 
 
 

@@ -19,21 +19,18 @@ one region and an empty map.
 \section{Local Mapping Procedure}
 \label{sec:local_mapping}
 
-\SILENT{
-\begin{itemize}
-\item Underlying mapping module: FastSLAM
-\item Modifications to FastSLAM: particles can be in different map
-  frames, time holes and teleportations.
-\item Why is it better than EKF: faster, multi-hype, better
-  uncertainty modelling.
-\item Summary of operation: how we start, state variables/data,
-  multiple hypotheses.
-\end{itemize}
-}
+%\begin{itemize}
+%\item Underlying mapping module: FastSLAM
+%\item Modifications to FastSLAM: particles can be in different map
+%  frames, time holes and teleportations.
+%\item Why is it better than EKF: faster, multi-hype, better
+%  uncertainty modelling.
+%\item Summary of operation: how we start, state variables/data,
+%  multiple hypotheses.
+%\end{itemize}
 
 %%% \subsection{ Rao-Blackwellised Particle Filter}
 %%% 
-%%% \SILENT{
 %%% 1. Faster: No need for cross-correlation between landmarks is a very
 %%% big advantage, since updates to the cross-correlation matrix have a
 %%% computational complexity of $O(N^3)$ ($O(N^4)$ using the trivial
@@ -48,7 +45,6 @@ one region and an empty map.
 %%% 2. Intrinsic support for multiple hypotheses - makes it really easy
 %%% to extend to multiple local maps, very natural integration into our
 %%% global map structure.
-%%% }
 %%% 
 %%% The main advantage of using Rao-Blackwellised particle filters for mapping
 %%% is the fact that they are fast, hence FastSLAM. The computational
@@ -170,7 +166,7 @@ straight ahead is as easily detectable as one on the robot's left),
 then this approach actually maximises the number of re-observed
 landmarks. In the real world landmarks are not distributed uniformly,
 and the detection rates for different views of a landmark are
-different. This approach nevertheless provides a good, computationaly
+different. This approach nevertheless provides a good, computationally
 inexpensive measure for determining map transitions.
 
 A sensor view based approach also makes the decision to start a new
@@ -348,10 +344,10 @@ location increases and hence the number of particles would be
 temporarily increased. After some observations of map $A$, bad paths
 would be pruned out through the process of re-sampling. 
 
-%% \NOTE{I reckon
+%% I reckon
 %% this approach is a better one. It is however not very clear, what will
 %% happen when running multiple hypotheses (loop closing). I know it have
-%% been done for localisation, but can not find any references for SLAM.}
+%% been done for localisation, but can not find any references for SLAM.
 
 Once the robot transfers from $B$ to $A$ the two maps are no longer
 independent. Any further update to map $A$ will depend on the pose of
@@ -362,10 +358,9 @@ transition between them are therefore dependent variables. This
 dependency is represented in the HTSLAM structure by a sample from the
 $\prob{\mapA,\tr{}{A}{B},\mapB}$.
 
-In practice this means that each particle now knows which map to
-update in $A$ and in $B$, and which transition to use when
-transferring from one to the other \SILENT{need to be more clear about
-the samples from map A,B}. From that point onwards no sampling will be required
+In practice this means that each particle now knows which map to update
+in $A$ and in $B$, and which transition to use when transferring from
+one to the other. From that point onwards no sampling will be required
 when transferring from $A$ to $B$ and back. If the robot continues
 operating only within these two maps, the mapping process will be
 equivalent to a normal FastSLAM, except that the environment is split
@@ -382,10 +377,10 @@ the particle filter. While this is generally a good thing, there is a
 drawback: the particle deprivation problem. Since there is no process in
 place that will introduce new particles to the transition, over time
 the transition estimate will collapse to just a few or even one
-particle. 
+particle. This will not necessarily cause major problems, since by the
+time that happens the relative poses of the local maps are already known
+and the topological structure has been initialised.
 
-%\NOTE{Why is it a problem, when is it not a problem. What
-%can be done about it. }
 
 If the robot starts a new region $C$ and then returns to
 region $A$, a similar process of sampling will occur. This time,

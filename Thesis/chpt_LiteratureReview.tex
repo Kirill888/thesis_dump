@@ -97,7 +97,7 @@ information gets incorporated into the map it becomes possible to
 recover bearing between any two points in the environment regardless
 of whether or not they are adjacent.
 
-Siegal \& White \cite{psycho_siegel75} see this process as the first
+Siegel \& White \cite{psycho_siegel75} see this process as the first
 step in the coordination of routes into a fully metric survey-like
 representation of the environment (equivalent of stage 4 in Piaget model).
 
@@ -130,8 +130,8 @@ rather go up and down in the hierarchy.
 %%% estimate, and I am really uncertain about the orientation of my house
 %%% relative to the coffee machine in the university. 
 
-%\SILENT{need a summary on the observation that local things are
-%  metric, but further things are topological.}
+%need a summary on the observation that local things are
+%  metric, but further things are topological.
 
 %Other interesting references: 
 \nocite{psycho_tversky81}
@@ -141,10 +141,10 @@ rather go up and down in the hierarchy.
 
 \section{Robotic Mapping}
 
-\SILENT{Introduce metric/topological mapping. Introduce EKF, FastSLAM,
-  EM. State how topological and metric were rather disjoint. Maybe
-  borrow some text from the next section. Future reference to the next
-  chapter that defines EKF and FastSLAM in a formal way.}
+%Introduce metric/topological mapping. Introduce EKF, FastSLAM, EM. State
+%how topological and metric were rather disjoint. Maybe borrow some text
+%from the next section. Future reference to the next chapter that defines
+%EKF and FastSLAM in a formal way.
 
 There are two main paradigms of robotic mapping: topological and
 metric. The topological map is essentially a graph.  Nodes of the
@@ -170,7 +170,7 @@ With a topological map, the robot is restricted to the routes along
 the edges of the map. The robot cannot take shortcuts even if they are
 physically possible. 
 
-%\NOTE{cite topological papers}
+%TODO: cite topological papers
 
 Metric maps are generally more detailed and hence useful. 
 The robot pose and the map features are defined in a single
@@ -245,17 +245,17 @@ typically called {\it Belief} and is denoted
 where \Uall{k-1}{} is a set of all control inputs up to time $k-1$, and
 \Zall{k}{} is a set of all observations up to time $k$. It is usually
 desired to approximate the posterior recursively, otherwise one would
-run into computation problems very quickly.  If we make a Markov
+run into computation problems very quickly. Making a Markov
 assumption that future data is independent of past data given the
-robot pose, we have
+robot pose:
 
 \begin{eqnarray}
  p(\z{k} | \Zall{k-1}{}, \Uall{k-1}{})    &=& p(\z{k} | \x{k}{}{}) \\
  p(\x{k}{}{} | \Zall{k-1}{}, \Uall{k-1}{})&=& p(\x{k}{}{} | \x{k-1}{}{}, \U{k-1}{}).
 \end{eqnarray}
 
-We can transform \refEquation{eqn:localise_belief} into a recursive
-formula by applying Bayes' rule (see \cite{Thrun00j} for a derivation)
+By applying Bayes' rule \refEquation{eqn:localise_belief} is transformed
+into a recursive formula (see \cite{Thrun00j} for a derivation)
 
 \begin{equation}
 Bel(\x{k}{}{}) = \eta p(\z{k} | \x{k}{}{}) \int 
@@ -332,7 +332,7 @@ computational resources against performance.
 \subsection{SLAM Problem}
 
 This section introduces the problem of Simultaneous Localisation and
-Mapping. %TODO: expand some refs
+Mapping \cite{smith1990eus,thrun2003rms}. 
 
 A robot starts at time 0 at location \x{0}{}{}, executes a series of
 motion commands $\Uall{k}{} = [\U{0},\U{1}...\U{k}]$ and collects a
@@ -342,10 +342,6 @@ commands are not synchronised, however this can be easily accommodated
 in the implementation. It is therefore commonly assumed that
 observation and motion happen at the same discrete time interval.
 Control and perception of the robot are subject to noise.
-
-%%% NOTE: above sentence might go
-
-\SILENT{$[\mape{}{}{1},\mape{}{}{2}...\mape{}{}{n}]$}
 
 SLAM seeks to find the true path of the robot up to time $k$,
 $\Xall{k}{}{} = [\x{0}{}{}, \x{1}{}{}, ... \x{k}{}{}]$, and the true
@@ -386,15 +382,6 @@ independent of past errors, hence
 p(\z{k}| \x{k}{}{},\map{k}{}{}, \Zall{k}{}) \equiv 
   p(\z{k}| \x{k}{}{},\map{k}{}{})
 \end{equation}
-
-\SILENT{
-\item The data association model (depends on the environment and the sensor)
-\begin{eqnarray}
- p(\z{k} \equiv noise), \\
- p(\z{k} \equiv new | \x{k}{}{}, \map{k}{}{}),\\
- p(\z{k} \equiv \mape{}{}{\asc{k}} | \x{k}{}{}, \map{k}{}{}).
-\end{eqnarray}
-}
 
 \end{enumerate}
 
@@ -921,7 +908,7 @@ uncertainty should be explored.
 
 \nocite{tim_bailey,
 bosse03atlas,
-fergusson2003
+fergusson2003,
 thrun00,
 dissanayake01,
 SOG-Slam01,

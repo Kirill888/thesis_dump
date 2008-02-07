@@ -352,7 +352,7 @@ Let $x_r,y_r$ be the location of the right camera with respect to the
 left one and $\theta_r$ be the orientation of the right camera
 relative to the left one. Let $u_l,u_r$ be the bearing observations
 (tangent of the angle) from the left and right cameras
-respectively. We then define the observation to be
+respectively. Observation is defined to be
 
 $$
 {\bf z} =  \left[
@@ -552,16 +552,18 @@ detected in the same video frame share common source of uncertainty:
 camera calibration parameters. Yet errors are assumed independent for
 practical reasons.
 
-As mentioned previously vision and corner data sets were collected
-from the same platform at the same time, yet one can see that local
-region assignment is significantly different between the two data
-sets. In corner based SLAM occupancy grid was used to define a local
-region. In the case of vision based experiment no free space
-information was available, hence regions were assigned to be of fixed
-size. Using free-space information for local region assignment is
-advantageous as it partitions the space in a more sensible
-way. Consequently local map transitions are less reliable for a vision
-data set.
+As mentioned previously vision and corner data sets were collected from
+the same platform at the same time, yet one can see that local region
+assignment is significantly different between the two data sets. In
+corner based SLAM occupancy grid was used to define a local region. In
+the case of vision based experiment no free space information was
+available, hence regions were assigned to be of fixed size. Using
+free-space information for local region assignment is advantageous as it
+partitions the space in a more sensible way. Consequently, local map
+transitions are less reliable for a vision data set. This suggests that
+a better model for local region assignment might be necessary.
+
+
 
 
 % LocalWords:  epipolar EKF Jacobians Gaussians IDE Sobel  cyan discretisation
