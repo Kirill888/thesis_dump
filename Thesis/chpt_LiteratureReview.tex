@@ -252,7 +252,7 @@ robot pose:
  p(\z{k} | \Zall{k-1}{}, \Uall{k-1}{})    &=& p(\z{k} | \x{k}{}{}) \\
  p(\x{k}{}{} | \Zall{k-1}{}, \Uall{k-1}{})&=& p(\x{k}{}{} | \x{k-1}{}{}, \U{k-1}{}).
 \end{eqnarray}
-By applying Bayes' rule equation~\refEquation{eqn:localise_belief} is
+By applying Bayes' rule, equation~\refEquation{eqn:localise_belief} is
 transformed into a recursive formula (see \cite{Thrun00j} for a
 derivation)
 \begin{equation}
@@ -574,7 +574,7 @@ distribution of the robot pose given observations and control input is
 then as shown in \refFigure{fig:post_obsodo_}. Clearly this
 distribution differs significantly from a Gaussian.
 
-The example presented shows that non-Gaussian distributions in robot
+The presented example shows that non-Gaussian distributions in robot
 posterior can arise as a result of an ambiguous data
 association. Approaches to SLAM that can deal with such distributions
 therefore might have an advantage in such situations.
