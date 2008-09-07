@@ -327,11 +327,11 @@ forward and $y$ axis pointing left. The laser sensor is mounted at 3.78m,
 \subsection{Region Model: Indoors}
 
 For the indoor experiment region extent was computed directly from the
-laser scans. The first five scans are used to compute the free space in
-front of the robot. This region defines the extent of the local map.
-The occupancy grid is computed by a standard ray tracing algorithm. Any
-uncertainty in the robot pose is ignored when building the occupancy
-grid.
+laser scans. The first five scans are used to compute the free space
+in front of the robot. This region defines the extent of the local
+map.  The occupancy grid with a cell size of 10cm is computed by a
+standard ray tracing algorithm. Any uncertainty in the robot pose is
+ignored when building the occupancy grid.
 
 \subsection{Region Model: Victoria Park}
 
@@ -508,9 +508,9 @@ more between runs further from the origin.
   \label{fig:corners_execution_time}
 \end{figure}
 
-\refFigure{fig:corners_execution_time} shows the plot of execution time
-per laser reading for one of the runs (100 particles were used).  The
-spikes in the execution time correspond to the creation of the new
+\refFigure{fig:corners_execution_time} shows the plot of execution
+time per laser reading for one of the runs (100 particles were used).
+The spikes in the execution time correspond to the creation of the new
 region. Most of this time is spent computing the occupancy grid of the
 region. It is possible to do this computation in the background, while
 robot is still processing new observations. Note that the graph never
@@ -518,8 +518,8 @@ exceeds 0.2 seconds, which is the time between observations in case of
 the SICK laser range finder. The algorithm runs faster than
 real-time. An important thing to note is that computation time per
 observation remains constant throughout the experiment. Even though
-robot explores larger and larger area and the size of the map grows, the
-time to process an observation remains roughly the same.
+the robot explores larger and larger area and the size of the map
+grows, the time to process an observation remains roughly the same.
 
 
 \section {Results Victoria Park}

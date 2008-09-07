@@ -248,8 +248,9 @@ computational complexity of the preprocessing step is $O(N_eM_e)$,
 where $N_e,M_e$ are number of edges in the two sets. However, if one
 first sorts the edges by their lengths, one does not need to match
 each edge to every other. The complexity in that case will be
-$O(N_e\log N_e + M_e\log M_e + N_eK)$ where $K << M_e$, and depends on
-the search window width and the distribution of edge lengths.
+$O(N_e\log N_e + M_e\log M_e + N_eK)$ where $K \leq M_e$ but in
+practice $K \ll M_e$ typically, and depends on the search window width and the
+distribution of edge lengths.
 
 Let $S$ be a set of landmark correspondence hypotheses. Each element
 of $S$ is a triple $(u_{ij}, i, j)$, where $u_{ij},i,j$ mean the same
@@ -643,12 +644,12 @@ discovers that region $A$ and $E$ overlap.
 
 From landmark correspondences it is possible to infer the relative
 pose of the two maps, allowing for an update of the global map
-structure. Through map alignment new link can be added between the two
-maps. The robot can then transfer into map $A$ and continue mapping.
-However, this new information also provides information about the path
-of the robot along the loop. Before map matching all paths are equally
-likely (by construction), subsequently the robot have re-localises
-itself in map $A$.
+structure. Through map alignment a new link can be added between the
+two maps. The robot can then transfer into map $A$ and continue
+mapping.  However, this new information also provides information
+about the path of the robot along the loop. Before map matching all
+paths are equally likely (by construction), subsequently the robot
+re-localises itself in map $A$.
 
 If there are no loops in the HTSLAM structure, transitions are
 independent variables. This follows from the process by which
@@ -805,7 +806,7 @@ form of approximation in order to obtain a sample. For example a
 genetic algorithm: 
 \begin{enumerate}
 \item Start with a small random sample of paths. 
-\item Generate new samples by mutating (mutation is performed by
+\item Generate new samples by mutating paths (mutation is performed by
   changing one transition at a time).
 \item Sample with replacement ``good'' paths.
 \item Repeat from step 2, until convergence is reached

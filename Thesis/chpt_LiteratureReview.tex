@@ -395,6 +395,7 @@ based algorithm \cite{ekf_slam} and a particle filter algorithm called
 ``FastSLAM'' \cite{fastslam}.
 
 \subsection{Kalman Filter Approach}
+\label{sec:EKF_SLAM}
 The Extended Kalman Filter approach treats the SLAM problem as a state
 estimation problem in which the state consists of the robot pose and
 locations of all landmarks. Usually the number of features is not
@@ -408,18 +409,25 @@ $O(K^2)$, where $K$ is the number of features in the map
 
 Considerable research has addressed the computational performance of
 the EKF approach to SLAM \cite{williams:acra2001, williams2001esa,
-  knight2001tct, guivant01, tim_bailey, uhlmann97nondivergent,
-  tardos02:_mappin_local_indoor_envir_using_sonar_data}.  It is
-possible to exploit the fact that only a small subset of the whole map
-is observed at any given time to reduce the computational burden.
-Compressed EKF \cite{williams:acra2001} is an optimal approach that
+  knight2001tct, guivant01,guivant02, tim_bailey,
+  uhlmann97nondivergent,
+  tardos02:_mappin_local_indoor_envir_using_sonar_data}.  
+It is possible to exploit the fact that only a small subset of the
+whole map is observed at any given time to reduce the computational
+burden.  Compressed EKF \cite{guivant02} is an optimal approach that
 reduces the computational cost of measurement update to $O(K_a^2)$,
 where $K_a$ is a number of features in the local region of the global
 map.  This approach still requires a costly $O(K^2)$ global
 registration stage when robot changes from one local region to the
-next. A sub-optimal version of the same algorithm bounds the cost of the
-global registration stage.
+next. A sub-optimal version of the same algorithm bounds the cost of
+the global registration stage.
 
+Constrained Local Submap Filters \cite{williams:acra2001} by Williams
+uses local maps for building the immediate environment around the
+robot, effectively forgetting about the rest of the world. The local
+map is then merged into the global reference frame. This keeps the
+computational requirements relatively constant, irrespective of the
+environment size. 
 
 The most important limitation of the EKF approach is the inability to
 model multiple data association decisions. Every observation has to be
@@ -429,12 +437,13 @@ multiple Kalman filters in parallel. Alternatively, one can try to
 improve the quality of data association decisions. Batch data
 association techniques like
 \cite{neira01:_data_assoc_stoch_mappin_using,
-tardos02:_mappin_local_indoor_envir_using_sonar_data} can reduce the
+  tardos02:_mappin_local_indoor_envir_using_sonar_data} can reduce the
 ambiguity of data association, but it is impossible to eliminate this
-problem completely. It is impossible to undo incorrect data association
-in EKF, as a result EKF is quite sensitive to data association
-errors. Detecting large cycles is a very difficult problem for EKF SLAM,
-due to the inability to deal with ambiguous data association.
+problem completely. It is impossible to undo incorrect data
+association in EKF, as a result EKF is quite sensitive to data
+association errors. Handling of large cycles is a very difficult
+problem for EKF SLAM, due to the inability to deal with ambiguous data
+association.
 
 
 \subsection{Particle Filter Approach}
@@ -510,7 +519,7 @@ posterior distribution.
 \label{fig:post_obsodo_}
 }
 \end{center}
-\caption[Robot pose uncertainty, example]{In \ref{fig:post_example} a
+\caption[The robot pose uncertainty, example]{In \ref{fig:post_example} a
   robot makes an observation at point (0,0), then moves 1 meter
   forward and makes another observation. The square shows the region
   for which pose uncertainty is computed. The resulting uncertainty
@@ -525,7 +534,7 @@ posterior distribution.
 
 To illustrate this point, consider a simple mapping example: the world
 consists of two point landmarks and a robot living on a
-two-dimensional plane, as shown in \refFigure{fig:post_all}. Robot
+two-dimensional plane, as shown in \refFigure{fig:post_all}. The robot
 pose is defined by its location on the plane only, ignoring the
 orientation of the robot (one can assume that the robot has an
 extremely accurate compass). The robot is equipped with a sensor that
@@ -601,7 +610,7 @@ detect a place the robot has already mapped.
 %Failure to detect revisiting results in an inconsistent map.
 
 In order to build a consistent map, the robot needs to be able to
-detect the places it has visited to before and correct its estimate of
+detect the places it has visited before and correct its estimate of
 the path along the loop. The problem of mapping large cyclic
 environments has been addressed by several researchers.
 
@@ -699,11 +708,11 @@ do not scale up to big environments. The main restricting factors are:
   measurement.
 
  \item Increase of the robot pose uncertainty. As you run the
- algorithm for longer, errors tend to accumulate, especially in large
- environments. No matter how accurate your mapping process is,
- there is still going to be some residual uncertainty, and it will
- accumulate as the robot travels longer distance. The effect of such approximation
- errors is especially harmful when cycles are present.
+   algorithm for longer, errors tend to accumulate, especially in
+   large environments. No matter how accurate your mapping process is,
+   there is still going to be some residual uncertainty, and it will
+   accumulate as the robot travels longer distance. The effect of such
+   errors is especially harmful when cycles are present.
 
  \item Increasing approximation error in the mapping procedure.
 
@@ -711,16 +720,24 @@ do not scale up to big environments. The main restricting factors are:
 
 The first point is fairly obvious: more landmarks require more
 computation and more memory. Since the environment is considered as a
-whole, one needs access to all landmarks to continue mapping. This
-problem was tackled by Williams \etal\ using Constrained Local Submap
-Filters \cite{williams:acra2001}. Their approach uses local maps for
-building the immediate environment around the robot, effectively
-forgetting about the rest of the world. The local map is then merged
-into the global reference frame. This keeps the computational
-requirements relatively constant, irrespective of the environment
-size. The underlying mapping algorithm used in this approach is EKF
-SLAM.
+whole, one needs access to all landmarks to continue mapping. As
+discussed earlier in Section~\ref{sec:EKF_SLAM}, the problem of
+computational complexity has been addressed by many. In particular, of
+interest are compressed EKF \cite{guivant02} and constrained local submap
+filter \cite{williams:acra2001}.
 
+%%locality of the observation.
+
+%%% This
+%%% problem was tackled by Williams \etal\ using Constrained Local Submap
+%%% Filters \cite{williams:acra2001}. Their approach uses local maps for
+%%% building the immediate environment around the robot, effectively
+%%% forgetting about the rest of the world. The local map is then merged
+%%% into the global reference frame. This keeps the computational
+%%% requirements relatively constant, irrespective of the environment
+%%% size. The underlying mapping algorithm used in this approach is EKF
+%%% SLAM.
+ 
 Increasing uncertainty is another fundamental problem when a map is
 built incrementally, i.e. new measurements are added to the existing
 map as they arrive. In order to add a measurement the robot needs to
@@ -816,12 +833,14 @@ topological map as an after thought. The relationships between nodes
 is purely topological. Metric information is only used inside the
 local maps.
 
-More recently a tighter coupling of metric and topological
-information started to appear in robotic research. A hybrid mapping
-approach called \Atlas\ by Bosse \etal\ \cite{bosse03atlas} incorporates
-metric information into the topological structure of the map. Every
-link in the topological structure stores the spatial relation between
-the two nodes (local maps) as a stochastic variable. 
+More recently a tighter coupling of metric and topological information
+started to appear in robotic research: \Atlas\ by Bosse
+\etal\ \cite{bosse03atlas} incorporates metric information into the
+topological structure of the map. Every link in the topological
+structure stores the spatial relation between the two nodes (local
+maps) as a stochastic variable. Since the approach described in this
+thesis is using ideas similar to that of \Atlas, it is worth
+presenting it in greater detail.
 
 %%% \Atlas\ is described in more detail in the next section.
 

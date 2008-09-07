@@ -305,15 +305,15 @@ possible to sample a map-transition-map triple $\{
 
 It is best to describe the process of transition from one map to
 another with an example, referring to
-\refFigure{fig:MappingExample}. The robot has a car-like driving
-system and lives on a plane. Three particles are used to approximate
-the robot's motion. The robot starts in region $A$ and travels some
-distance forward, taking observations. Some time later the robot
-reaches the boundary of region $A$ and starts a new map $B$. Again
-three particles are used to model the uncertainty of the robot's path
-in map $B$. After performing a three point turn the robot returns to
-region $A$. At this point there are 9 possible paths the robot could
-have taken. These paths are illustrated in
+\refFigure{fig:MappingExample}. In this example the robot has a
+car-like driving system and lives on a plane. Three particles are used
+to approximate the robot's motion. The robot starts in region $A$ and
+travels some distance forward, taking observations. Some time later
+the robot reaches the boundary of region $A$ and starts a new map
+$B$. Again three particles are used to model the uncertainty of the
+robot's path in map $B$. After performing a three point turn the robot
+returns to region $A$. At this point there are 9 possible paths the
+robot could have taken. These paths are illustrated in
 \refFigure{fig:MappingExampleC}. By starting a new map $B$, HTSLAM
 effectively conserves the uncertainty at that time instant. Now, when
 the robot is returning to the region $A$ there are more possible paths

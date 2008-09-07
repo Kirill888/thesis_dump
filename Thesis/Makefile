@@ -100,5 +100,4 @@ get:
 diff:
 	diff ./ $(USB)/ | less
 clean:
-	rm -f $(MAIN).ps $(MAIN).pdf $(MAIN).dvi\
-	$(MAIN).aux $(MAIN).log $(MAIN).bbl $(MAIN).blg
+	rm -f $(MAIN).ps $(MAIN).pdf $(MAIN).dvi $(MAIN).aux $(MAIN).log $(MAIN).bbl $(MAIN).blg

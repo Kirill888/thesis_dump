@@ -71,21 +71,21 @@ two approaches
   between map frames.
 \end{itemize}
 
-\Atlas\ uses the EKF as its local mapping module, while HTSLAM uses
-FastSLAM. FastSLAM has a number of advantages over EKF. FastSLAM is
-computationally more efficient and also provides a richer representation
-of uncertainty as it can model multi-modal distributions, while the EKF
-is restricted to a single mode. For a local mapping module computational
-complexity is not as important, as map size is bounded. The EKFs
-inability to handle multi-modal distributions makes it unusable in some
-environments, even if the size of the map is limited.  In high clutter
-environments data association errors are more likely. Incorrect data
-association is known to lead to inconsistent maps when using
-EKF. FastSLAM can deal with data association ambiguity by sampling over
-all plausible data association decisions
-\cite{fastslam,Montemerlo2003,nieto2003}. The authors of \Atlas\ do
-mention the possibility of using mapping modules other than EKF, however
-as of time of the writing no such implementations have been reported.
+\Atlas\ uses the EKF as its local mapping module\footnote{The authors
+  of \Atlas\ do mention the possibility of using mapping modules other
+  than EKF, however as of time of the writing no such implementations
+  have been reported.}, while HTSLAM uses FastSLAM. FastSLAM has a
+number of advantages over EKF. FastSLAM is computationally more
+efficient and also provides a richer representation of uncertainty as
+it can model multi-modal distributions, while the EKF is restricted to
+a single mode. For a local mapping module computational complexity is
+not as important, as map size is bounded. The EKFs inability to handle
+multi-modal distributions makes it unusable in some environments, even
+if the size of the map is limited.  In high clutter environments data
+association errors are more likely. Incorrect data association is
+known to lead to inconsistent maps when using EKF. FastSLAM can deal
+with data association ambiguity by sampling over all plausible data
+association decisions \cite{fastslam,Montemerlo2003,nieto2003}.
 
 %Transitions and Local Map region boundary.
 

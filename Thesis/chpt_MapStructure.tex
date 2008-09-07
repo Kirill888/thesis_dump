@@ -1,8 +1,9 @@
-HTSLAM models the map as a hybrid topological-metric structure: the
-environment is divided into a number of regions, and a local metric
-map is built for each region. The relative poses of the regions are
-stored in a topological structure. There is no global reference
-frame. Only relative poses of the nearby regions are stored.
+Hybrid topological SLAM (HTSLAM) models the map as a hybrid
+topological-metric structure: the environment is divided into a number
+of regions, and a local metric map is built for each region. The
+relative poses of the regions are stored in a topological
+structure. There is no global reference frame. Only relative poses of
+the nearby regions are stored.
 
 
 %maybe enumerate 1,2,3
@@ -22,8 +23,7 @@ fridge.
 
 This chapter describes the HTSLAM approach to map modelling.  Some
 aspects of the map design are motivated by the mapping procedures
-developed in Chapter~\ref{chpt:Mapping}, and will be clarified in
-chapter~\ref{chpt:Mapping}. %look in to wording
+developed in Chapter~\ref{chpt:Mapping}, and will be clarified then.
 The following section describes the overall map structure.
 Section~\ref{sec:local_map} presents the methods used for modelling
 uncertainty within each local map and section~\ref{sec:link} describes
@@ -176,22 +176,23 @@ expected to contain the most probable paths and their associated maps
 \caption[Modeling transition distribution]
 {Relative locations of the adjacent maps are represented by a
   set of particles.}
+\label{fig:transition_model}
 \end{figure}
 
-The spatial relationships between adjacent local maps are 
-represented by a set of particles.  Whenever a new map is started, the assumption is made
-that the current location of the robot is precisely known in the  coordinate frame of the new
-map.\footnote{Often it is assumed that the robot is
-at the origin.  Here the position of the robot is chosen to place the
-origin of the coordinate frame suitably for describing the local map
-extents.} Thus, the transition between the old and the new map can be
-most directly computed from the estimate of the robot pose in the old
-map (a set of FastSLAM path particles) and the pose in the new map
+The spatial relationships between adjacent local maps are represented
+by a set of particles (see \refFigure{fig:transition_model}).
+Whenever a new map is started, the assumption is made that the current
+location of the robot is precisely known in the coordinate frame of
+the new map.\footnote{Often it is assumed that the robot is at the
+  origin.  Here the position of the robot is chosen to place the
+  origin of the coordinate frame suitably for describing the local map
+  extents.} Thus, the transition between the old and the new map can
+be most directly computed from the estimate of the robot pose in the
+old map (a set of FastSLAM path particles) and the pose in the new map
 (known by assumption). The transition is then a stochastic variable
-which is easily represented by particles. This is the chief
-motivation for using a particle representation for the
-transitions: the choice of representation makes the process of adding
-new maps straightforward.
+which is easily represented by particles. This is the chief motivation
+for using a particle representation for the transitions: the choice of
+representation makes the process of adding new maps straightforward.
 
 Note that when closing loops or, more generally, re-visiting maps,
 there is no similarly easy method for transition determination, and samples
@@ -204,7 +205,7 @@ Define \tr{}{a}{b} to be a coordinate transformation between
 coordinate frames $a$ and $b$, and the coordinate transform operator
 \transit\ 
 $$
-\x{k}{}{b} = \x{k}{}{a} \transit \tr{}{a}{b}.
+\x{k}{}{b} = \tr{}{a}{b} \transit \x{k}{}{a}.
 $$
 This operator projects the pose of the robot from one coordinate frame to
 another.
