@@ -339,10 +339,10 @@ In outdoor environments free space dominates. It is therefore possible
 to assign any region to the local map. A grid map with a resolution of
 50cm is used. The initial map region is a rectangle aligned with the
 robot heading direction. At the end of the mapping process the region
-is trimmed, as shown in \refFigure{fig:initial_region_vision}. Trimmed
-region is set to the intersection of the initial region and the region
-formed by the convex hull of the map. When computing the convex hull
-of the map any uncertainty in landmark estimates is ignored.
+is trimmed, as shown in \refFigure{fig:initial_region_vision}. The
+final region is set to the intersection of the initial region and the
+region formed by the convex hull of the map. When computing the convex
+hull of the map any uncertainty in landmark estimates is ignored.
 
 \begin{figure}[htbp]
   \centering
@@ -517,9 +517,9 @@ robot is still processing new observations. Note that the graph never
 exceeds 0.2 seconds, which is the time between observations in case of
 the SICK laser range finder. The algorithm runs faster than
 real-time. An important thing to note is that computation time per
-observation remains constant throughout the experiment. Even though
-the robot explores larger and larger area and the size of the map
-grows, the time to process an observation remains roughly the same.
+observation remains constant throughout the experiment. As the robot
+explores larger and larger area and the size of the map grows, the
+time to process an observation remains roughly the same.
 
 
 \section {Results Victoria Park}

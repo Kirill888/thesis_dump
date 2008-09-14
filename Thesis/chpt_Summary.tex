@@ -21,7 +21,7 @@ ambiguities arising in the data association decisions. Particle filters
 deal with multi-modal distributions natively. HTSLAM benefits from this
 ability of particle filters. This advantage is especially apparent when
 closing large cycles. When closing the loop HTSLAM runs multiple mapping
-hypothesis in parallel. Pruning of unlikely hypothesis happens
+hypotheses in parallel. Pruning of unlikely hypothesis happens
 automatically as part of a resampling step of the particle filter.
 
 
@@ -94,7 +94,7 @@ data allows HTSLAM to perform map transitions in a simple way. In HTSLAM
 the estimate of the robot pose in a current reference frame is all that
 is needed to make a decision on whether to stay in the current frame,
 perform a transition into a neighbouring region or to start a new
-map. In contrast, \Atlas\ runs multiple localisation hypothesis in all
+map. In contrast, \Atlas\ runs multiple localisation hypotheses in all
 neighbouring regions in order to determine which region provides a
 better explanation to current observations. \Atlas\ uses some quality
 metric to judge the fitness of each alternative. Generally, when
@@ -107,10 +107,10 @@ hypothesis if there is significant ambiguity in the robot pose.
 %write a paragraph or so on how HTSLAM is more elegant
 %Multiple Hypotheses
 
-Both \Atlas\ and HTSLAM use multiple hypothesis to prove or disprove the
+Both \Atlas\ and HTSLAM use multiple hypotheses to prove or disprove the
 validity of loop closing. \Atlas\ uses some performance metrics to
-compare different hypothesis, and to prune out the weak ones. In HTSLAM
-mapping hypothesis are compared directly with each other within a common
+compare different hypotheses, and to prune out the weak ones. In HTSLAM
+mapping hypotheses are compared directly with each other within a common
 particle filter framework. Importance sampling is used to prune out the
 unlikely hypotheses. There is no need to invent performance
 metrics. HTSLAM provides a more formal approach to management of

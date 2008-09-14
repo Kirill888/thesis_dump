@@ -65,7 +65,7 @@ The first step of the algorithm is the detection of vertical edges in
 the left and right images using vertical Sobel edge detector
 \cite{Hartley2004}. To make feature detection more robust, short edges
 are discarded as these are more likely to be spurious. Edges that are
-only few pixels apart are also removed at this stage.
+few pixels apart are also removed at this stage.
 
 In the second step correspondences between edges in the left and right
 images are established. The cameras on the robot are aligned to be
@@ -348,8 +348,9 @@ $$
 \right].
 $$
 
-The landmark state can be computed from the observation using the
-following:
+The landmark state expressed in the coordinate frame of the left
+camera is computed from the observation using the following:
+
 $$
 {\bf x} = f\left({\bf z}\right) 
 = \left[\begin{array}{c}
@@ -383,7 +384,8 @@ $$
 P = {\bf J} C_z {\bf J}^T.
 $$
 
-The landmark template is initialised to that of the observation.
+The landmark template is initialised to that of the observation
+adjusted by the pose of the sensor in the local reference frame.
 
 \section{Defining Map Region}
 

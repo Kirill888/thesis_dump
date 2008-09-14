@@ -487,7 +487,7 @@ translation from frame $a$ to $b$, such that ${\bf R}\theta_i + {\bf t}$
 is a true location of the landmark $i$ in the reference frame of
 $b$. Let $\mapA=[(a_1,A_1),...(a_n,A_n)]$,
 $\mapB=[(b_1,B_1),...(b_n,B_n)]$ be a set of common landmarks in the two
-maps. The mean of the landmark $i$ is denoted vy $a_i$ and $A_i$ is the
+maps. The mean of the landmark $i$ is denoted by $a_i$ and $A_i$ is the
 inverse of the corresponding covariance. It is required to find ${\bf
 R,t},\theta_1, \theta_2 ...\theta_n$ that maximise
 \begin{equation}
@@ -644,8 +644,8 @@ discovers that region $A$ and $E$ overlap.
 
 From landmark correspondences it is possible to infer the relative
 pose of the two maps, allowing for an update of the global map
-structure. Through map alignment a new link can be added between the
-two maps. The robot can then transfer into map $A$ and continue
+structure. Map alignment is used to compute a new link between the
+two maps. The robot then transfers into map $A$ and continues
 mapping.  However, this new information also provides information
 about the path of the robot along the loop. Before map matching all
 paths are equally likely (by construction), subsequently the robot
@@ -992,7 +992,7 @@ perform loop closing. Some mechanism should be in place to evaluate the
 likelihood of the hypothesis that the two local maps are the two views
 of the same region.
 
-In HTSLAM such a mechanism is built in to the local mapping
+In HTSLAM such a mechanism is built into the local mapping
 module. Several mapping hypotheses can be compared directly in a
 particle filtering framework. FastSLAM samples over robot paths in one
 global reference frame. HTSLAM extends particle filtering to sample

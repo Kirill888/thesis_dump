@@ -126,7 +126,11 @@ that are close to a current one in a topological and Cartesian sense.
 The neighbourhood region is a union of the current map region and
 projections of neighbouring regions onto the current coordinate frame.
 Two regions are not considered neighbours if their relative pose
-uncertainty is too high.
+uncertainty is too high. Two regions that are close in Cartesian sense
+but far apart in topological structure are not considered neighbours
+until their proximity is verified by loop closing procedure. The
+procedure for dealing with loop closing is discussed in the next
+chapter.
 
 \begin{figure}
 \begin{center}
@@ -226,7 +230,7 @@ at the time of creating a transition is a mapping $\mapA \Rightarrow
 \tr{}{A}{B}$.
 
 
-The process of creating new map as follows:
+The process of creating new map is as following:
 
 \begin{enumerate}
 
@@ -261,7 +265,8 @@ to the corresponding local map. Typically, the neighbouring region
 will be adjacent to the current region, however two regions that are
 separated by several links in the graph can also be considered
 neighbours if the compound coordinate transformation from one to the
-other is sufficiently certain.  In the case when the regions are not
+other is sufficiently certain\footnote{Loop closing is discussed in
+  the next chapter}. In the case when the regions are not
 directly connected, the transition is performed along the shortest
 path between the two regions and is equivalent to performing several
 transitions sequentially. The procedure for computing the shortest
