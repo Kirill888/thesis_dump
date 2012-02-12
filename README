@@ -1,3 +1,8 @@
 This is a dump of old code and thesis latex sources I did when doing PhD in ANU.
 
+It should be mentioned that while majority of the source code here is
+written by me, some utility files could be from other open
+sources. For example I am pretty sure I didn't implement simplex
+algorithm, but the file doesn't say where it comes from.
+
 Age: source code last changed mid 2005, latex -- late 2008
